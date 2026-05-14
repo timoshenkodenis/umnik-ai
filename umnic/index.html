@@ -51,9 +51,9 @@
       flex:0 0 auto;
       gap:8px;
     }
-    .top.welcome-top{grid-template-columns:1fr;justify-items:center;height:80px;padding-top:18px}
+    .top.welcome-top{display:flex;align-items:center;justify-content:center;height:80px;padding-top:18px}
     .logo{height:34px;max-width:150px;object-fit:contain;justify-self:center;grid-column:2}
-    .welcome-top .logo{justify-self:center;height:46px;max-width:170px}
+    .welcome-top .logo{height:46px;max-width:170px;margin:0 auto;justify-self:center;grid-column:auto}
     .header-fox{height:58px;width:74px;object-fit:contain;filter:drop-shadow(0 7px 10px rgba(0,0,0,.16));transition:.25s ease;justify-self:start;grid-column:1}
     .gear-btn,.icon-btn{
       border:1px solid var(--line);
@@ -85,9 +85,9 @@
     .chat-tabs::-webkit-scrollbar,.suggestions::-webkit-scrollbar{display:none}.chat-tabs.dragging{cursor:grabbing}
     .tab{flex:0 0 auto;border-radius:999px;padding:9px 13px;font-weight:800;background:white;border:1px solid var(--line);color:#4b5563;display:flex;align-items:center;gap:7px;min-height:40px}.tab.active{background:var(--orange);color:white}.tab .tab-controls{display:none;gap:3px}.tabs-row.editing .tab .tab-controls{display:flex}.tab-control{height:22px;width:22px;border-radius:999px;background:rgba(0,0,0,.08);color:inherit;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;border:0;padding:0;cursor:pointer}.tab.active .tab-control{background:rgba(255,255,255,.22)}
     .edit-tabs{height:40px;width:40px;flex:0 0 auto;border-radius:999px;border:1px solid var(--line);background:white;color:var(--orange);font-weight:900;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-    .new-tab{height:40px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:white;color:var(--orange);font-weight:900;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .new-tab{height:40px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:white;color:var(--orange);font-weight:900;box-shadow:0 2px 8px rgba(0,0,0,.06);display:none}
 
-    .chat{flex:1;min-height:0;overflow:auto;padding:12px 16px 8px;display:flex;flex-direction:column;gap:9px}.bubble{max-width:86%;padding:11px 14px;border-radius:22px;font-weight:500;font-size:14px;line-height:1.38;white-space:pre-wrap;letter-spacing:0;overflow-wrap:anywhere}.user{align-self:flex-end;background:var(--orange);color:white;border-bottom-right-radius:7px;font-weight:650}.bot{align-self:flex-start;background:var(--soft);border:1px solid var(--line);border-bottom-left-radius:7px;color:#202020}.status{font-size:12px;color:var(--gray);font-weight:800;text-align:center;padding:0 12px 7px;flex:0 0 auto}.composer{padding:12px;border-top:1px solid var(--line);background:rgba(248,244,238,.97);flex:0 0 auto}.suggestions{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none;cursor:grab;user-select:none}.suggestions button{flex:0 0 auto;background:white;color:#4b5563;border:1px solid var(--line);border-radius:999px;padding:9px 12px;font-size:12px;font-weight:800}.row{display:flex;gap:8px;align-items:center}.round{width:48px;height:48px;border-radius:50%;background:white;border:1px solid var(--line);color:var(--orange);font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center;flex:0 0 auto;padding:0;line-height:1}.round svg{display:block;width:22px;height:22px}.send{background:var(--orange);color:white}.send:disabled{background:#cfcac3;border-color:#cfcac3;color:white;cursor:not-allowed;box-shadow:none}.send svg{transform:translateX(1px)}textarea{resize:none;height:48px;min-height:48px;max-height:48px;flex:1;padding:13px 14px;font-size:14px;line-height:20px;border-radius:24px;font-weight:500}.small-note{font-size:11px;color:var(--gray);font-weight:700;text-align:center;margin-top:6px}.settings{padding:16px;gap:12px;overflow:auto}.card{background:white;border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:0 4px 14px rgba(0,0,0,.05)}.card h3{margin:0 0 8px;font-size:17px}.toggle{display:flex;gap:8px;margin-top:10px}.toggle button{flex:1;padding:12px;border-radius:16px;background:#f3eee8;font-weight:900;color:#555}.toggle button.active{background:var(--orange);color:white}.preview{max-width:85px;max-height:60px;border-radius:12px;border:1px solid var(--line);object-fit:cover;display:none;margin-top:8px}.plus-card{background:linear-gradient(140deg,var(--orange),var(--orange2));color:white}.plus-card .muted{color:rgba(255,255,255,.86)}
+    .chat{flex:1;min-height:0;overflow:auto;padding:12px 16px 8px;display:flex;flex-direction:column;gap:9px}.bubble{max-width:86%;padding:11px 14px;border-radius:22px;font-weight:500;font-size:14px;line-height:1.38;white-space:pre-wrap;letter-spacing:0;overflow-wrap:anywhere}.user{align-self:flex-end;background:var(--orange);color:white;border-bottom-right-radius:7px;font-weight:650}.bot{align-self:flex-start;background:var(--soft);border:1px solid var(--line);border-bottom-left-radius:7px;color:#202020}.status{font-size:12px;color:var(--gray);font-weight:800;text-align:center;padding:0 12px 7px;flex:0 0 auto}.composer{padding:12px;border-top:1px solid var(--line);background:rgba(248,244,238,.97);flex:0 0 auto}.suggestions{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none;cursor:grab;user-select:none}.suggestions button{flex:0 0 auto;background:white;color:#4b5563;border:1px solid var(--line);border-radius:999px;padding:9px 12px;font-size:12px;font-weight:800}.suggestions button:disabled{opacity:.55;cursor:not-allowed}.row{display:flex;gap:8px;align-items:center}.round{width:48px;height:48px;border-radius:50%;background:white;border:1px solid var(--line);color:var(--orange);font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center;flex:0 0 auto;padding:0;line-height:1}.round svg{display:block;width:22px;height:22px}.send{background:var(--orange);color:white}.send:disabled{background:#cfcac3;border-color:#cfcac3;color:white;cursor:not-allowed;box-shadow:none}.send svg{transform:translateX(1px)}textarea{resize:none;height:48px;min-height:48px;max-height:48px;flex:1;padding:13px 14px;font-size:14px;line-height:20px;border-radius:24px;font-weight:500}.small-note{font-size:11px;color:var(--gray);font-weight:700;text-align:center;margin-top:6px}.settings{padding:16px;gap:12px;overflow:auto}.card{background:white;border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:0 4px 14px rgba(0,0,0,.05)}.card h3{margin:0 0 8px;font-size:17px}.toggle{display:flex;gap:8px;margin-top:10px}.toggle button{flex:1;padding:12px;border-radius:16px;background:#f3eee8;font-weight:900;color:#555}.toggle button.active{background:var(--orange);color:white}.preview{max-width:85px;max-height:60px;border-radius:12px;border:1px solid var(--line);object-fit:cover;display:none;margin-top:8px}.plus-card{background:linear-gradient(140deg,var(--orange),var(--orange2));color:white}.plus-card .muted{color:rgba(255,255,255,.86)}
   </style>
 </head>
 <body>
@@ -137,7 +137,6 @@
     <div class="card"><h3>Тариф</h3><p class="muted">Free показывает лимиты, Plus — полную версию продукта.</p><div class="toggle"><button id="planFree" onclick="setPlan('free')">Free</button><button id="planPlus" onclick="setPlan('plus')">Умник Плюс</button></div></div>
     <div class="card plus-card"><h3>Умник Плюс — 349 ₽/мес</h3><p class="muted">Безлимитные сообщения, сохранённые чаты, фото-разбор и голосовой ввод.</p></div>
     <div class="card"><h3>Аккаунт и подписка</h3><p class="muted">В полной версии здесь будет регистрация, история чатов и подключение подписки.</p><button class="primary" style="margin-top:12px">Войти / создать аккаунт</button></div>
-    <div class="card"><h3>Управление чатами</h3><p class="muted">На главном экране чата включи ✎, чтобы удалить или переместить чаты.</p><button class="primary" style="margin-top:12px" onclick="newChat()">Создать новый чат</button></div>
   </section>
 </div>
 
@@ -153,6 +152,7 @@ try{
   localStorage.removeItem('umnik_active_chat');
   localStorage.removeItem('umnik_limits');
 }catch(e){}
+
 
 const defaultChats = ['Домашка','Таблица ×7','Русский'];
 const suggestions = [
@@ -176,7 +176,8 @@ const state = {
   limits:{messages:0,photos:0},
   editingTabs:false,
   isSending:false,
-  suppressTabClick:false
+  tabDragMoved:false,
+  sugDragMoved:false
 };
 
 let currentEmotion = 'welcome';
@@ -199,8 +200,11 @@ function normalizeChatsForPlan(){
     state.editingTabs = false;
     return;
   }
+
   defaultChats.forEach(ensureChat);
-  if(!state.chatOrder.includes(state.activeChat)) state.activeChat = state.chatOrder[0] || 'Домашка';
+  if(!state.chatOrder.includes(state.activeChat)){
+    state.activeChat = state.chatOrder[0] || 'Домашка';
+  }
 }
 
 function show(id){
@@ -214,7 +218,7 @@ function renderTop(id){
   if(id === 'welcome'){
     top.className = 'top welcome-top';
     top.innerHTML = '<img class="logo" src="/assets/logo.png" alt="Умник">';
-  } else {
+  }else{
     top.className = 'top';
     top.innerHTML =
       '<img id="headerFox" class="header-fox" src="/assets/umnik_welcome.png" alt="Умник">' +
@@ -243,18 +247,20 @@ function startApp(){
   state.age = age;
   state.plan = 'free';
   state.mode = 'ai';
-  state.activeChat = 'Домашка';
-  state.chats = {'Домашка':[{role:'bot', text:welcomeText()}]};
-  state.chatOrder = ['Домашка'];
-  state.limits = {messages:0,photos:0};
-  state.editingTabs = false;
-  state.isSending = false;
+  resetEveryOpen();
   show('chatScreen');
   render();
 }
 
-function openSettings(){ show('settings'); renderSettings(); }
-function openChat(){ show('chatScreen'); render(); }
+function openSettings(){
+  show('settings');
+  renderSettings();
+}
+
+function openChat(){
+  show('chatScreen');
+  render();
+}
 
 function setMode(m){
   state.mode = m;
@@ -276,39 +282,56 @@ function toggleEditTabs(){
 }
 
 function uniqueName(base){
-  let n = base || 'Новый чат', i = 2;
-  while(state.chats[n]){ n = base + ' ' + i; i++; }
+  let root = (base || 'Новый чат').trim() || 'Новый чат';
+  let n = root;
+  let i = 2;
+  while(state.chats[n]){
+    n = root + ' ' + i;
+    i++;
+  }
   return n;
 }
 
 function newChat(){
   if(state.plan === 'free'){
     addMessage('bot','В Free-версии доступен только один чат. Создание отдельных чатов относится к Умник Плюс.');
+    render();
     return;
   }
+
   const raw = prompt('Название нового чата:','Новый чат');
   if(raw === null) return;
-  const n = uniqueName((raw.trim() || 'Новый чат'));
+
+  const n = uniqueName(raw);
   state.activeChat = n;
   state.chats[n] = [{role:'bot', text:'Новый чат создан. Что будем разбирать?'}];
   state.chatOrder.push(n);
+  state.editingTabs = false;
   openChat();
 }
 
 function deleteChat(n){
   if(state.plan === 'free') return;
   if(state.chatOrder.length <= 1) return;
+
   delete state.chats[n];
   state.chatOrder = state.chatOrder.filter(x => x !== n);
-  if(state.activeChat === n) state.activeChat = state.chatOrder[0] || 'Домашка';
+
+  if(state.activeChat === n){
+    state.activeChat = state.chatOrder[0] || 'Домашка';
+  }
+
   render();
 }
 
 function moveChat(n, dir){
   if(state.plan === 'free') return;
+
   const i = state.chatOrder.indexOf(n);
   const j = i + dir;
+
   if(i < 0 || j < 0 || j >= state.chatOrder.length) return;
+
   [state.chatOrder[i], state.chatOrder[j]] = [state.chatOrder[j], state.chatOrder[i]];
   renderTabs();
 }
@@ -318,7 +341,9 @@ function renderSettings(){
   const demo = document.getElementById('modeDemo');
   const free = document.getElementById('planFree');
   const plus = document.getElementById('planPlus');
+
   if(!ai) return;
+
   ai.classList.toggle('active', state.mode === 'ai');
   demo.classList.toggle('active', state.mode === 'demo');
   free.classList.toggle('active', state.plan === 'free');
@@ -332,12 +357,17 @@ function renderTabs(){
   const tabs = document.getElementById('chatTabs');
   const editBtn = document.getElementById('editTabsBtn');
   const newBtn = document.querySelector('.new-tab');
+
   if(!tabs || !row || !editBtn || !newBtn) return;
 
-  row.classList.toggle('editing', state.editingTabs && state.plan !== 'free');
+  const isFree = state.plan === 'free';
+  row.classList.toggle('editing', state.editingTabs && !isFree);
+
   editBtn.textContent = state.editingTabs ? '✓' : '✎';
-  editBtn.style.display = state.plan === 'free' ? 'none' : 'block';
-  newBtn.style.display = state.plan === 'free' ? 'none' : 'block';
+  editBtn.style.display = isFree ? 'none' : 'block';
+
+  // Новые чаты появляются только в режиме редактирования и только в Plus.
+  newBtn.style.display = (!isFree && state.editingTabs) ? 'block' : 'none';
 
   tabs.innerHTML = '';
 
@@ -352,7 +382,7 @@ function renderTabs(){
     label.textContent = n;
     b.appendChild(label);
 
-    if(state.editingTabs && state.plan !== 'free'){
+    if(state.editingTabs && !isFree){
       const controls = document.createElement('span');
       controls.className = 'tab-controls';
 
@@ -360,19 +390,31 @@ function renderTabs(){
       left.type = 'button';
       left.className = 'tab-control';
       left.textContent = '‹';
-      left.onclick = (e) => { e.preventDefault(); e.stopPropagation(); moveChat(n,-1); };
+      left.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        moveChat(n,-1);
+      };
 
       const right = document.createElement('button');
       right.type = 'button';
       right.className = 'tab-control';
       right.textContent = '›';
-      right.onclick = (e) => { e.preventDefault(); e.stopPropagation(); moveChat(n,1); };
+      right.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        moveChat(n,1);
+      };
 
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'tab-control';
       del.textContent = '×';
-      del.onclick = (e) => { e.preventDefault(); e.stopPropagation(); deleteChat(n); };
+      del.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        deleteChat(n);
+      };
 
       controls.appendChild(left);
       controls.appendChild(right);
@@ -381,9 +423,9 @@ function renderTabs(){
     }
 
     b.onclick = () => {
-      if(state.plan === 'free') return;
+      if(isFree) return;
       if(state.editingTabs) return;
-      if(state.suppressTabClick) return;
+      if(state.tabDragMoved) return;
       state.activeChat = n;
       render();
     };
@@ -403,6 +445,7 @@ function render(){
 
   const chat = document.getElementById('chat');
   if(!chat) return;
+
   chat.innerHTML = '';
 
   state.chats[state.activeChat].forEach(m => {
@@ -435,16 +478,20 @@ function render(){
   const sug = document.getElementById('suggestions');
   if(sug){
     sug.innerHTML = '';
+
     suggestions.forEach(s => {
       const b = document.createElement('button');
       b.type = 'button';
       b.textContent = s;
       b.disabled = state.isSending;
+
       b.onclick = () => {
         if(state.isSending) return;
+        if(state.sugDragMoved) return;
         document.getElementById('input').value = s;
         send();
       };
+
       sug.appendChild(b);
     });
   }
@@ -452,6 +499,7 @@ function render(){
 
 function setFox(e){
   currentEmotion = e;
+
   const map = {
     thinking:'/assets/umnik_thinking.png',
     explain:'/assets/umnik_explain.png',
@@ -462,6 +510,7 @@ function setFox(e){
     safe_stop:'/assets/umnik_explain.png',
     welcome:'/assets/umnik_welcome.png'
   };
+
   const img = document.getElementById('headerFox');
   if(img){
     img.src = map[e] || map.welcome;
@@ -476,21 +525,25 @@ function addMessage(role,text){
 
 function canUse(){
   if(state.plan === 'plus') return true;
+
   if(state.limits.messages >= 10){
     addMessage('bot','В Free-версии закончились 10 сообщений на сегодня. В презентации это место для перехода на Умник Плюс.');
     render();
     return false;
   }
+
   return true;
 }
 
 function demoAnswer(message) {
   const q = String(message || '').toLowerCase();
+
   if(q.includes('сказуем')) return { emotion:'explain', text:'Сказуемое — это главный член предложения, который показывает, что делает предмет. Например: «Мальчик читает». Что делает? Читает — это сказуемое.' };
   if(q.includes('периметр')) return { emotion:'explain', text:'Периметр — это сумма длин всех сторон фигуры. Чтобы найти периметр, нужно сложить все стороны. У прямоугольника можно так: P = 2 × (длина + ширина).' };
   if(q.includes('дроб')) return { emotion:'happy', text:'Дробь — это часть целого. Например, если пиццу разделили на 4 равные части и взяли 1 кусок, это 1/4.' };
   if(q.includes('устал')) return { emotion:'support', text:'Понимаю. Давай сделаем один маленький шаг: напиши первое задание, и я помогу разобрать его спокойно.' };
   if(q.includes('фото')) return { emotion:'idea', text:'Фото принято. В полной версии я распознаю задание на фото и объясню решение текстом.' };
+
   return { emotion:'explain', text:'Я понял вопрос. Давай разберём его простыми шагами: сначала выделим главное, потом решим пример.' };
 }
 
@@ -499,6 +552,7 @@ async function send(){
 
   const input = document.getElementById('input');
   const text = input.value.trim();
+
   if(!text && !state.imageDataUrl) return;
   if(!canUse()) return;
 
@@ -511,6 +565,7 @@ async function send(){
 
   try{
     let data;
+
     if(state.mode === 'demo'){
       await new Promise(r => setTimeout(r, 700));
       data = demoAnswer(text);
@@ -526,6 +581,7 @@ async function send(){
           mode:state.mode
         })
       });
+
       data = await res.json();
       if(!res.ok) throw new Error(data?.error || 'AI error');
     }
@@ -533,6 +589,7 @@ async function send(){
     state.imageDataUrl = null;
     const preview = document.getElementById('photoPreview');
     if(preview) preview.style.display = 'none';
+
     addMessage('bot', data.text || 'Ответ пустой. Попробуй ещё раз.');
     setFox(data.emotion || 'explain');
   }catch(e){
@@ -554,17 +611,20 @@ function handleKey(e){
 
 function pickPhoto(){
   if(state.isSending) return;
+
   if(state.plan === 'free' && state.limits.photos >= 3){
     addMessage('bot','В Free-версии закончились 3 фото на сегодня. В Plus фото-разбор будет расширенным.');
     render();
     return;
   }
+
   document.getElementById('fileInput').click();
 }
 
 function handlePhoto(e){
   const file = e.target.files[0];
   if(!file) return;
+
   const reader = new FileReader();
   reader.onload = () => compressImage(reader.result, (small) => {
     state.imageDataUrl = small;
@@ -574,50 +634,69 @@ function handlePhoto(e){
     img.style.display = 'block';
     render();
   });
+
   reader.readAsDataURL(file);
 }
 
 function compressImage(dataUrl, cb){
   const img = new Image();
+
   img.onload = () => {
     const c = document.createElement('canvas');
     const max = 1000;
     let w = img.width, h = img.height;
-    if(w > h && w > max){ h = Math.round(h * max / w); w = max; }
-    else if(h > max){ w = Math.round(w * max / h); h = max; }
+
+    if(w > h && w > max){
+      h = Math.round(h * max / w);
+      w = max;
+    }else if(h > max){
+      w = Math.round(w * max / h);
+      h = max;
+    }
+
     c.width = w;
     c.height = h;
     c.getContext('2d').drawImage(img,0,0,w,h);
     cb(c.toDataURL('image/jpeg',0.75));
   };
+
   img.src = dataUrl;
 }
 
 function voiceInput(){
   if(state.isSending) return;
+
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
   if(!SR){
     addMessage('bot','Голосовой ввод не поддерживается в этом браузере. Попробуй Google Chrome.');
     render();
     return;
   }
+
   const rec = new SR();
   rec.lang = 'ru-RU';
-  rec.onresult = e => { document.getElementById('input').value = e.results[0][0].transcript; };
+  rec.onresult = e => {
+    document.getElementById('input').value = e.results[0][0].transcript;
+  };
   rec.start();
 }
 
-function enableDragScroll(el){
+function enableDragScroll(el, key){
   if(!el || el.dataset.dragReady === '1') return;
   el.dataset.dragReady = '1';
 
-  let down = false, startX = 0, scrollLeft = 0, moved = false;
+  let down = false;
+  let startX = 0;
+  let scrollLeft = 0;
+  let moved = false;
 
   el.addEventListener('pointerdown', e => {
     if(e.target.closest('.tab-control,.edit-tabs,.new-tab')) return;
+
     down = true;
     moved = false;
-    state.suppressTabClick = false;
+    state[key] = false;
     startX = e.clientX;
     scrollLeft = el.scrollLeft;
     el.classList.add('dragging');
@@ -626,19 +705,28 @@ function enableDragScroll(el){
 
   el.addEventListener('pointermove', e => {
     if(!down) return;
+
     const dx = e.clientX - startX;
+
     if(Math.abs(dx) > 6){
       moved = true;
-      state.suppressTabClick = true;
+      state[key] = true;
     }
+
     el.scrollLeft = scrollLeft - dx;
   });
 
   function finish(){
     if(!down) return;
+
     down = false;
     el.classList.remove('dragging');
-    setTimeout(() => { state.suppressTabClick = false; }, moved ? 120 : 0);
+
+    if(moved){
+      setTimeout(() => { state[key] = false; }, 150);
+    }else{
+      state[key] = false;
+    }
   }
 
   el.addEventListener('pointerup', finish);
@@ -648,7 +736,8 @@ function enableDragScroll(el){
 
 window.addEventListener('DOMContentLoaded', () => {
   resetEveryOpen();
-  enableDragScroll(document.getElementById('chatTabs'));
+  enableDragScroll(document.getElementById('chatTabs'), 'tabDragMoved');
+  enableDragScroll(document.getElementById('suggestions'), 'sugDragMoved');
   renderTop('welcome');
   render();
 });
@@ -663,6 +752,8 @@ function resetEveryOpen(){
   state.limits = {messages:0,photos:0};
   state.editingTabs = false;
   state.isSending = false;
+  state.tabDragMoved = false;
+  state.sugDragMoved = false;
 }
 </script>
 </body>
