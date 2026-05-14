@@ -5,29 +5,179 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Умник AI</title>
   <style>
-    :root{--orange:#ff7a00;--orange2:#ff9f3d;--bg:#f8f4ee;--soft:#fff3e4;--dark:#161618;--gray:#66707a;--line:#eadbca;--white:#fff;}
-    *{box-sizing:border-box} body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -20%,#35302a,#111 50%);font-family:Arial,"Segoe UI",sans-serif;color:var(--dark);display:flex;align-items:center;justify-content:center;padding:18px}.phone{width:min(420px,100%);height:min(790px,calc(100vh - 24px));min-height:650px;background:var(--bg);border:10px solid #111;border-radius:38px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5);display:flex;flex-direction:column;position:relative}.top{height:72px;padding:15px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(0,0,0,.05);flex:0 0 auto}.logo{height:34px;max-width:150px;object-fit:contain}.chip{border:1px solid var(--line);background:white;color:var(--orange);border-radius:999px;padding:9px 13px;font-weight:900;font-size:12px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.08)}.screen{display:none;flex-direction:column;min-height:0;flex:1}.screen.active{display:flex}.welcome{align-items:center;justify-content:center;text-align:center;padding:24px;gap:14px}.fox-big{height:225px;max-width:90%;object-fit:contain;filter:drop-shadow(0 16px 20px rgba(0,0,0,.16))}h1{font-size:44px;line-height:1;margin:0}.muted{color:var(--gray);line-height:1.45;font-weight:700}.form{display:grid;gap:10px;width:100%;margin-top:10px}input,textarea,select{font:inherit;border:1px solid var(--line);background:white;border-radius:18px;padding:13px 14px;outline:none;width:100%}button{font:inherit;border:0;cursor:pointer}.primary{width:100%;background:var(--orange);color:white;border-radius:22px;padding:15px;font-weight:900;font-size:16px;box-shadow:0 8px 18px rgba(255,122,0,.25)}.chat-tabs{display:flex;gap:8px;overflow-x:auto;padding:12px 16px 0;flex:0 0 auto}.chat-tabs button{flex:0 0 auto;border-radius:999px;padding:10px 14px;font-weight:900;background:white;border:1px solid var(--line);color:#4b5563}.chat-tabs button.active{background:var(--orange);color:white}.chat{flex:1;min-height:0;overflow:auto;padding:14px 16px 8px;display:flex;flex-direction:column;gap:10px}.bubble{max-width:86%;padding:12px 14px;border-radius:22px;font-weight:800;font-size:14px;line-height:1.35;white-space:pre-wrap}.user{align-self:flex-end;background:var(--orange);color:white;border-bottom-right-radius:7px}.bot{align-self:flex-start;background:var(--soft);border:1px solid var(--line);border-bottom-left-radius:7px}.mascot-zone{height:140px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;position:relative}.fox{height:132px;max-width:210px;object-fit:contain;filter:drop-shadow(0 12px 18px rgba(0,0,0,.18));transition:.25s ease}.fox.thinking{transform:translateY(-5px) rotate(2deg)}.status{font-size:12px;color:var(--gray);font-weight:900;text-align:center;padding:0 12px 7px;flex:0 0 auto}.composer{padding:12px;border-top:1px solid var(--line);background:rgba(248,244,238,.97);flex:0 0 auto}.suggestions{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px}.suggestions button{flex:0 0 auto;background:white;color:#4b5563;border:1px solid var(--line);border-radius:999px;padding:9px 12px;font-size:12px;font-weight:900}.row{display:flex;gap:8px;align-items:flex-end}.round{width:44px;height:44px;border-radius:50%;background:white;border:1px solid var(--line);color:var(--orange);font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center;flex:0 0 auto}.send{background:var(--orange);color:white}textarea{resize:none;min-height:44px;max-height:105px;flex:1;padding-top:11px;font-size:14px}.small-note{font-size:11px;color:var(--gray);font-weight:800;text-align:center;margin-top:6px}.settings{padding:16px;gap:12px;overflow:auto}.card{background:white;border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:0 4px 14px rgba(0,0,0,.05)}.card h3{margin:0 0 8px;font-size:17px}.toggle{display:flex;gap:8px;margin-top:10px}.toggle button{flex:1;padding:12px;border-radius:16px;background:#f3eee8;font-weight:900;color:#555}.toggle button.active{background:var(--orange);color:white}.preview{max-width:85px;max-height:60px;border-radius:12px;border:1px solid var(--line);object-fit:cover;display:none;margin-top:8px}.plus-card{background:linear-gradient(140deg,var(--orange),var(--orange2));color:white}.plus-card .muted{color:rgba(255,255,255,.86)}
+    :root{
+      --orange:#ff7a00;
+      --orange2:#ff9f3d;
+      --bg:#f8f4ee;
+      --soft:#fff3e4;
+      --dark:#161618;
+      --gray:#66707a;
+      --line:#eadbca;
+      --white:#fff;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      background:radial-gradient(circle at 50% -20%,#35302a,#111 50%);
+      font-family:Arial,"Segoe UI",sans-serif;
+      color:var(--dark);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .phone{
+      width:min(420px,100%);
+      height:min(790px,calc(100vh - 24px));
+      min-height:650px;
+      background:var(--bg);
+      border:10px solid #111;
+      border-radius:38px;
+      overflow:hidden;
+      box-shadow:0 30px 80px rgba(0,0,0,.5);
+      display:flex;
+      flex-direction:column;
+      position:relative;
+    }
+    .top{
+      height:72px;
+      padding:12px 18px;
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      align-items:center;
+      border-bottom:1px solid rgba(0,0,0,.05);
+      flex:0 0 auto;
+      gap:8px;
+    }
+    .top.welcome-top{grid-template-columns:1fr;justify-items:center;height:80px;padding-top:18px}
+    .logo{height:34px;max-width:150px;object-fit:contain;justify-self:start}
+    .welcome-top .logo{justify-self:center;height:46px;max-width:170px}
+    .header-fox{height:58px;width:74px;object-fit:contain;filter:drop-shadow(0 7px 10px rgba(0,0,0,.16));transition:.25s ease}
+    .gear-btn,.icon-btn{
+      border:1px solid var(--line);
+      background:white;
+      color:var(--orange);
+      border-radius:999px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 4px 12px rgba(0,0,0,.08);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .gear-btn{height:44px;width:44px;justify-self:end}
+    .chip{border:1px solid var(--line);background:white;color:var(--orange);border-radius:999px;padding:9px 13px;font-weight:800;font-size:12px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+    .screen{display:none;flex-direction:column;min-height:0;flex:1}.screen.active{display:flex}
+    .welcome{align-items:center;justify-content:center;text-align:center;padding:12px 24px 24px;gap:13px}
+    .fox-big{height:215px;max-width:90%;object-fit:contain;filter:drop-shadow(0 16px 20px rgba(0,0,0,.16));transition:.25s ease}
+    .fox-big.warn{animation:softShake .35s ease both}
+    @keyframes softShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+    h1{font-size:42px;line-height:1;margin:0}.muted{color:var(--gray);line-height:1.45;font-weight:600}.form{display:grid;gap:10px;width:100%;margin-top:8px}
+    input,textarea,select{font:inherit;border:1px solid var(--line);background:white;border-radius:18px;padding:13px 14px;outline:none;width:100%}
+    input:focus,textarea:focus{border-color:var(--orange)}
+    button{font:inherit;border:0;cursor:pointer}.primary{width:100%;background:var(--orange);color:white;border-radius:22px;padding:15px;font-weight:900;font-size:16px;box-shadow:0 8px 18px rgba(255,122,0,.25)}
+    .error-note{min-height:20px;color:#d94f00;font-size:13px;font-weight:800}
+
+    .tabs-row{display:flex;align-items:center;gap:8px;padding:10px 14px 0;flex:0 0 auto}
+    .chat-tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;cursor:grab;flex:1;min-width:0;padding-bottom:4px;user-select:none;touch-action:pan-x}
+    .chat-tabs::-webkit-scrollbar,.suggestions::-webkit-scrollbar{display:none}.chat-tabs.dragging{cursor:grabbing}
+    .tab{flex:0 0 auto;border-radius:999px;padding:9px 13px;font-weight:800;background:white;border:1px solid var(--line);color:#4b5563;display:flex;align-items:center;gap:7px;min-height:40px}.tab.active{background:var(--orange);color:white}.tab .tab-controls{display:none;gap:3px}.tabs-row.editing .tab .tab-controls{display:flex}.tab-control{height:22px;width:22px;border-radius:999px;background:rgba(0,0,0,.08);color:inherit;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center}.tab.active .tab-control{background:rgba(255,255,255,.22)}
+    .edit-tabs{height:40px;width:40px;flex:0 0 auto;border-radius:999px;border:1px solid var(--line);background:white;color:var(--orange);font-weight:900;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .new-tab{height:40px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:white;color:var(--orange);font-weight:900;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+
+    .chat{flex:1;min-height:0;overflow:auto;padding:12px 16px 8px;display:flex;flex-direction:column;gap:9px}.bubble{max-width:86%;padding:11px 14px;border-radius:22px;font-weight:600;font-size:14px;line-height:1.35;white-space:pre-wrap;letter-spacing:.01em}.user{align-self:flex-end;background:var(--orange);color:white;border-bottom-right-radius:7px;font-weight:700}.bot{align-self:flex-start;background:var(--soft);border:1px solid var(--line);border-bottom-left-radius:7px;color:#202020}.status{font-size:12px;color:var(--gray);font-weight:800;text-align:center;padding:0 12px 7px;flex:0 0 auto}.composer{padding:12px;border-top:1px solid var(--line);background:rgba(248,244,238,.97);flex:0 0 auto}.suggestions{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none;cursor:grab;user-select:none}.suggestions button{flex:0 0 auto;background:white;color:#4b5563;border:1px solid var(--line);border-radius:999px;padding:9px 12px;font-size:12px;font-weight:800}.row{display:flex;gap:8px;align-items:center}.round{width:48px;height:48px;border-radius:50%;background:white;border:1px solid var(--line);color:var(--orange);font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center;flex:0 0 auto;padding:0;line-height:1}.round svg{display:block;width:22px;height:22px}.send{background:var(--orange);color:white}.send svg{transform:translateX(1px)}textarea{resize:none;height:48px;min-height:48px;max-height:48px;flex:1;padding:13px 14px;font-size:14px;line-height:20px;border-radius:24px;font-weight:500}.small-note{font-size:11px;color:var(--gray);font-weight:700;text-align:center;margin-top:6px}.settings{padding:16px;gap:12px;overflow:auto}.card{background:white;border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:0 4px 14px rgba(0,0,0,.05)}.card h3{margin:0 0 8px;font-size:17px}.toggle{display:flex;gap:8px;margin-top:10px}.toggle button{flex:1;padding:12px;border-radius:16px;background:#f3eee8;font-weight:900;color:#555}.toggle button.active{background:var(--orange);color:white}.preview{max-width:85px;max-height:60px;border-radius:12px;border:1px solid var(--line);object-fit:cover;display:none;margin-top:8px}.plus-card{background:linear-gradient(140deg,var(--orange),var(--orange2));color:white}.plus-card .muted{color:rgba(255,255,255,.86)}
   </style>
 </head>
 <body>
 <div class="phone">
-  <div class="top"><img class="logo" src="/assets/logo.png" alt="Умник"><button class="chip" onclick="openSettings()">Настройки</button></div>
-  <section id="welcome" class="screen welcome active"><img class="fox-big" src="/assets/umnik_welcome.png"><div class="chip">детский AI-помощник для школы</div><h1>Умник AI</h1><p class="muted">Объясняет школьные темы простыми шагами и помогает с домашкой.</p><div class="form"><input id="nameInput" placeholder="Имя ребёнка"><input id="ageInput" placeholder="Возраст" inputmode="numeric"><button class="primary" onclick="startApp()">Начать чат</button></div></section>
-  <section id="chatScreen" class="screen"><div class="chat-tabs" id="chatTabs"></div><main class="chat" id="chat"></main><div class="mascot-zone"><img id="fox" class="fox" src="/assets/umnik_welcome.png"></div><div class="status" id="limitsText"></div><div class="composer"><div class="suggestions" id="suggestions"></div><div class="row"><button class="round" onclick="pickPhoto()">+</button><button class="round" onclick="voiceInput()">🎙</button><textarea id="input" placeholder="Спроси Умника..." onkeydown="handleKey(event)"></textarea><button class="round send" onclick="send()">›</button></div><img id="photoPreview" class="preview"><input id="fileInput" type="file" accept="image/*" style="display:none" onchange="handlePhoto(event)"><div class="small-note" id="modeNote"></div></div></section>
-  <section id="settings" class="screen settings"><button class="chip" onclick="openChat()">← Назад</button><div class="card"><h3>Режим ответа</h3><p class="muted">AI — настоящий запрос в модель. Демо — запасной режим.</p><div class="toggle"><button id="modeAi" onclick="setMode('ai')">AI</button><button id="modeDemo" onclick="setMode('demo')">Демо</button></div></div><div class="card"><h3>Тариф</h3><p class="muted">Free показывает лимиты, Plus — полную версию продукта.</p><div class="toggle"><button id="planFree" onclick="setPlan('free')">Free</button><button id="planPlus" onclick="setPlan('plus')">Умник Плюс</button></div></div><div class="card plus-card"><h3>Умник Плюс — 349 ₽/мес</h3><p class="muted">Безлимитные сообщения, сохранённые чаты, фото-разбор и голосовой ввод.</p></div><div class="card"><h3>Аккаунт и подписка</h3><p class="muted">В полной версии здесь будет регистрация, история чатов и подключение подписки.</p><button class="primary" style="margin-top:12px">Войти / создать аккаунт</button></div><div class="card"><h3>Новый чат</h3><p class="muted">История сохраняется локально в браузере.</p><button class="primary" style="margin-top:12px" onclick="newChat()">Создать новый чат</button></div></section>
+  <div class="top welcome-top" id="topBar">
+    <img class="logo" src="/assets/logo.png" alt="Умник">
+  </div>
+
+  <section id="welcome" class="screen welcome active">
+    <img id="welcomeFox" class="fox-big" src="/assets/umnik_welcome.png" alt="Умник">
+    <div class="chip">детский AI-помощник для школы</div>
+    <h1>Умник AI</h1>
+    <p class="muted">Объясняет школьные темы простыми шагами и помогает с домашкой.</p>
+    <div class="form">
+      <input id="nameInput" placeholder="Имя ребёнка" autocomplete="off">
+      <input id="ageInput" placeholder="Возраст" inputmode="numeric" autocomplete="off">
+      <div id="welcomeError" class="error-note"></div>
+      <button class="primary" onclick="startApp()">Начать чат</button>
+    </div>
+  </section>
+
+  <section id="chatScreen" class="screen">
+    <div class="tabs-row" id="tabsRow">
+      <div class="chat-tabs" id="chatTabs"></div>
+      <button class="new-tab" onclick="newChat()">+ чат</button>
+      <button class="edit-tabs" id="editTabsBtn" onclick="toggleEditTabs()">✎</button>
+    </div>
+    <main class="chat" id="chat"></main>
+    <div class="status" id="limitsText"></div>
+    <div class="composer">
+      <div class="suggestions" id="suggestions"></div>
+      <div class="row">
+        <button class="round" onclick="pickPhoto()" aria-label="Прикрепить файл" title="Прикрепить файл"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.4 11.6 12 21a6 6 0 0 1-8.5-8.5l9.8-9.8a4 4 0 0 1 5.7 5.7l-9.9 9.9a2 2 0 0 1-2.8-2.8l9.2-9.2"/></svg></button>
+        <button class="round" onclick="voiceInput()" aria-label="Голосовой ввод" title="Голосовой ввод"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z"/><path d="M19 11a7 7 0 0 1-14 0"/><path d="M12 18v3"/><path d="M8 21h8"/></svg></button>
+        <textarea id="input" placeholder="Спроси Умника..." onkeydown="handleKey(event)"></textarea>
+        <button class="round send" onclick="send()" aria-label="Отправить" title="Отправить"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.4 20.4 21.7 12 3.4 3.6 5.1 10.3 13.5 12l-8.4 1.7-1.7 6.7Z"/></svg></button>
+      </div>
+      <img id="photoPreview" class="preview" alt="Прикреплённое фото">
+      <input id="fileInput" type="file" accept="image/*" style="display:none" onchange="handlePhoto(event)">
+      <div class="small-note" id="modeNote"></div>
+    </div>
+  </section>
+
+  <section id="settings" class="screen settings">
+    <button class="chip" onclick="openChat()">← Назад</button>
+    <div class="card"><h3>Режим ответа</h3><p class="muted">AI — настоящий запрос в модель. Демо — запасной режим.</p><div class="toggle"><button id="modeAi" onclick="setMode('ai')">AI</button><button id="modeDemo" onclick="setMode('demo')">Демо</button></div></div>
+    <div class="card"><h3>Тариф</h3><p class="muted">Free показывает лимиты, Plus — полную версию продукта.</p><div class="toggle"><button id="planFree" onclick="setPlan('free')">Free</button><button id="planPlus" onclick="setPlan('plus')">Умник Плюс</button></div></div>
+    <div class="card plus-card"><h3>Умник Плюс — 349 ₽/мес</h3><p class="muted">Безлимитные сообщения, сохранённые чаты, фото-разбор и голосовой ввод.</p></div>
+    <div class="card"><h3>Аккаунт и подписка</h3><p class="muted">В полной версии здесь будет регистрация, история чатов и подключение подписки.</p><button class="primary" style="margin-top:12px">Войти / создать аккаунт</button></div>
+    <div class="card"><h3>Управление чатами</h3><p class="muted">На главном экране чата включи ✎, чтобы удалить или переместить чаты.</p><button class="primary" style="margin-top:12px" onclick="newChat()">Создать новый чат</button></div>
+  </section>
 </div>
+
 <script>
-const state={name:'',age:'',mode:localStorage.getItem('umnik_mode')||'ai',plan:localStorage.getItem('umnik_plan')||'free',activeChat:localStorage.getItem('umnik_active_chat')||'Домашка',imageDataUrl:null,chats:JSON.parse(localStorage.getItem('umnik_chats')||'{}'),limits:JSON.parse(localStorage.getItem('umnik_limits')||'{}')};
-const suggestions=['Что такое сказуемое?','Как найти периметр?','Что такое дробь?','Я устал, у меня не получится','Объясни таблицу умножения','Разбери фото задания'];
-function todayKey(){return new Date().toISOString().slice(0,10)}function initLimits(){const k=todayKey();if(!state.limits[k]) state.limits={[k]:{messages:0,photos:0}};save()}function save(){localStorage.setItem('umnik_chats',JSON.stringify(state.chats));localStorage.setItem('umnik_active_chat',state.activeChat);localStorage.setItem('umnik_mode',state.mode);localStorage.setItem('umnik_plan',state.plan);localStorage.setItem('umnik_limits',JSON.stringify(state.limits))}function ensureChat(n){if(!state.chats[n]) state.chats[n]=[{role:'bot',text:'Привет! Я Умник. Напиши школьный вопрос или прикрепи фото задания — разберём вместе.'}]}
-function startApp(){state.name=document.getElementById('nameInput').value.trim()||'друг';state.age=document.getElementById('ageInput').value.trim()||'';ensureChat(state.activeChat);save();show('chatScreen');render()}function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}function openSettings(){show('settings');renderSettings()}function openChat(){show('chatScreen');render()}function setMode(m){state.mode=m;save();renderSettings();render()}function setPlan(p){state.plan=p;save();renderSettings();render()}function newChat(){const n=prompt('Название нового чата:','Новый чат')||'Новый чат';state.activeChat=n;state.chats[n]=[{role:'bot',text:'Новый чат создан. Что будем разбирать?'}];save();openChat()}function renderSettings(){document.getElementById('modeAi').classList.toggle('active',state.mode==='ai');document.getElementById('modeDemo').classList.toggle('active',state.mode==='demo');document.getElementById('planFree').classList.toggle('active',state.plan==='free');document.getElementById('planPlus').classList.toggle('active',state.plan==='plus')}
-function renderTabs(){const tabs=document.getElementById('chatTabs');['Домашка','Таблица ×7','Русский'].forEach(ensureChat);tabs.innerHTML='';Object.keys(state.chats).forEach(n=>{const b=document.createElement('button');b.textContent=n;b.className=n===state.activeChat?'active':'';b.onclick=()=>{state.activeChat=n;save();render()};tabs.appendChild(b)})}
-function render(){initLimits();ensureChat(state.activeChat);renderTabs();renderSettings();const chat=document.getElementById('chat');chat.innerHTML='';state.chats[state.activeChat].forEach(m=>{const d=document.createElement('div');d.className='bubble '+(m.role==='user'?'user':'bot');d.textContent=m.text;chat.appendChild(d)});chat.scrollTop=chat.scrollHeight;const k=todayKey(),l=state.limits[k];document.getElementById('limitsText').textContent=state.plan==='free'?`Free: осталось ${Math.max(0,10-l.messages)} сообщений / ${Math.max(0,3-l.photos)} фото сегодня`:'Умник Плюс: безлимит, фото, голос и сохранённые чаты';document.getElementById('modeNote').textContent=state.mode==='ai'?'AI-режим: запрос отправляется в модель':'Демо-режим: ответы из заготовленной базы';const sug=document.getElementById('suggestions');sug.innerHTML='';suggestions.forEach(s=>{const b=document.createElement('button');b.textContent=s;b.onclick=()=>{document.getElementById('input').value=s;send()};sug.appendChild(b)})}
-function setFox(e){const map={thinking:'/assets/umnik_thinking.png',explain:'/assets/umnik_explain.png',happy:'/assets/umnik_happy.png',idea:'/assets/umnik_idea.png',support:'/assets/umnik_welcome.png',confused:'/assets/umnik_confused.png',safe_stop:'/assets/umnik_explain.png',welcome:'/assets/umnik_welcome.png'};const img=document.getElementById('fox');img.src=map[e]||map.welcome;img.className='fox '+(e==='thinking'?'thinking':'')}
-function addMessage(role,text){ensureChat(state.activeChat);state.chats[state.activeChat].push({role,text});save();render()}function canUse(){if(state.plan==='plus')return true;const l=state.limits[todayKey()];if(l.messages>=10){addMessage('bot','В Free-версии закончились 10 сообщений на сегодня. В презентации это место для перехода на Умник Плюс.');return false}return true}
-async function send(){const input=document.getElementById('input');const text=input.value.trim();if(!text&&!state.imageDataUrl)return;if(!canUse())return;state.limits[todayKey()].messages++;save();addMessage('user',text||'Я прикрепил фото задания.');input.value='';addMessage('bot','Умник думает...');setFox('thinking');try{const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,age:state.age,chatTitle:state.activeChat,imageDataUrl:state.imageDataUrl,mode:state.mode})});const data=await res.json();state.chats[state.activeChat].pop();state.imageDataUrl=null;document.getElementById('photoPreview').style.display='none';addMessage('bot',data.text||'Ответ пустой. Попробуй ещё раз.');setFox(data.emotion||'explain')}catch(e){state.chats[state.activeChat].pop();addMessage('bot','Ошибка соединения. Проверь деплой и API-функцию.');setFox('confused')}}function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}}
-function pickPhoto(){if(state.plan==='free'&&state.limits[todayKey()].photos>=3){addMessage('bot','В Free-версии закончились 3 фото на сегодня. В Plus фото-разбор будет расширенным.');return}document.getElementById('fileInput').click()}function handlePhoto(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>compressImage(reader.result,(small)=>{state.imageDataUrl=small;state.limits[todayKey()].photos++;save();const img=document.getElementById('photoPreview');img.src=small;img.style.display='block';render()});reader.readAsDataURL(file)}
-function compressImage(dataUrl,cb){const img=new Image();img.onload=()=>{const c=document.createElement('canvas');const max=1000;let w=img.width,h=img.height;if(w>h&&w>max){h=Math.round(h*max/w);w=max}else if(h>max){w=Math.round(w*max/h);h=max}c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);cb(c.toDataURL('image/jpeg',0.75))};img.src=dataUrl}function voiceInput(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){addMessage('bot','Голосовой ввод не поддерживается в этом браузере. Попробуй Google Chrome.');return}const rec=new SR();rec.lang='ru-RU';rec.onresult=e=>{document.getElementById('input').value=e.results[0][0].transcript};rec.start()}initLimits();ensureChat(state.activeChat);render();
+function paperclipIcon(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.4 11.6 12 21a6 6 0 0 1-8.5-8.5l9.8-9.8a4 4 0 0 1 5.7 5.7l-9.9 9.9a2 2 0 0 1-2.8-2.8l9.2-9.2"/></svg>'}
+function micIcon(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z"/><path d="M19 11a7 7 0 0 1-14 0"/><path d="M12 18v3"/><path d="M8 21h8"/></svg>'}
+function sendIcon(){return '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.4 20.4 21.7 12 3.4 3.6 5.1 10.3 13.5 12l-8.4 1.7-1.7 6.7Z"/></svg>'}
+function gearIcon(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3h.1a1.7 1.7 0 0 0 .9-1.6V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.6.9H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5.9Z"/></svg>'}
+
+try{localStorage.removeItem('umnik_chats');localStorage.removeItem('umnik_active_chat');localStorage.removeItem('umnik_limits')}catch(e){}
+
+const defaultChats=['Домашка','Таблица ×7','Русский'];
+const state={name:'',age:'',mode:'ai',plan:'free',activeChat:'Домашка',imageDataUrl:null,chats:{},chatOrder:[...defaultChats],limits:{messages:0,photos:0},editingTabs:false};
+const suggestions=['Что такое сказуемое?','Как найти периметр?','Объясни таблицу умножения','Разбери фото задания','Что такое дробь?','Я устал, у меня не получится'];
+function welcomeText(){return 'Привет! Я Умник. Напиши школьный вопрос или прикрепи фото задания — разберём вместе.'}
+function ensureChat(n){if(!state.chats[n]) state.chats[n]=[{role:'bot',text:welcomeText()}];if(!state.chatOrder.includes(n)) state.chatOrder.push(n)}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');renderTop(id)}
+function renderTop(id){const top=document.getElementById('topBar');if(id==='welcome'){top.className='top welcome-top';top.innerHTML='<img class="logo" src="/assets/logo.png" alt="Умник">'}else{top.className='top';top.innerHTML='<img class="logo" src="/assets/logo.png" alt="Умник"><img id="headerFox" class="header-fox" src="/assets/umnik_welcome.png" alt="Умник"><button class="gear-btn" onclick="openSettings()" aria-label="Настройки">'+gearIcon()+'</button>';setFox(currentEmotion||'welcome')}}
+let currentEmotion='welcome';
+function startApp(){const name=document.getElementById('nameInput').value.trim();const age=document.getElementById('ageInput').value.trim();const error=document.getElementById('welcomeError');const fox=document.getElementById('welcomeFox');if(!name||!age){error.textContent='Заполни имя и возраст, пожалуйста 🙂';fox.classList.remove('warn');void fox.offsetWidth;fox.classList.add('warn');fox.src='/assets/umnik_welcome.png';return}state.name=name;state.age=age;state.activeChat='Домашка';defaultChats.forEach(ensureChat);show('chatScreen');render()}
+function openSettings(){show('settings');renderSettings()}function openChat(){show('chatScreen');render()}function setMode(m){state.mode=m;renderSettings();render()}function setPlan(p){state.plan=p;renderSettings();render()}function toggleEditTabs(){state.editingTabs=!state.editingTabs;renderTabs()}
+function uniqueName(base){let n=base,i=2;while(state.chats[n]){n=base+' '+i;i++}return n}
+function newChat(){const n=uniqueName(prompt('Название нового чата:','Новый чат')||'Новый чат');state.activeChat=n;state.chats[n]=[{role:'bot',text:'Новый чат создан. Что будем разбирать?'}];state.chatOrder.push(n);openChat()}
+function deleteChat(n){if(state.chatOrder.length<=1)return;delete state.chats[n];state.chatOrder=state.chatOrder.filter(x=>x!==n);if(state.activeChat===n)state.activeChat=state.chatOrder[0];render()}
+function moveChat(n,dir){const i=state.chatOrder.indexOf(n);const j=i+dir;if(i<0||j<0||j>=state.chatOrder.length)return;[state.chatOrder[i],state.chatOrder[j]]=[state.chatOrder[j],state.chatOrder[i]];renderTabs()}
+function renderSettings(){const ai=document.getElementById('modeAi'),demo=document.getElementById('modeDemo'),free=document.getElementById('planFree'),plus=document.getElementById('planPlus');if(!ai)return;ai.classList.toggle('active',state.mode==='ai');demo.classList.toggle('active',state.mode==='demo');free.classList.toggle('active',state.plan==='free');plus.classList.toggle('active',state.plan==='plus')}
+function renderTabs(){defaultChats.forEach(ensureChat);const row=document.getElementById('tabsRow');const tabs=document.getElementById('chatTabs');if(!tabs)return;row.classList.toggle('editing',state.editingTabs);document.getElementById('editTabsBtn').textContent=state.editingTabs?'✓':'✎';tabs.innerHTML='';state.chatOrder.forEach(n=>{ensureChat(n);const b=document.createElement('button');b.className='tab '+(n===state.activeChat?'active':'');b.innerHTML='<span>'+escapeHtml(n)+'</span><span class="tab-controls"><span class="tab-control" data-act="left">‹</span><span class="tab-control" data-act="right">›</span><span class="tab-control" data-act="del">×</span></span>';b.onclick=(e)=>{const act=e.target.dataset.act;if(act){e.stopPropagation();if(act==='del')deleteChat(n);if(act==='left')moveChat(n,-1);if(act==='right')moveChat(n,1);return}state.activeChat=n;render()};tabs.appendChild(b)})}
+function escapeHtml(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function render(){ensureChat(state.activeChat);renderTabs();renderSettings();const chat=document.getElementById('chat');if(!chat)return;chat.innerHTML='';state.chats[state.activeChat].forEach(m=>{const d=document.createElement('div');d.className='bubble '+(m.role==='user'?'user':'bot');d.textContent=m.text;chat.appendChild(d)});chat.scrollTop=chat.scrollHeight;document.getElementById('limitsText').textContent=state.plan==='free'?`Free: осталось ${Math.max(0,10-state.limits.messages)} сообщений / ${Math.max(0,3-state.limits.photos)} фото сегодня`:'Умник Плюс: безлимитные сообщения, фото, голос и сохранённые чаты';document.getElementById('modeNote').textContent=state.mode==='ai'?'AI-режим: запрос отправляется в модель':'Демо-режим: ответы из заготовленной базы';const sug=document.getElementById('suggestions');sug.innerHTML='';suggestions.forEach(s=>{const b=document.createElement('button');b.textContent=s;b.onclick=()=>{document.getElementById('input').value=s;send()};sug.appendChild(b)})}
+function setFox(e){currentEmotion=e;const map={thinking:'/assets/umnik_thinking.png',explain:'/assets/umnik_explain.png',happy:'/assets/umnik_happy.png',idea:'/assets/umnik_idea.png',support:'/assets/umnik_welcome.png',confused:'/assets/umnik_confused.png',safe_stop:'/assets/umnik_explain.png',welcome:'/assets/umnik_welcome.png'};const img=document.getElementById('headerFox');if(img){img.src=map[e]||map.welcome;img.className='header-fox '+(e==='thinking'?'thinking':'')}}
+function addMessage(role,text){ensureChat(state.activeChat);state.chats[state.activeChat].push({role,text});render()}
+function canUse(){if(state.plan==='plus')return true;if(state.limits.messages>=10){addMessage('bot','В Free-версии закончились 10 сообщений на сегодня. В презентации это место для перехода на Умник Плюс.');return false}return true}
+async function send(){const input=document.getElementById('input');const text=input.value.trim();if(!text&&!state.imageDataUrl)return;if(!canUse())return;state.limits.messages++;addMessage('user',text||'Я прикрепил фото задания.');input.value='';addMessage('bot','Умник думает...');setFox('thinking');try{const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,age:state.age,chatTitle:state.activeChat,imageDataUrl:state.imageDataUrl,mode:state.mode})});const data=await res.json();state.chats[state.activeChat].pop();state.imageDataUrl=null;document.getElementById('photoPreview').style.display='none';addMessage('bot',data.text||'Ответ пустой. Попробуй ещё раз.');setFox(data.emotion||'explain')}catch(e){state.chats[state.activeChat].pop();addMessage('bot','Ошибка соединения. Проверь деплой и API-функцию.');setFox('confused')}}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}}
+function pickPhoto(){if(state.plan==='free'&&state.limits.photos>=3){addMessage('bot','В Free-версии закончились 3 фото на сегодня. В Plus фото-разбор будет расширенным.');return}document.getElementById('fileInput').click()}
+function handlePhoto(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>compressImage(reader.result,(small)=>{state.imageDataUrl=small;state.limits.photos++;const img=document.getElementById('photoPreview');img.src=small;img.style.display='block';render()});reader.readAsDataURL(file)}
+function compressImage(dataUrl,cb){const img=new Image();img.onload=()=>{const c=document.createElement('canvas');const max=1000;let w=img.width,h=img.height;if(w>h&&w>max){h=Math.round(h*max/w);w=max}else if(h>max){w=Math.round(w*max/h);h=max}c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);cb(c.toDataURL('image/jpeg',0.75))};img.src=dataUrl}
+function voiceInput(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){addMessage('bot','Голосовой ввод не поддерживается в этом браузере. Попробуй Google Chrome.');return}const rec=new SR();rec.lang='ru-RU';rec.onresult=e=>{document.getElementById('input').value=e.results[0][0].transcript};rec.start()}
+function enableDragScroll(el){let down=false,startX=0,scrollLeft=0,moved=false;el.addEventListener('pointerdown',e=>{down=true;moved=false;startX=e.clientX;scrollLeft=el.scrollLeft;el.classList.add('dragging');el.setPointerCapture?.(e.pointerId)});el.addEventListener('pointermove',e=>{if(!down)return;const dx=e.clientX-startX;if(Math.abs(dx)>4)moved=true;el.scrollLeft=scrollLeft-dx});el.addEventListener('pointerup',e=>{down=false;el.classList.remove('dragging');if(moved){e.preventDefault();e.stopPropagation()}});el.addEventListener('pointercancel',()=>{down=false;el.classList.remove('dragging')})}
+window.addEventListener('DOMContentLoaded',()=>{enableDragScroll(document.getElementById('chatTabs'));enableDragScroll(document.getElementById('suggestions'));defaultChats.forEach(ensureChat);renderTop('welcome');render()});
 </script>
 </body>
 </html>
