@@ -154,6 +154,7 @@ try{
 }catch(e){}
 
 
+
 const defaultChats = ['Домашка','Таблица ×7','Русский'];
 const suggestions = [
   'Что такое сказуемое?',
@@ -171,7 +172,7 @@ const state = {
   plan:'free',
   activeChat:'Домашка',
   imageDataUrl:null,
-  chats:{'Домашка':[{role:'bot', text:welcomeText()}]},
+  chats:{'Домашка':[{role:'bot', text:welcomeText('')}]},
   chatOrder:['Домашка'],
   limits:{messages:0,photos:0},
   editingTabs:false,
@@ -182,26 +183,32 @@ const state = {
 
 let currentEmotion = 'welcome';
 
-function welcomeText(){
-  return 'Привет! Я Умник. Напиши школьный вопрос или прикрепи фото задания — разберём вместе.';
+function welcomeText(name){
+  const cleanName = String(name || '').trim();
+  const hello = cleanName ? `Привет, ${cleanName}!` : 'Привет!';
+  return `${hello} Я Умник. Напиши школьный вопрос или прикрепи фото задания — разберём вместе.`;
 }
 
 function ensureChat(n){
-  if(!state.chats[n]) state.chats[n] = [{role:'bot', text:welcomeText()}];
+  if(!state.chats[n]) state.chats[n] = [{role:'bot', text:welcomeText(state.name)}];
   if(!state.chatOrder.includes(n)) state.chatOrder.push(n);
 }
 
 function normalizeChatsForPlan(){
   if(state.plan === 'free'){
     ensureChat('Домашка');
-    state.chats = {'Домашка': state.chats['Домашка'] || [{role:'bot', text:welcomeText()}]};
+    state.chats = {'Домашка': state.chats['Домашка'] || [{role:'bot', text:welcomeText(state.name)}]};
     state.chatOrder = ['Домашка'];
     state.activeChat = 'Домашка';
     state.editingTabs = false;
     return;
   }
 
-  defaultChats.forEach(ensureChat);
+  if(!state.chatOrder.length){
+    state.chatOrder = ['Домашка'];
+    ensureChat('Домашка');
+  }
+
   if(!state.chatOrder.includes(state.activeChat)){
     state.activeChat = state.chatOrder[0] || 'Домашка';
   }
@@ -269,7 +276,21 @@ function setMode(m){
 }
 
 function setPlan(p){
+  const wasFree = state.plan === 'free';
   state.plan = p;
+
+  if(p === 'plus' && wasFree){
+    // При первом входе в Plus создаём стартовые чаты один раз.
+    defaultChats.forEach(name => {
+      if(!state.chats[name]){
+        state.chats[name] = [{role:'bot', text:welcomeText(state.name)}];
+      }
+      if(!state.chatOrder.includes(name)){
+        state.chatOrder.push(name);
+      }
+    });
+  }
+
   normalizeChatsForPlan();
   renderSettings();
   render();
@@ -434,10 +455,6 @@ function renderTabs(){
   });
 }
 
-function escapeHtml(s){
-  return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-}
-
 function render(){
   normalizeChatsForPlan();
   renderTabs();
@@ -475,26 +492,36 @@ function render(){
   const sendBtn = document.getElementById('sendBtn');
   if(sendBtn) sendBtn.disabled = state.isSending;
 
+  renderSuggestions();
+}
+
+function renderSuggestions(){
   const sug = document.getElementById('suggestions');
-  if(sug){
-    sug.innerHTML = '';
+  if(!sug) return;
 
-    suggestions.forEach(s => {
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.textContent = s;
-      b.disabled = state.isSending;
+  sug.innerHTML = '';
 
-      b.onclick = () => {
-        if(state.isSending) return;
-        if(state.sugDragMoved) return;
-        document.getElementById('input').value = s;
-        send();
-      };
+  suggestions.forEach(s => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = s;
+    b.disabled = state.isSending;
 
-      sug.appendChild(b);
+    b.addEventListener('click', (e) => {
+      if(state.isSending) return;
+
+      // Если реально перетаскивали ленту, не отправляем вопрос.
+      if(state.sugDragMoved){
+        e.preventDefault();
+        return;
+      }
+
+      document.getElementById('input').value = s;
+      send();
     });
-  }
+
+    sug.appendChild(b);
+  });
 }
 
 function setFox(e){
@@ -690,17 +717,18 @@ function enableDragScroll(el, key){
   let startX = 0;
   let scrollLeft = 0;
   let moved = false;
+  let downTarget = null;
 
   el.addEventListener('pointerdown', e => {
     if(e.target.closest('.tab-control,.edit-tabs,.new-tab')) return;
 
     down = true;
     moved = false;
+    downTarget = e.target;
     state[key] = false;
     startX = e.clientX;
     scrollLeft = el.scrollLeft;
     el.classList.add('dragging');
-    el.setPointerCapture?.(e.pointerId);
   });
 
   el.addEventListener('pointermove', e => {
@@ -708,30 +736,53 @@ function enableDragScroll(el, key){
 
     const dx = e.clientX - startX;
 
-    if(Math.abs(dx) > 6){
+    if(Math.abs(dx) > 8){
       moved = true;
       state[key] = true;
+      el.scrollLeft = scrollLeft - dx;
     }
-
-    el.scrollLeft = scrollLeft - dx;
   });
 
-  function finish(){
+  function finish(e){
     if(!down) return;
 
+    const wasMoved = moved;
     down = false;
+    moved = false;
     el.classList.remove('dragging');
 
-    if(moved){
-      setTimeout(() => { state[key] = false; }, 150);
-    }else{
-      state[key] = false;
+    if(wasMoved){
+      state[key] = true;
+      setTimeout(() => { state[key] = false; }, 120);
+      return;
+    }
+
+    state[key] = false;
+
+    // Для кнопок быстрых вопросов: если это был обычный тап, отправляем вручную.
+    // Это чинит ситуацию, когда drag-scroll перехватывает обычный click.
+    if(key === 'sugDragMoved'){
+      const button = downTarget && downTarget.closest && downTarget.closest('button');
+      if(button && el.contains(button) && !button.disabled){
+        const text = button.textContent.trim();
+        if(text){
+          document.getElementById('input').value = text;
+          send();
+        }
+      }
     }
   }
 
   el.addEventListener('pointerup', finish);
-  el.addEventListener('pointercancel', finish);
-  el.addEventListener('pointerleave', finish);
+  el.addEventListener('pointercancel', () => {
+    down = false;
+    moved = false;
+    state[key] = false;
+    el.classList.remove('dragging');
+  });
+  el.addEventListener('pointerleave', e => {
+    if(down && key !== 'sugDragMoved') finish(e);
+  });
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -747,7 +798,7 @@ function resetEveryOpen(){
   state.mode = 'ai';
   state.activeChat = 'Домашка';
   state.imageDataUrl = null;
-  state.chats = {'Домашка':[{role:'bot', text:welcomeText()}]};
+  state.chats = {'Домашка':[{role:'bot', text:welcomeText(state.name)}]};
   state.chatOrder = ['Домашка'];
   state.limits = {messages:0,photos:0};
   state.editingTabs = false;
