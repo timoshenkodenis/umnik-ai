@@ -77,7 +77,7 @@ async function callOpenRouter({ message, age, chatTitle, imageDataUrl }) {
     },
     body: JSON.stringify({
       model,
-      messages: [
+      messages: [ ...(body.history || []),
         { role: 'system', content: SYSTEM_PROMPT },
         { role: 'user', content: userContent }
       ],

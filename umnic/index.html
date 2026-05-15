@@ -1,42 +1,1000 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Умник Voice MVP</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Умник AI</title>
+  <style>
+    :root{
+      --orange:#ff7a00;
+      --orange2:#ff9f3d;
+      --bg:#f8f4ee;
+      --soft:#fff3e4;
+      --dark:#161618;
+      --gray:#66707a;
+      --line:#eadbca;
+      --white:#fff;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      background:radial-gradient(circle at 50% -20%,#35302a,#111 50%);
+      font-family:Arial,"Segoe UI",sans-serif;
+      color:var(--dark);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .phone{
+      width:min(420px,100%);
+      height:min(790px,calc(100vh - 24px));
+      min-height:650px;
+      background:var(--bg);
+      border:10px solid #111;
+      border-radius:38px;
+      overflow:hidden;
+      box-shadow:0 30px 80px rgba(0,0,0,.5);
+      display:flex;
+      flex-direction:column;
+      position:relative;
+    }
+    .top{
+      height:72px;
+      padding:12px 18px;
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      align-items:center;
+      border-bottom:1px solid rgba(0,0,0,.05);
+      flex:0 0 auto;
+      gap:8px;
+    }
+    .top.welcome-top{display:flex;align-items:center;justify-content:center;height:80px;padding-top:18px}
+    .logo{height:34px;max-width:150px;object-fit:contain;justify-self:center;grid-column:2}
+    .welcome-top .logo{height:46px;max-width:170px;margin:0 auto;justify-self:center;grid-column:auto}
+    .header-fox{height:58px;width:74px;object-fit:contain;filter:drop-shadow(0 7px 10px rgba(0,0,0,.16));transition:.25s ease;justify-self:start;grid-column:1}
+    .gear-btn,.icon-btn{
+      border:1px solid var(--line);
+      background:white;
+      color:var(--orange);
+      border-radius:999px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 4px 12px rgba(0,0,0,.08);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .gear-btn{height:36px;width:36px;justify-self:end;grid-column:3}.gear-btn svg{width:17px;height:17px}
+    .chip{border:1px solid var(--line);background:white;color:var(--orange);border-radius:999px;padding:9px 13px;font-weight:800;font-size:12px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+    .screen{display:none;flex-direction:column;min-height:0;flex:1}.screen.active{display:flex}
+    .welcome{align-items:center;justify-content:center;text-align:center;padding:12px 24px 24px;gap:13px}
+    .fox-big{height:215px;max-width:90%;object-fit:contain;filter:drop-shadow(0 16px 20px rgba(0,0,0,.16));transition:.25s ease}
+    .fox-big.warn{animation:softShake .35s ease both}
+    @keyframes softShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+    h1{font-size:42px;line-height:1;margin:0}.muted{color:var(--gray);line-height:1.45;font-weight:600}.form{display:grid;gap:10px;width:100%;margin-top:8px}
+    input,textarea,select{font:inherit;border:1px solid var(--line);background:white;border-radius:18px;padding:13px 14px;outline:none;width:100%}
+    input:focus,textarea:focus{border-color:var(--orange)}
+    button{font:inherit;border:0;cursor:pointer}.primary{width:100%;background:var(--orange);color:white;border-radius:22px;padding:15px;font-weight:900;font-size:16px;box-shadow:0 8px 18px rgba(255,122,0,.25)}
+    .error-note{min-height:20px;color:#d94f00;font-size:13px;font-weight:800}
+
+    .tabs-row{display:flex;align-items:center;gap:8px;padding:10px 14px 0;flex:0 0 auto}
+    .chat-tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;cursor:grab;flex:1;min-width:0;padding-bottom:4px;user-select:none;touch-action:pan-x}
+    .chat-tabs::-webkit-scrollbar,.suggestions::-webkit-scrollbar{display:none}.chat-tabs.dragging{cursor:grabbing}
+    .tab{flex:0 0 auto;border-radius:999px;padding:9px 13px;font-weight:800;background:white;border:1px solid var(--line);color:#4b5563;display:flex;align-items:center;gap:7px;min-height:40px}.tab.active{background:var(--orange);color:white}.tab .tab-controls{display:none;gap:3px}.tabs-row.editing .tab .tab-controls{display:flex}.tab-control{height:22px;width:22px;border-radius:999px;background:rgba(0,0,0,.08);color:inherit;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;border:0;padding:0;cursor:pointer}.tab.active .tab-control{background:rgba(255,255,255,.22)}
+    .edit-tabs{height:40px;width:40px;flex:0 0 auto;border-radius:999px;border:1px solid var(--line);background:white;color:var(--orange);font-weight:900;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .new-tab{height:40px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:white;color:var(--orange);font-weight:900;box-shadow:0 2px 8px rgba(0,0,0,.06);display:none}
+
+    .chat{flex:1;min-height:0;overflow:auto;padding:12px 16px 8px;display:flex;flex-direction:column;gap:9px}.bubble{max-width:86%;padding:11px 14px;border-radius:22px;font-weight:500;font-size:14px;line-height:1.38;white-space:pre-wrap;letter-spacing:0;overflow-wrap:anywhere}.user{align-self:flex-end;background:var(--orange);color:white;border-bottom-right-radius:7px;font-weight:650}.bot{align-self:flex-start;background:var(--soft);border:1px solid var(--line);border-bottom-left-radius:7px;color:#202020}.status{font-size:12px;color:var(--gray);font-weight:800;text-align:center;padding:0 12px 7px;flex:0 0 auto}.composer{padding:12px;border-top:1px solid var(--line);background:rgba(248,244,238,.97);flex:0 0 auto}.suggestions{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none;cursor:grab;user-select:none}.suggestions button{flex:0 0 auto;background:white;color:#4b5563;border:1px solid var(--line);border-radius:999px;padding:9px 12px;font-size:12px;font-weight:800}.suggestions button:disabled{opacity:.55;cursor:not-allowed}.row{display:flex;gap:8px;align-items:center}.round{width:48px;height:48px;border-radius:50%;background:white;border:1px solid var(--line);color:var(--orange);font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center;flex:0 0 auto;padding:0;line-height:1}.round svg{display:block;width:22px;height:22px}.send{background:var(--orange);color:white}.send:disabled{background:#cfcac3;border-color:#cfcac3;color:white;cursor:not-allowed;box-shadow:none}.send svg{transform:translateX(1px)}textarea{resize:none;height:48px;min-height:48px;max-height:48px;flex:1;padding:13px 14px;font-size:14px;line-height:20px;border-radius:24px;font-weight:500}.small-note{font-size:11px;color:var(--gray);font-weight:700;text-align:center;margin-top:6px}.settings{padding:16px;gap:12px;overflow:auto}.card{background:white;border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:0 4px 14px rgba(0,0,0,.05)}.card h3{margin:0 0 8px;font-size:17px}.toggle{display:flex;gap:8px;margin-top:10px}.toggle button{flex:1;padding:12px;border-radius:16px;background:#f3eee8;font-weight:900;color:#555}.toggle button.active{background:var(--orange);color:white}.preview{max-width:85px;max-height:60px;border-radius:12px;border:1px solid var(--line);object-fit:cover;display:none;margin-top:8px}.plus-card{background:linear-gradient(140deg,var(--orange),var(--orange2));color:white}.plus-card .muted{color:rgba(255,255,255,.86)}
+  
+.voice-call-btn{
+height:40px;width:40px;border-radius:999px;border:1px solid var(--line);
+background:white;color:var(--orange);font-size:18px;font-weight:900;
+display:flex;align-items:center;justify-content:center;
+box-shadow:0 2px 8px rgba(0,0,0,.06)
+}
+.voice-modal{
+position:fixed;inset:0;background:rgba(0,0,0,.65);
+display:flex;align-items:center;justify-content:center;z-index:9999
+}
+.voice-modal.hidden{display:none}
+.voice-content{
+width:min(92%,420px);background:white;border-radius:28px;
+padding:22px;display:flex;flex-direction:column;
+align-items:center;gap:16px
+}
+.voice-header{
+width:100%;display:flex;justify-content:space-between;align-items:center
+}
+.voice-title{font-size:20px;font-weight:900}
+.voice-close{
+border:0;background:none;font-size:24px;cursor:pointer
+}
+.voice-umnik{
+width:170px;object-fit:contain;
+filter:drop-shadow(0 10px 18px rgba(0,0,0,.18));
+animation:voiceFloat 3s ease-in-out infinite
+}
+@keyframes voiceFloat{
+0%{transform:translateY(0)}
+50%{transform:translateY(-8px)}
+100%{transform:translateY(0)}
+}
+.voice-status{
+font-weight:900;color:var(--orange);font-size:18px
+}
+.voice-mic{
+height:110px;width:110px;border-radius:999px;border:0;
+background:var(--orange);color:white;font-size:42px;
+box-shadow:0 12px 24px rgba(255,122,0,.28)
+}
+.voice-mic.listening{transform:scale(1.07)}
+.voice-transcript{
+width:100%;min-height:110px;background:#f5f5f5;
+border-radius:18px;padding:14px;line-height:1.5;
+font-size:14px;white-space:pre-wrap
+}
+
+</style>
 </head>
 <body>
-
-<div class="topbar">
-  <div class="logo">Умник AI</div>
-  <button id="voiceCallBtn">📞</button>
-</div>
-
-<div class="chat">
-  <div class="msg">
-    Привет! Нажми на кнопку звонка и поговори со мной 🎓
+<div class="phone">
+  <div class="top welcome-top" id="topBar">
+    <img class="logo" src="/assets/logo.png" alt="Умник">
   </div>
+
+  <section id="welcome" class="screen welcome active">
+    <img id="welcomeFox" class="fox-big" src="/assets/umnik_welcome.png" alt="Умник">
+    <div class="chip">детский AI-помощник для школы</div>
+    <h1>Умник AI</h1>
+    <p class="muted">Объясняет школьные темы простыми шагами и помогает с домашкой.</p>
+    <div class="form">
+      <input id="nameInput" placeholder="Имя ребёнка" autocomplete="off">
+      <input id="ageInput" placeholder="Возраст" inputmode="numeric" autocomplete="off">
+      <div id="welcomeError" class="error-note"></div>
+      <button class="primary" onclick="startApp()">Начать чат</button>
+    </div>
+  </section>
+
+  <section id="chatScreen" class="screen">
+    <div class="tabs-row" id="tabsRow">
+      <div class="chat-tabs" id="chatTabs"></div>
+      <button class="new-tab" onclick="newChat()">+ чат</button>
+      <button class="edit-tabs" id="editTabsBtn" onclick="toggleEditTabs()">✎</button>
+    </div>
+    <main class="chat" id="chat"></main>
+    <div class="status" id="limitsText"></div>
+    <div class="composer">
+      <div class="suggestions" id="suggestions"></div>
+      <div class="row">
+        <button class="round" onclick="pickPhoto()" aria-label="Прикрепить файл" title="Прикрепить файл"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.4 11.6 12 21a6 6 0 0 1-8.5-8.5l9.8-9.8a4 4 0 0 1 5.7 5.7l-9.9 9.9a2 2 0 0 1-2.8-2.8l9.2-9.2"/></svg></button>
+        <button class="round" onclick="voiceInput()" aria-label="Голосовой ввод" title="Голосовой ввод"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z"/><path d="M19 11a7 7 0 0 1-14 0"/><path d="M12 18v3"/><path d="M8 21h8"/></svg></button>
+        <textarea id="input" placeholder="Спроси Умника..." onkeydown="handleKey(event)"></textarea>
+        <button id="sendBtn" class="round send" onclick="send()" aria-label="Отправить" title="Отправить"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.4 20.4 21.7 12 3.4 3.6 5.1 10.3 13.5 12l-8.4 1.7-1.7 6.7Z"/></svg></button>
+      </div>
+      <img id="photoPreview" class="preview" alt="Прикреплённое фото">
+      <input id="fileInput" type="file" accept="image/*" style="display:none" onchange="handlePhoto(event)">
+      <div class="small-note" id="modeNote"></div>
+    </div>
+  </section>
+
+  <section id="settings" class="screen settings">
+    <button class="chip" onclick="openChat()">← Назад</button>
+    <div class="card"><h3>Режим ответа</h3><p class="muted">AI — настоящий запрос в модель. Демо — запасной режим.</p><div class="toggle"><button id="modeAi" onclick="setMode('ai')">AI</button><button id="modeDemo" onclick="setMode('demo')">Демо</button></div></div>
+    <div class="card"><h3>Тариф</h3><p class="muted">Free показывает лимиты, Plus — полную версию продукта.</p><div class="toggle"><button id="planFree" onclick="setPlan('free')">Free</button><button id="planPlus" onclick="setPlan('plus')">Умник Плюс</button></div></div>
+    <div class="card plus-card"><h3>Умник Плюс — 349 ₽/мес</h3><p class="muted">Безлимитные сообщения, сохранённые чаты, фото-разбор и голосовой ввод.</p></div>
+    <div class="card"><h3>Аккаунт и подписка</h3><p class="muted">В полной версии здесь будет регистрация, история чатов и подключение подписки.</p><button class="primary" style="margin-top:12px">Войти / создать аккаунт</button></div>
+  </section>
 </div>
 
-<div id="voiceModal" class="hidden modal">
-  <div class="card">
-    <div class="head">
-      <h2>Созвон с Умником</h2>
-      <button id="closeVoice">✕</button>
+<script>
+function paperclipIcon(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.4 11.6 12 21a6 6 0 0 1-8.5-8.5l9.8-9.8a4 4 0 0 1 5.7 5.7l-9.9 9.9a2 2 0 0 1-2.8-2.8l9.2-9.2"/></svg>'}
+function micIcon(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z"/><path d="M19 11a7 7 0 0 1-14 0"/><path d="M12 18v3"/><path d="M8 21h8"/></svg>'}
+function sendIcon(){return '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.4 20.4 21.7 12 3.4 3.6 5.1 10.3 13.5 12l-8.4 1.7-1.7 6.7Z"/></svg>'}
+function gearIcon(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3h.1a1.7 1.7 0 0 0 .9-1.6V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.6.9H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5.9Z"/></svg>'}
+
+
+try{
+  localStorage.removeItem('umnik_chats');
+  localStorage.removeItem('umnik_active_chat');
+  localStorage.removeItem('umnik_limits');
+}catch(e){}
+
+
+
+const defaultChats = ['Домашка','Таблица ×7','Русский'];
+const suggestions = [
+  'Что такое сказуемое?',
+  'Как найти периметр?',
+  'Объясни таблицу умножения',
+  'Разбери фото задания',
+  'Что такое дробь?',
+  'Я устал, у меня не получится'
+];
+
+const state = {
+  name:'',
+  age:'',
+  mode:'ai',
+  plan:'free',
+  activeChat:'Домашка',
+  imageDataUrl:null,
+  chats:{'Домашка':[{role:'bot', text:welcomeText('')}]},
+  chatOrder:['Домашка'],
+  limits:{messages:0,photos:0},
+  editingTabs:false,
+  isSending:false,
+  tabDragMoved:false,
+  sugDragMoved:false
+};
+
+let currentEmotion = 'welcome';
+
+function welcomeText(name){
+  const cleanName = String(name || '').trim();
+  const hello = cleanName ? `Привет, ${cleanName}!` : 'Привет!';
+  return `${hello} Я Умник. Напиши школьный вопрос или прикрепи фото задания — разберём вместе.`;
+}
+
+function ensureChat(n){
+  if(!state.chats[n]) state.chats[n] = [{role:'bot', text:welcomeText(state.name)}];
+  if(!state.chatOrder.includes(n)) state.chatOrder.push(n);
+}
+
+function normalizeChatsForPlan(){
+  if(state.plan === 'free'){
+    ensureChat('Домашка');
+    state.chats = {'Домашка': state.chats['Домашка'] || [{role:'bot', text:welcomeText(state.name)}]};
+    state.chatOrder = ['Домашка'];
+    state.activeChat = 'Домашка';
+    state.editingTabs = false;
+    return;
+  }
+
+  if(!state.chatOrder.length){
+    state.chatOrder = ['Домашка'];
+    ensureChat('Домашка');
+  }
+
+  if(!state.chatOrder.includes(state.activeChat)){
+    state.activeChat = state.chatOrder[0] || 'Домашка';
+  }
+}
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  renderTop(id);
+}
+
+function renderTop(id){
+  const top = document.getElementById('topBar');
+  if(id === 'welcome'){
+    top.className = 'top welcome-top';
+    top.innerHTML = '<img class="logo" src="/assets/logo.png" alt="Умник">';
+  }else{
+    top.className = 'top';
+    top.innerHTML =
+      '<img id="headerFox" class="header-fox" src="/assets/umnik_welcome.png" alt="Умник">' +
+      '<img class="logo" src="/assets/logo.png" alt="Умник">' +
+      '<button id="voiceCallBtn" class="voice-call-btn" style="display:none">📞</button>
+      <button class="gear-btn" onclick="openSettings()" aria-label="Настройки">' + gearIcon() + '</button>';
+    setFox(currentEmotion || 'welcome');
+  }
+}
+
+function startApp(){
+  const name = document.getElementById('nameInput').value.trim();
+  const age = document.getElementById('ageInput').value.trim();
+  const error = document.getElementById('welcomeError');
+  const fox = document.getElementById('welcomeFox');
+
+  if(!name || !age){
+    error.textContent = 'Заполни имя и возраст, пожалуйста 🙂';
+    fox.classList.remove('warn');
+    void fox.offsetWidth;
+    fox.classList.add('warn');
+    fox.src = '/assets/umnik_welcome.png';
+    return;
+  }
+
+  state.name = name;
+  state.age = age;
+  state.plan = 'free';
+  state.mode = 'ai';
+  resetEveryOpen();
+  show('chatScreen');
+  render();
+}
+
+function openSettings(){
+  show('settings');
+  renderSettings();
+}
+
+function openChat(){
+  show('chatScreen');
+  render();
+}
+
+function setMode(m){
+  state.mode = m;
+  renderSettings();
+  render();
+}
+
+function setPlan(p){
+  const wasFree = state.plan === 'free';
+  state.plan = p;
+
+  if(p === 'plus' && wasFree){
+    // При первом входе в Plus создаём стартовые чаты один раз.
+    defaultChats.forEach(name => {
+      if(!state.chats[name]){
+        state.chats[name] = [{role:'bot', text:welcomeText(state.name)}];
+      }
+      if(!state.chatOrder.includes(name)){
+        state.chatOrder.push(name);
+      }
+    });
+  }
+
+  normalizeChatsForPlan();
+  renderSettings();
+  render();
+}
+
+function toggleEditTabs(){
+  if(state.plan === 'free') return;
+  state.editingTabs = !state.editingTabs;
+  renderTabs();
+}
+
+function uniqueName(base){
+  let root = (base || 'Новый чат').trim() || 'Новый чат';
+  let n = root;
+  let i = 2;
+  while(state.chats[n]){
+    n = root + ' ' + i;
+    i++;
+  }
+  return n;
+}
+
+function newChat(){
+  if(state.plan === 'free'){
+    addMessage('bot','В Free-версии доступен только один чат. Создание отдельных чатов относится к Умник Плюс.');
+    render();
+    return;
+  }
+
+  const raw = prompt('Название нового чата:','Новый чат');
+  if(raw === null) return;
+
+  const n = uniqueName(raw);
+  state.activeChat = n;
+  state.chats[n] = [{role:'bot', text:'Новый чат создан. Что будем разбирать?'}];
+  state.chatOrder.push(n);
+  state.editingTabs = false;
+  openChat();
+}
+
+function deleteChat(n){
+  if(state.plan === 'free') return;
+  if(state.chatOrder.length <= 1) return;
+
+  delete state.chats[n];
+  state.chatOrder = state.chatOrder.filter(x => x !== n);
+
+  if(state.activeChat === n){
+    state.activeChat = state.chatOrder[0] || 'Домашка';
+  }
+
+  render();
+}
+
+function moveChat(n, dir){
+  if(state.plan === 'free') return;
+
+  const i = state.chatOrder.indexOf(n);
+  const j = i + dir;
+
+  if(i < 0 || j < 0 || j >= state.chatOrder.length) return;
+
+  [state.chatOrder[i], state.chatOrder[j]] = [state.chatOrder[j], state.chatOrder[i]];
+  renderTabs();
+}
+
+function renderSettings(){
+  const ai = document.getElementById('modeAi');
+  const demo = document.getElementById('modeDemo');
+  const free = document.getElementById('planFree');
+  const plus = document.getElementById('planPlus');
+
+  if(!ai) return;
+
+  ai.classList.toggle('active', state.mode === 'ai');
+  demo.classList.toggle('active', state.mode === 'demo');
+  free.classList.toggle('active', state.plan === 'free');
+  plus.classList.toggle('active', state.plan === 'plus');
+}
+
+function renderTabs(){
+  normalizeChatsForPlan();
+
+  const row = document.getElementById('tabsRow');
+  const tabs = document.getElementById('chatTabs');
+  const editBtn = document.getElementById('editTabsBtn');
+  const newBtn = document.querySelector('.new-tab');
+
+  if(!tabs || !row || !editBtn || !newBtn) return;
+
+  const isFree = state.plan === 'free';
+  row.classList.toggle('editing', state.editingTabs && !isFree);
+
+  editBtn.textContent = state.editingTabs ? '✓' : '✎';
+  editBtn.style.display = isFree ? 'none' : 'block';
+
+  // Новые чаты появляются только в режиме редактирования и только в Plus.
+  newBtn.style.display = (!isFree && state.editingTabs) ? 'block' : 'none';
+
+  tabs.innerHTML = '';
+
+  state.chatOrder.forEach(n => {
+    ensureChat(n);
+
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'tab ' + (n === state.activeChat ? 'active' : '');
+
+    const label = document.createElement('span');
+    label.textContent = n;
+    b.appendChild(label);
+
+    if(state.editingTabs && !isFree){
+      const controls = document.createElement('span');
+      controls.className = 'tab-controls';
+
+      const left = document.createElement('button');
+      left.type = 'button';
+      left.className = 'tab-control';
+      left.textContent = '‹';
+      left.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        moveChat(n,-1);
+      };
+
+      const right = document.createElement('button');
+      right.type = 'button';
+      right.className = 'tab-control';
+      right.textContent = '›';
+      right.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        moveChat(n,1);
+      };
+
+      const del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'tab-control';
+      del.textContent = '×';
+      del.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        deleteChat(n);
+      };
+
+      controls.appendChild(left);
+      controls.appendChild(right);
+      controls.appendChild(del);
+      b.appendChild(controls);
+    }
+
+    b.onclick = () => {
+      if(isFree) return;
+      if(state.editingTabs) return;
+      if(state.tabDragMoved) return;
+      state.activeChat = n;
+      render();
+    };
+
+    tabs.appendChild(b);
+  });
+}
+
+function render(){
+  normalizeChatsForPlan();
+  renderTabs();
+  renderSettings();
+
+  const chat = document.getElementById('chat');
+  if(!chat) return;
+
+  chat.innerHTML = '';
+
+  state.chats[state.activeChat].forEach(m => {
+    const d = document.createElement('div');
+    d.className = 'bubble ' + (m.role === 'user' ? 'user' : 'bot');
+    d.textContent = m.text;
+    chat.appendChild(d);
+  });
+
+  if(state.isSending){
+    const d = document.createElement('div');
+    d.className = 'bubble bot';
+    d.textContent = 'Умник думает...';
+    chat.appendChild(d);
+  }
+
+  chat.scrollTop = chat.scrollHeight;
+
+  document.getElementById('limitsText').textContent = state.plan === 'free'
+    ? 'Free: 1 чат, 10 сообщений и 3 фото в день'
+    : 'Умник Плюс: безлимитные сообщения, фото, голос и сохранённые чаты';
+
+  document.getElementById('modeNote').textContent = state.mode === 'ai'
+    ? 'AI-режим: запрос отправляется в модель'
+    : 'Демо-режим: ответы из заготовленной базы';
+
+  const sendBtn = document.getElementById('sendBtn');
+  if(sendBtn) sendBtn.disabled = state.isSending;
+
+  renderSuggestions();
+}
+
+function renderSuggestions(){
+  const sug = document.getElementById('suggestions');
+  if(!sug) return;
+
+  sug.innerHTML = '';
+
+  suggestions.forEach(s => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = s;
+    b.disabled = state.isSending;
+
+    b.addEventListener('click', (e) => {
+      if(state.isSending) return;
+
+      // Если реально перетаскивали ленту, не отправляем вопрос.
+      if(state.sugDragMoved){
+        e.preventDefault();
+        return;
+      }
+
+      document.getElementById('input').value = s;
+      send();
+    });
+
+    sug.appendChild(b);
+  });
+}
+
+function setFox(e){
+  currentEmotion = e;
+
+  const map = {
+    thinking:'/assets/umnik_thinking.png',
+    explain:'/assets/umnik_explain.png',
+    happy:'/assets/umnik_happy.png',
+    idea:'/assets/umnik_idea.png',
+    support:'/assets/umnik_welcome.png',
+    confused:'/assets/umnik_confused.png',
+    safe_stop:'/assets/umnik_explain.png',
+    welcome:'/assets/umnik_welcome.png'
+  };
+
+  const img = document.getElementById('headerFox');
+  if(img){
+    img.src = map[e] || map.welcome;
+    img.className = 'header-fox ' + (e === 'thinking' ? 'thinking' : '');
+  }
+}
+
+function addMessage(role,text){
+  ensureChat(state.activeChat);
+  state.chats[state.activeChat].push({role,text});
+}
+
+function canUse(){
+  if(state.plan === 'plus') return true;
+
+  if(state.limits.messages >= 10){
+    addMessage('bot','В Free-версии закончились 10 сообщений на сегодня. В презентации это место для перехода на Умник Плюс.');
+    render();
+    return false;
+  }
+
+  return true;
+}
+
+function demoAnswer(message) {
+  const q = String(message || '').toLowerCase();
+
+  if(q.includes('сказуем')) return { emotion:'explain', text:'Сказуемое — это главный член предложения, который показывает, что делает предмет. Например: «Мальчик читает». Что делает? Читает — это сказуемое.' };
+  if(q.includes('периметр')) return { emotion:'explain', text:'Периметр — это сумма длин всех сторон фигуры. Чтобы найти периметр, нужно сложить все стороны. У прямоугольника можно так: P = 2 × (длина + ширина).' };
+  if(q.includes('дроб')) return { emotion:'happy', text:'Дробь — это часть целого. Например, если пиццу разделили на 4 равные части и взяли 1 кусок, это 1/4.' };
+  if(q.includes('устал')) return { emotion:'support', text:'Понимаю. Давай сделаем один маленький шаг: напиши первое задание, и я помогу разобрать его спокойно.' };
+  if(q.includes('фото')) return { emotion:'idea', text:'Фото принято. В полной версии я распознаю задание на фото и объясню решение текстом.' };
+
+  return { emotion:'explain', text:'Я понял вопрос. Давай разберём его простыми шагами: сначала выделим главное, потом решим пример.' };
+}
+
+async function send(){
+  if(state.isSending) return;
+
+  const input = document.getElementById('input');
+  const text = input.value.trim();
+
+  if(!text && !state.imageDataUrl) return;
+  if(!canUse()) return;
+
+  state.isSending = true;
+  state.limits.messages++;
+  addMessage('user', text || 'Я прикрепил фото задания.');
+  input.value = '';
+  setFox('thinking');
+  render();
+
+  try{
+    let data;
+
+    if(state.mode === 'demo'){
+      await new Promise(r => setTimeout(r, 700));
+      data = demoAnswer(text);
+    }else{
+      const res = await fetch('/api/chat', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          message:text,
+          age:state.age,
+          chatTitle:state.activeChat,
+          imageDataUrl:state.imageDataUrl,
+          mode:state.mode
+        })
+      });
+
+      data = await res.json();
+      if(!res.ok) throw new Error(data?.error || 'AI error');
+    }
+
+    state.imageDataUrl = null;
+    const preview = document.getElementById('photoPreview');
+    if(preview) preview.style.display = 'none';
+
+    addMessage('bot', data.text || 'Ответ пустой. Попробуй ещё раз.');
+    setFox(data.emotion || 'explain');
+  }catch(e){
+    const fallback = demoAnswer(text);
+    addMessage('bot', 'AI сейчас не ответил. Показываю демо-ответ:\n\n' + fallback.text);
+    setFox('confused');
+  }finally{
+    state.isSending = false;
+    render();
+  }
+}
+
+function handleKey(e){
+  if(e.key === 'Enter' && !e.shiftKey){
+    e.preventDefault();
+    send();
+  }
+}
+
+function pickPhoto(){
+  if(state.isSending) return;
+
+  if(state.plan === 'free' && state.limits.photos >= 3){
+    addMessage('bot','В Free-версии закончились 3 фото на сегодня. В Plus фото-разбор будет расширенным.');
+    render();
+    return;
+  }
+
+  document.getElementById('fileInput').click();
+}
+
+function handlePhoto(e){
+  const file = e.target.files[0];
+  if(!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => compressImage(reader.result, (small) => {
+    state.imageDataUrl = small;
+    state.limits.photos++;
+    const img = document.getElementById('photoPreview');
+    img.src = small;
+    img.style.display = 'block';
+    render();
+  });
+
+  reader.readAsDataURL(file);
+}
+
+function compressImage(dataUrl, cb){
+  const img = new Image();
+
+  img.onload = () => {
+    const c = document.createElement('canvas');
+    const max = 1000;
+    let w = img.width, h = img.height;
+
+    if(w > h && w > max){
+      h = Math.round(h * max / w);
+      w = max;
+    }else if(h > max){
+      w = Math.round(w * max / h);
+      h = max;
+    }
+
+    c.width = w;
+    c.height = h;
+    c.getContext('2d').drawImage(img,0,0,w,h);
+    cb(c.toDataURL('image/jpeg',0.75));
+  };
+
+  img.src = dataUrl;
+}
+
+function voiceInput(){
+  if(state.isSending) return;
+
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if(!SR){
+    addMessage('bot','Голосовой ввод не поддерживается в этом браузере. Попробуй Google Chrome.');
+    render();
+    return;
+  }
+
+  const rec = new SR();
+  rec.lang = 'ru-RU';
+  rec.onresult = e => {
+    document.getElementById('input').value = e.results[0][0].transcript;
+  };
+  rec.start();
+}
+
+function enableDragScroll(el, key){
+  if(!el || el.dataset.dragReady === '1') return;
+  el.dataset.dragReady = '1';
+
+  let down = false;
+  let startX = 0;
+  let scrollLeft = 0;
+  let moved = false;
+  let downTarget = null;
+
+  el.addEventListener('pointerdown', e => {
+    if(e.target.closest('.tab-control,.edit-tabs,.new-tab')) return;
+
+    down = true;
+    moved = false;
+    downTarget = e.target;
+    state[key] = false;
+    startX = e.clientX;
+    scrollLeft = el.scrollLeft;
+    el.classList.add('dragging');
+  });
+
+  el.addEventListener('pointermove', e => {
+    if(!down) return;
+
+    const dx = e.clientX - startX;
+
+    if(Math.abs(dx) > 8){
+      moved = true;
+      state[key] = true;
+      el.scrollLeft = scrollLeft - dx;
+    }
+  });
+
+  function finish(e){
+    if(!down) return;
+
+    const wasMoved = moved;
+    down = false;
+    moved = false;
+    el.classList.remove('dragging');
+
+    if(wasMoved){
+      state[key] = true;
+      setTimeout(() => { state[key] = false; }, 120);
+      return;
+    }
+
+    state[key] = false;
+
+    // Для кнопок быстрых вопросов: если это был обычный тап, отправляем вручную.
+    // Это чинит ситуацию, когда drag-scroll перехватывает обычный click.
+    if(key === 'sugDragMoved'){
+      const button = downTarget && downTarget.closest && downTarget.closest('button');
+      if(button && el.contains(button) && !button.disabled){
+        const text = button.textContent.trim();
+        if(text){
+          document.getElementById('input').value = text;
+          send();
+        }
+      }
+    }
+  }
+
+  el.addEventListener('pointerup', finish);
+  el.addEventListener('pointercancel', () => {
+    down = false;
+    moved = false;
+    state[key] = false;
+    el.classList.remove('dragging');
+  });
+  el.addEventListener('pointerleave', e => {
+    if(down && key !== 'sugDragMoved') finish(e);
+  });
+}
+
+
+
+// VOICE MODE
+let voiceHistory = [];
+let voiceRecognition = null;
+let voiceListening = false;
+
+function initVoiceMode(){
+  const btn = document.getElementById('voiceCallBtn');
+  const modal = document.getElementById('voiceModal');
+  const close = document.getElementById('closeVoice');
+  const mic = document.getElementById('micButton');
+  const status = document.getElementById('voiceStatus');
+  const transcript = document.getElementById('voiceTranscript');
+
+  if(state.plan === 'plus'){
+    btn.style.display = 'flex';
+  }
+
+  btn.onclick = () => {
+    if(state.plan !== 'plus'){
+      addMessage('bot','Созвон с Умником доступен только в Plus версии.');
+      render();
+      return;
+    }
+    modal.classList.remove('hidden');
+  };
+
+  close.onclick = () => {
+    modal.classList.add('hidden');
+    speechSynthesis.cancel();
+  };
+
+  mic.onclick = () => startVoice();
+
+  function startVoice(){
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if(!SR){
+      alert('Используй Google Chrome для голосового режима');
+      return;
+    }
+
+    if(!voiceRecognition){
+      voiceRecognition = new SR();
+      voiceRecognition.lang = 'ru-RU';
+      voiceRecognition.interimResults = false;
+      voiceRecognition.continuous = false;
+
+      voiceRecognition.onstart = () => {
+        voiceListening = true;
+        mic.classList.add('listening');
+        status.innerText = 'Слушаю...';
+      };
+
+      voiceRecognition.onend = () => {
+        voiceListening = false;
+        mic.classList.remove('listening');
+      };
+
+      voiceRecognition.onresult = async (e) => {
+        const text = e.results[0][0].transcript;
+
+        voiceHistory.push({
+          role:'user',
+          content:text
+        });
+
+        transcript.innerText += '\nТы: ' + text + '\n';
+        status.innerText = 'Думаю...';
+
+        try{
+          const response = await fetch('/api/chat',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+              message:text,
+              history:voiceHistory,
+              age:state.age || '8',
+              chatTitle:'Voice Chat'
+            })
+          });
+
+          const data = await response.json();
+
+          const answer = data.text || 'Я не смог ответить';
+
+          voiceHistory.push({
+            role:'assistant',
+            content:answer
+          });
+
+          transcript.innerText += '\nУмник: ' + answer + '\n';
+          transcript.scrollTop = transcript.scrollHeight;
+
+          status.innerText = 'Объясняю...';
+
+          const utter = new SpeechSynthesisUtterance(answer);
+          utter.lang = 'ru-RU';
+
+          utter.onend = () => {
+            status.innerText = 'Готов помочь';
+          };
+
+          speechSynthesis.cancel();
+          speechSynthesis.speak(utter);
+
+        }catch(err){
+          status.innerText = 'Ошибка';
+        }
+      };
+    }
+
+    if(!voiceListening){
+      voiceRecognition.start();
+    }
+  }
+}
+
+
+window.addEventListener('DOMContentLoaded', () => {
+  resetEveryOpen();
+  enableDragScroll(document.getElementById('chatTabs'), 'tabDragMoved');
+  enableDragScroll(document.getElementById('suggestions'), 'sugDragMoved');
+  renderTop('welcome');
+  initVoiceMode();
+  render();
+});
+
+function resetEveryOpen(){
+  state.plan = 'free';
+  state.mode = 'ai';
+  state.activeChat = 'Домашка';
+  state.imageDataUrl = null;
+  state.chats = {'Домашка':[{role:'bot', text:welcomeText(state.name)}]};
+  state.chatOrder = ['Домашка'];
+  state.limits = {messages:0,photos:0};
+  state.editingTabs = false;
+  state.isSending = false;
+  state.tabDragMoved = false;
+  state.sugDragMoved = false;
+}
+</script>
+
+<div id="voiceModal" class="voice-modal hidden">
+  <div class="voice-content">
+    <div class="voice-header">
+      <div class="voice-title">Созвон с Умником</div>
+      <button id="closeVoice" class="voice-close">✕</button>
     </div>
 
-    <div class="fox">🦊</div>
+    <img src="assets/umnik_happy.png" class="voice-umnik"/>
 
-    <div id="voiceStatus">Готов помочь</div>
+    <div id="voiceStatus" class="voice-status">Готов помочь</div>
 
-    <button id="micButton" class="mic">🎤</button>
+    <button id="micButton" class="voice-mic">🎤</button>
 
-    <div id="voiceTranscript" class="transcript"></div>
+    <div id="voiceTranscript" class="voice-transcript"></div>
   </div>
 </div>
 
-<script src="app.js"></script>
 </body>
 </html>
