@@ -628,6 +628,9 @@ const VOICE_SETTINGS_KEY = 'umnik_voice_settings_v1';
 
 function defaultProfile(){return {name:'',age:'',grade:'',hardSubject:'',hardTopics:'',explainStyle:'очень просто',goal:''}}
 function defaultMemory(){return {totalQuestions:0,totalVoiceQuestions:0,totalPhotos:0,topics:{},difficult:{},recent:[],lastSummary:'',updatedAt:''}}
+function defaultAccount(){return {loggedIn:false,email:'',createdAt:''}}
+function defaultSubscription(){return {plan:'free',expiresAt:'',lastPaidAt:''}}
+function defaultVoiceSettings(){return {rate:1.12,pitch:1.08}}
 function loadJson(key,fallback){try{const raw=localStorage.getItem(key);return raw?Object.assign(fallback(),JSON.parse(raw)):fallback()}catch(e){return fallback()}}
 function saveJson(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch(e){}}
 
@@ -647,6 +650,131 @@ if(state.subscription && state.subscription.plan === 'plus' && state.subscriptio
 
 function saveProfile(){saveJson(PROFILE_KEY,state.profile)}
 function saveMemory(){state.learningMemory.updatedAt=new Date().toISOString();saveJson(MEMORY_KEY,state.learningMemory)}
+
+function saveAccount(){saveJson(ACCOUNT_KEY,state.account||defaultAccount())}
+function saveSubscription(){saveJson(SUBSCRIPTION_KEY,state.subscription||defaultSubscription())}
+function saveVoiceSettings(){saveJson(VOICE_SETTINGS_KEY,state.voiceSettings||defaultVoiceSettings())}
+
+function hasActivePlus(){
+  const sub = state.subscription || defaultSubscription();
+  if(sub.plan !== 'plus' || !sub.expiresAt) return false;
+  try{return new Date(sub.expiresAt).getTime() > Date.now()}catch(e){return false}
+}
+
+function getSubscriptionDaysLeft(){
+  if(!hasActivePlus()) return 0;
+  const end = new Date(state.subscription.expiresAt).getTime();
+  const diff = end - Date.now();
+  return Math.max(0, Math.ceil(diff / (1000*60*60*24)));
+}
+
+function syncPlanWithSubscription(){
+  state.plan = hasActivePlus() ? 'plus' : 'free';
+}
+
+function extendSubscription(days=30){
+  const now = Date.now();
+  const currentEnd = hasActivePlus() ? new Date(state.subscription.expiresAt).getTime() : now;
+  const nextEnd = new Date(Math.max(currentEnd, now) + days*24*60*60*1000);
+
+  state.subscription = {
+    plan:'plus',
+    expiresAt:nextEnd.toISOString(),
+    lastPaidAt:new Date().toISOString()
+  };
+
+  saveSubscription();
+  state.plan = 'plus';
+}
+
+function renderAccountSubscription(){
+  const accBox = document.getElementById('accountSummary');
+  const subBox = document.getElementById('subscriptionSummary');
+  const loginBtn = document.getElementById('loginBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  if(accBox){
+    const acc = state.account || defaultAccount();
+    accBox.textContent = acc.loggedIn
+      ? `Вы вошли как ${acc.email || 'пользователь'}`
+      : 'Вы пока не вошли. Для MVP вход сохраняется локально в браузере.';
+  }
+
+  if(loginBtn && logoutBtn){
+    const logged = !!(state.account && state.account.loggedIn);
+    loginBtn.style.display = logged ? 'none' : 'block';
+    logoutBtn.style.display = logged ? 'block' : 'none';
+  }
+
+  if(subBox){
+    const active = hasActivePlus();
+    const days = getSubscriptionDaysLeft();
+
+    subBox.innerHTML =
+      `<div class="account-row"><span>Тариф</span><b>${active ? 'Умник Плюс' : 'Free'}</b></div>` +
+      `<div class="account-row"><span>Статус</span><b>${active ? 'Активна' : 'Не активна'}</b></div>` +
+      `<div class="account-row"><span>Осталось</span><b>${active ? `${days} дн.` : '0 дн.'}</b></div>` +
+      `<div class="account-row"><span>Стоимость</span><b>349 ₽ / мес</b></div>`;
+  }
+}
+
+function openProfileMenu(){
+  const modal = document.getElementById('profileMenuModal');
+  if(!modal) return;
+
+  syncPlanWithSubscription();
+  renderProfileSummary();
+  renderMemorySummary();
+  renderAccountSubscription();
+
+  modal.classList.remove('hidden');
+  modal.setAttribute('aria-hidden','false');
+}
+
+function closeProfileMenu(){
+  const modal = document.getElementById('profileMenuModal');
+  if(modal){
+    modal.classList.add('hidden');
+    modal.setAttribute('aria-hidden','true');
+  }
+}
+
+function openProfileEditor(){
+  closeProfileMenu();
+  openProfileModal();
+}
+
+function loginAccount(){
+  const email = prompt('Введи email для входа в MVP-аккаунт:', state.account?.email || '');
+  if(email === null) return;
+
+  const clean = email.trim() || 'demo@umnik.ai';
+
+  state.account = {
+    loggedIn:true,
+    email:clean,
+    createdAt:state.account?.createdAt || new Date().toISOString()
+  };
+
+  saveAccount();
+  renderAccountSubscription();
+}
+
+function logoutAccount(){
+  state.account = defaultAccount();
+  saveAccount();
+  renderAccountSubscription();
+}
+
+function paySubscription(){
+  extendSubscription(30);
+  normalizeChatsForPlan();
+  render();
+  renderAccountSubscription();
+  updateVoiceButtonVisibility();
+  alert('MVP: подписка Умник Плюс активирована на 30 дней.');
+}
+
 function syncProfileToWelcome(){const n=document.getElementById('nameInput');const a=document.getElementById('ageInput');if(n&&state.profile.name&&!n.value)n.value=state.profile.name;if(a&&state.profile.age&&!a.value)a.value=state.profile.age}
 function updateProfileFromWelcome(name,age){state.profile.name=name||state.profile.name||'';state.profile.age=age||state.profile.age||'';saveProfile()}
 function profileForApi(){return {name:state.profile.name||state.name||'',age:state.profile.age||state.age||'',grade:state.profile.grade||'',hardSubject:state.profile.hardSubject||'',hardTopics:state.profile.hardTopics||'',explainStyle:state.profile.explainStyle||'очень просто',goal:state.profile.goal||''}}
@@ -877,9 +1005,9 @@ function renderSettings(){
   demo.classList.toggle('active', state.mode === 'demo');
   free.classList.toggle('active', state.plan === 'free');
   plus.classList.toggle('active', state.plan === 'plus');
-  renderProfileSummary();
-  renderMemorySummary();
-  renderAccountSubscription();
+  try{renderProfileSummary()}catch(e){}
+  try{renderMemorySummary()}catch(e){}
+  try{renderAccountSubscription()}catch(e){}
 }
 
 function renderTabs(){
@@ -1833,23 +1961,23 @@ function splitSpeechIntoChunks(text){
 
 function getVoiceRate(){
   const settings = state.voiceSettings || defaultVoiceSettings();
-  const rate = Number(settings.rate || 1.06);
+  const rate = Number(settings.rate || 1.12);
   return Math.min(1.25, Math.max(0.9, rate));
 }
 
 function getVoicePitch(){
   const settings = state.voiceSettings || defaultVoiceSettings();
-  const pitch = Number(settings.pitch || 1.14);
+  const pitch = Number(settings.pitch || 1.08);
   return Math.min(1.25, Math.max(0.95, pitch));
 }
 
 function changeVoiceSpeed(value){
-  const rate = Number(value || 1.06);
+  const rate = Number(value || 1.12);
   state.voiceSettings = state.voiceSettings || defaultVoiceSettings();
   state.voiceSettings.rate = Math.min(1.25, Math.max(0.9, rate));
 
   // Чем быстрее голос, тем меньше повышаем тон, чтобы он не звучал слишком «роботом».
-  state.voiceSettings.pitch = state.voiceSettings.rate >= 1.12 ? 1.10 : 1.14;
+  state.voiceSettings.pitch = state.voiceSettings.rate >= 1.12 ? 1.06 : 1.08;
 
   saveVoiceSettings();
   updateVoiceSpeedUI();
@@ -2262,8 +2390,8 @@ function resetEveryOpen(clearVoice = true){
     <div class="voice-settings">
       <div class="voice-settings-title">Скорость голоса</div>
       <div class="voice-speed-row">
-        <input id="voiceSpeedRange" type="range" min="0.9" max="1.25" step="0.01" value="1.06" oninput="changeVoiceSpeed(this.value)">
-        <div id="voiceSpeedValue" class="voice-speed-value">1.06×</div>
+        <input id="voiceSpeedRange" type="range" min="0.9" max="1.25" step="0.01" value="1.12" oninput="changeVoiceSpeed(this.value)">
+        <div id="voiceSpeedValue" class="voice-speed-value">1.12×</div>
       </div>
     </div>
 
