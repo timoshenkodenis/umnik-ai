@@ -393,6 +393,118 @@
     .profile-save{border:0;background:var(--orange);color:white;border-radius:18px;padding:14px 16px;font-weight:900;cursor:pointer}
     .memory-box{margin-top:10px;border-radius:18px;background:white;border:1px solid var(--line);padding:12px;font-size:13px;line-height:1.45;color:var(--dark);white-space:pre-wrap}
 
+  
+    .profile-menu-btn{
+      height:36px;
+      width:36px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:white;
+      color:var(--orange);
+      font-size:17px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 4px 12px rgba(0,0,0,.08);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      line-height:1;
+    }
+    .account-card{
+      width:100%;
+      border-radius:22px;
+      border:1px solid var(--line);
+      background:white;
+      padding:14px;
+    }
+    .account-card h3{
+      margin:0 0 6px;
+      font-size:16px;
+      line-height:1.2;
+      color:var(--dark);
+    }
+    .account-muted{
+      color:var(--gray);
+      font-size:12px;
+      line-height:1.35;
+      font-weight:800;
+    }
+    .account-status{
+      display:grid;
+      gap:8px;
+      margin-top:10px;
+    }
+    .account-row{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      padding:9px 0;
+      border-bottom:1px solid #f0e4d7;
+      font-size:13px;
+      font-weight:800;
+      color:var(--dark);
+    }
+    .account-row:last-child{
+      border-bottom:0;
+    }
+    .account-row span:first-child{
+      color:var(--gray);
+    }
+    .profile-menu-actions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+    .profile-menu-actions button{
+      border:0;
+      border-radius:16px;
+      padding:12px 10px;
+      font-weight:900;
+      cursor:pointer;
+      background:var(--orange);
+      color:white;
+      font-size:13px;
+    }
+    .profile-menu-actions button.secondary{
+      background:white;
+      color:var(--dark);
+      border:1px solid var(--line);
+    }
+    .profile-menu-actions button.full{
+      grid-column:1 / -1;
+    }
+    .voice-settings{
+      width:100%;
+      border-radius:20px;
+      border:1px solid var(--line);
+      background:white;
+      padding:12px;
+      display:grid;
+      gap:8px;
+    }
+    .voice-settings-title{
+      font-size:13px;
+      font-weight:900;
+      color:var(--dark);
+    }
+    .voice-speed-row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .voice-speed-row input{
+      flex:1;
+      accent-color:var(--orange);
+    }
+    .voice-speed-value{
+      min-width:44px;
+      text-align:right;
+      color:var(--orange);
+      font-weight:900;
+      font-size:13px;
+    }
+
   </style>
 </head>
 <body>
@@ -444,23 +556,9 @@
     <div class="card plus-card"><h3>Умник Плюс — 349 ₽/мес</h3><p class="muted">Безлимитные сообщения, сохранённые чаты, фото-разбор, голосовой звонок и память ученика.</p></div>
 
     <div class="card">
-      <h3>Профиль ученика</h3>
-      <p class="muted">Умник будет учитывать класс, сложные темы и стиль объяснения.</p>
-      <div id="profileSummary" class="profile-grid"></div>
-      <div class="profile-actions"><button onclick="openProfileModal()">Редактировать профиль</button></div>
+      <h3>Настройки приложения</h3>
+      <p class="muted">Профиль ученика, аккаунт, подписка и память теперь вынесены в отдельное меню 👤 в правом верхнем углу.</p>
     </div>
-
-    <div class="card">
-      <h3>Память Умника</h3>
-      <p class="muted">Память хранится на этом устройстве и помогает Умнику подстраиваться под ученика.</p>
-      <div id="memorySummary" class="memory-box"></div>
-      <div class="profile-actions">
-        <button onclick="showFullMemory()">Показать память</button>
-        <button class="secondary" onclick="clearLearningMemory()">Очистить память</button>
-      </div>
-    </div>
-
-    <div class="card"><h3>Аккаунт и подписка</h3><p class="muted">В полной версии здесь будет регистрация, история чатов и синхронизация памяти между устройствами.</p><button class="primary" style="margin-top:12px">Войти / создать аккаунт</button></div>
   </section>
 </div>
 
@@ -523,6 +621,11 @@ const voiceState = {
 const PROFILE_KEY = 'umnik_student_profile_v1';
 const MEMORY_KEY = 'umnik_learning_memory_v1';
 
+const ACCOUNT_KEY = 'umnik_account_v1';
+const SUBSCRIPTION_KEY = 'umnik_subscription_v1';
+const VOICE_SETTINGS_KEY = 'umnik_voice_settings_v1';
+
+
 function defaultProfile(){return {name:'',age:'',grade:'',hardSubject:'',hardTopics:'',explainStyle:'очень просто',goal:''}}
 function defaultMemory(){return {totalQuestions:0,totalVoiceQuestions:0,totalPhotos:0,topics:{},difficult:{},recent:[],lastSummary:'',updatedAt:''}}
 function loadJson(key,fallback){try{const raw=localStorage.getItem(key);return raw?Object.assign(fallback(),JSON.parse(raw)):fallback()}catch(e){return fallback()}}
@@ -530,6 +633,17 @@ function saveJson(key,value){try{localStorage.setItem(key,JSON.stringify(value))
 
 state.profile = loadJson(PROFILE_KEY, defaultProfile);
 state.learningMemory = loadJson(MEMORY_KEY, defaultMemory);
+state.account = loadJson(ACCOUNT_KEY, defaultAccount);
+state.subscription = loadJson(SUBSCRIPTION_KEY, defaultSubscription);
+state.voiceSettings = loadJson(VOICE_SETTINGS_KEY, defaultVoiceSettings);
+
+if(state.subscription && state.subscription.plan === 'plus' && state.subscription.expiresAt){
+  try{
+    if(new Date(state.subscription.expiresAt).getTime() > Date.now()){
+      state.plan = 'plus';
+    }
+  }catch(e){}
+}
 
 function saveProfile(){saveJson(PROFILE_KEY,state.profile)}
 function saveMemory(){state.learningMemory.updatedAt=new Date().toISOString();saveJson(MEMORY_KEY,state.learningMemory)}
@@ -603,6 +717,7 @@ function renderTop(id){
       '<img class="logo" src="/assets/logo.png" alt="Умник">' +
       '<div class="top-actions">' +
         '<button id="voiceCallBtn" class="voice-call-btn" type="button" onclick="openVoiceCall()" aria-label="Позвонить Умнику">📞</button>' +
+        '<button id="profileMenuBtn" class="profile-menu-btn" type="button" onclick="openProfileMenu()" aria-label="Профиль ученика">👤</button>' +
         '<button class="gear-btn" onclick="openSettings()" aria-label="Настройки">' + gearIcon() + '</button>' +
       '</div>';
     setFox(currentEmotion || 'welcome');
@@ -656,6 +771,16 @@ function setMode(m){
 
 function setPlan(p){
   const wasFree = state.plan === 'free';
+
+  if(p === 'plus'){
+    extendSubscription(30);
+  }
+
+  if(p === 'free'){
+    state.subscription = defaultSubscription();
+    saveSubscription();
+  }
+
   state.plan = p;
 
   if(p === 'plus' && wasFree){
@@ -754,6 +879,7 @@ function renderSettings(){
   plus.classList.toggle('active', state.plan === 'plus');
   renderProfileSummary();
   renderMemorySummary();
+  renderAccountSubscription();
 }
 
 function renderTabs(){
@@ -1262,6 +1388,7 @@ function openVoiceCall(){
   voiceState.speaking = false;
 
   initVoiceEvents();
+  updateVoiceSpeedUI();
 
   if(!voiceState.history.length){
     clearVoiceTranscript();
@@ -1674,7 +1801,7 @@ function makeSpeechTextHuman(text){
     .replace(/\*/g, '')
     .replace(/```[\s\S]*?```/g, '')
     .replace(/\s+/g, ' ')
-    .replace(/([.!?])\s+/g, '$1 ... ')
+    .replace(/([.!?])\s+/g, '$1 ')
     .trim();
 }
 
@@ -1701,6 +1828,42 @@ function splitSpeechIntoChunks(text){
   if(current) chunks.push(current.trim());
 
   return chunks;
+}
+
+
+function getVoiceRate(){
+  const settings = state.voiceSettings || defaultVoiceSettings();
+  const rate = Number(settings.rate || 1.06);
+  return Math.min(1.25, Math.max(0.9, rate));
+}
+
+function getVoicePitch(){
+  const settings = state.voiceSettings || defaultVoiceSettings();
+  const pitch = Number(settings.pitch || 1.14);
+  return Math.min(1.25, Math.max(0.95, pitch));
+}
+
+function changeVoiceSpeed(value){
+  const rate = Number(value || 1.06);
+  state.voiceSettings = state.voiceSettings || defaultVoiceSettings();
+  state.voiceSettings.rate = Math.min(1.25, Math.max(0.9, rate));
+
+  // Чем быстрее голос, тем меньше повышаем тон, чтобы он не звучал слишком «роботом».
+  state.voiceSettings.pitch = state.voiceSettings.rate >= 1.12 ? 1.10 : 1.14;
+
+  saveVoiceSettings();
+  updateVoiceSpeedUI();
+}
+
+function updateVoiceSpeedUI(){
+  const range = document.getElementById('voiceSpeedRange');
+  const value = document.getElementById('voiceSpeedValue');
+
+  if(!range || !value) return;
+
+  const rate = getVoiceRate();
+  range.value = String(rate);
+  value.textContent = rate.toFixed(2) + '×';
 }
 
 function speakVoiceAnswer(text){
@@ -1744,8 +1907,8 @@ function speakVoiceAnswer(text){
     const utter = new SpeechSynthesisUtterance(chunks[index]);
 
     utter.lang = 'ru-RU';
-    utter.rate = 0.88;
-    utter.pitch = 1.28;
+    utter.rate = getVoiceRate();
+    utter.pitch = getVoicePitch();
     utter.volume = 1;
 
     if(bestVoice) utter.voice = bestVoice;
@@ -1926,7 +2089,10 @@ window.addEventListener('DOMContentLoaded', () => {
 function resetEveryOpen(clearVoice = true){
   state.profile = loadJson(PROFILE_KEY, defaultProfile);
   state.learningMemory = loadJson(MEMORY_KEY, defaultMemory);
-  state.plan = 'free';
+  state.account = loadJson(ACCOUNT_KEY, defaultAccount);
+  state.subscription = loadJson(SUBSCRIPTION_KEY, defaultSubscription);
+  state.voiceSettings = loadJson(VOICE_SETTINGS_KEY, defaultVoiceSettings);
+  state.plan = hasActivePlus() ? 'plus' : 'free';
   state.mode = 'ai';
   state.activeChat = 'Домашка';
   state.imageDataUrl = null;
@@ -1952,6 +2118,56 @@ function resetEveryOpen(clearVoice = true){
 </script>
 
 
+
+<div id="profileMenuModal" class="profile-modal hidden" aria-hidden="true">
+  <div class="profile-content">
+    <div class="profile-header">
+      <div>
+        <div class="profile-title">Профиль и аккаунт</div>
+        <div class="profile-subtitle">Здесь профиль ученика, подписка, вход и память Умника.</div>
+      </div>
+      <button class="profile-close" type="button" onclick="closeProfileMenu()" aria-label="Закрыть">×</button>
+    </div>
+
+    <div class="account-card">
+      <h3>Аккаунт</h3>
+      <div id="accountSummary" class="account-muted"></div>
+      <div class="profile-menu-actions">
+        <button id="loginBtn" onclick="loginAccount()">Войти</button>
+        <button id="logoutBtn" class="secondary" onclick="logoutAccount()">Выйти</button>
+      </div>
+    </div>
+
+    <div class="account-card">
+      <h3>Подписка</h3>
+      <div class="account-status" id="subscriptionSummary"></div>
+      <div class="profile-menu-actions">
+        <button onclick="paySubscription()">Оплатить / продлить</button>
+        <button class="secondary" onclick="setPlan('free')">Перейти на Free</button>
+      </div>
+    </div>
+
+    <div class="account-card">
+      <h3>Профиль ученика</h3>
+      <p class="account-muted">Класс, сложные темы и стиль объяснения помогают Умнику быть личным репетитором.</p>
+      <div id="profileSummary" class="profile-grid"></div>
+      <div class="profile-menu-actions">
+        <button class="full" onclick="openProfileEditor()">Редактировать профиль</button>
+      </div>
+    </div>
+
+    <div class="account-card">
+      <h3>Память Умника</h3>
+      <p class="account-muted">Умник запоминает темы, ошибки и вопросы на этом устройстве.</p>
+      <div id="memorySummary" class="memory-box"></div>
+      <div class="profile-menu-actions">
+        <button onclick="showFullMemory()">Показать</button>
+        <button class="secondary" onclick="clearLearningMemory()">Очистить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="profileModal" class="profile-modal hidden" aria-hidden="true">
   <div class="profile-content">
     <div class="profile-header">
@@ -1963,25 +2179,56 @@ function resetEveryOpen(clearVoice = true){
     </div>
 
     <div class="profile-form">
-      <label>Имя<input id="profileName" placeholder="Например, Денис"></label>
-      <label>Возраст<input id="profileAge" inputmode="numeric" placeholder="Например, 10"></label>
+      <label>Имя
+        <input id="profileName" placeholder="Например, Денис">
+      </label>
+
+      <label>Возраст
+        <input id="profileAge" inputmode="numeric" placeholder="Например, 10">
+      </label>
+
       <label>Класс
         <select id="profileGrade">
-          <option value="">Не выбран</option><option value="1">1 класс</option><option value="2">2 класс</option><option value="3">3 класс</option><option value="4">4 класс</option><option value="5">5 класс</option><option value="6">6 класс</option><option value="7">7 класс</option>
+          <option value="">Не выбран</option>
+          <option value="1">1 класс</option>
+          <option value="2">2 класс</option>
+          <option value="3">3 класс</option>
+          <option value="4">4 класс</option>
+          <option value="5">5 класс</option>
+          <option value="6">6 класс</option>
+          <option value="7">7 класс</option>
         </select>
       </label>
+
       <label>Что сложнее всего?
         <select id="profileHardSubject">
-          <option value="">Не выбрано</option><option value="математика">Математика</option><option value="русский язык">Русский язык</option><option value="чтение">Чтение</option><option value="окружающий мир">Окружающий мир</option><option value="английский">Английский</option>
+          <option value="">Не выбрано</option>
+          <option value="математика">Математика</option>
+          <option value="русский язык">Русский язык</option>
+          <option value="чтение">Чтение</option>
+          <option value="окружающий мир">Окружающий мир</option>
+          <option value="английский">Английский</option>
         </select>
       </label>
-      <label>Сложные темы<textarea id="profileHardTopics" placeholder="Например: дроби, таблица умножения, сказуемое"></textarea></label>
+
+      <label>Сложные темы
+        <textarea id="profileHardTopics" placeholder="Например: дроби, таблица умножения, сказуемое"></textarea>
+      </label>
+
       <label>Как объяснять?
         <select id="profileExplainStyle">
-          <option value="очень просто">Очень просто</option><option value="обычно">Обычно</option><option value="как учитель">Как учитель</option><option value="через примеры">Через примеры</option><option value="игровым способом">Игровым способом</option>
+          <option value="очень просто">Очень просто</option>
+          <option value="обычно">Обычно</option>
+          <option value="как учитель">Как учитель</option>
+          <option value="через примеры">Через примеры</option>
+          <option value="игровым способом">Игровым способом</option>
         </select>
       </label>
-      <label>Цель занятий<textarea id="profileGoal" placeholder="Например: лучше понимать домашку и не бояться задач"></textarea></label>
+
+      <label>Цель занятий
+        <textarea id="profileGoal" placeholder="Например: лучше понимать домашку и не бояться задач"></textarea>
+      </label>
+
       <button class="profile-save" onclick="saveProfileFromModal()">Сохранить профиль</button>
     </div>
   </div>
@@ -2011,6 +2258,14 @@ function resetEveryOpen(clearVoice = true){
     </div>
 
     <div id="voiceTranscript" class="voice-transcript"></div>
+
+    <div class="voice-settings">
+      <div class="voice-settings-title">Скорость голоса</div>
+      <div class="voice-speed-row">
+        <input id="voiceSpeedRange" type="range" min="0.9" max="1.25" step="0.01" value="1.06" oninput="changeVoiceSpeed(this.value)">
+        <div id="voiceSpeedValue" class="voice-speed-value">1.06×</div>
+      </div>
+    </div>
 
     <div class="voice-help">
       Во время ответа Умника микрофон временно не слушает. Когда Умник закончит говорить, он снова начнёт слушать автоматически.
