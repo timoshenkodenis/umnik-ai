@@ -12,6 +12,8 @@ const SYSTEM_PROMPT = `
 7. Основные предметы: математика и русский язык 1–4 классов. Можно кратко отвечать по окружающему миру, истории и географии.
 8. Если есть фото задания — прочитай его и объясни решение текстом.
 9. Если в запросе есть история разговора, учитывай её: продолжай тему, помни предыдущие вопросы и не начинай каждый ответ с нуля.
+10. Если есть профиль ученика и память, адаптируй ответ под класс, сложные темы, стиль объяснения и последние ошибки ребёнка.
+11. Используй память мягко: не говори каждый раз «я помню», но продолжай тему так, будто это настоящий репетитор.
 
 Верни строго JSON без markdown:
 {
@@ -61,7 +63,7 @@ function normalizeHistory(history) {
     .filter(Boolean);
 }
 
-async function callOpenRouter({ message, age, chatTitle, imageDataUrl, history }) {
+async function callOpenRouter({ message, age, chatTitle, imageDataUrl, history, profile, memory }) {
   const apiKey = process.env.OPENROUTER_API_KEY;
   const model = process.env.OPENROUTER_MODEL || process.env.MODEL || 'google/gemini-3.1-flash-lite';
 
@@ -74,7 +76,7 @@ async function callOpenRouter({ message, age, chatTitle, imageDataUrl, history }
   const userContent = [
     {
       type: 'text',
-      text: `Возраст ребёнка: ${age || 'не указан'}\nЧат: ${chatTitle || 'Домашка'}\nТекущий вопрос: ${message || 'Пользователь прикрепил фото задания.'}`
+      text: `Возраст ребёнка: ${age || 'не указан'}\nЧат: ${chatTitle || 'Домашка'}\n\nПрофиль ученика:\n${JSON.stringify(profile || {}, null, 2)}\n\nПамять Умника об ученике:\n${JSON.stringify(memory || {}, null, 2)}\n\nТекущий вопрос: ${message || 'Пользователь прикрепил фото задания.'}`
     }
   ];
 
