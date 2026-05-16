@@ -499,6 +499,8 @@
       white-space:pre-wrap;
     }
 
+  
+    #startChatBtn{pointer-events:auto!important;opacity:1!important;cursor:pointer!important;position:relative;z-index:20;}
   </style>
 </head>
 <body>
@@ -516,7 +518,7 @@
       <input id="nameInput" placeholder="Имя ребёнка" autocomplete="off">
       <input id="ageInput" placeholder="Возраст" inputmode="numeric" autocomplete="off">
       <div id="welcomeError" class="error-note"></div>
-      <button class="primary" onclick="startApp()">Начать чат</button>
+      <button id="startChatBtn" class="primary" type="button" onclick="startApp()">Начать чат</button>
     </div>
   </section>
 
@@ -991,28 +993,43 @@ function renderTop(id){
 }
 
 function startApp(){
-  const name = document.getElementById('nameInput').value.trim();
-  const age = document.getElementById('ageInput').value.trim();
-  const error = document.getElementById('welcomeError');
-  const fox = document.getElementById('welcomeFox');
+  try{
+    const nameEl = document.getElementById('nameInput');
+    const ageEl = document.getElementById('ageInput');
+    const error = document.getElementById('welcomeError');
+    const fox = document.getElementById('welcomeFox');
 
-  if(!name || !age){
-    error.textContent = 'Заполни имя и возраст, пожалуйста 🙂';
-    fox.classList.remove('warn');
-    void fox.offsetWidth;
-    fox.classList.add('warn');
-    fox.src = '/assets/umnik_welcome.png';
-    return;
+    const savedProfile = loadJson(PROFILE_KEY, defaultProfile);
+    const name = (nameEl && nameEl.value ? nameEl.value.trim() : '') || savedProfile.name || 'друг';
+    const age = (ageEl && ageEl.value ? ageEl.value.trim() : '') || savedProfile.age || '8';
+
+    if(error) error.textContent = '';
+
+    state.name = name;
+    state.age = age;
+    updateProfileFromWelcome(name, age);
+    state.plan = 'free';
+    state.mode = 'ai';
+    resetEveryOpen(false);
+    show('chatScreen');
+    render();
+  }catch(err){
+    console.error('startApp error', err);
+
+    // Жёсткий fallback: даже если что-то пошло не так, всё равно открываем чат.
+    try{
+      state.name = state.name || 'друг';
+      state.age = state.age || '8';
+      document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+      const chat = document.getElementById('chatScreen');
+      if(chat) chat.classList.add('active');
+      renderTop('chatScreen');
+      render();
+    }catch(e){
+      const error = document.getElementById('welcomeError');
+      if(error) error.textContent = 'Ошибка запуска. Обнови страницу Ctrl+F5 и попробуй ещё раз.';
+    }
   }
-
-  state.name = name;
-  state.age = age;
-  updateProfileFromWelcome(name, age);
-  state.plan = 'free';
-  state.mode = 'ai';
-  resetEveryOpen(false);
-  show('chatScreen');
-  render();
 }
 
 function openSettings(){
@@ -2260,11 +2277,55 @@ if('speechSynthesis' in window){
 }
 
 
+
+function bindStartButton(){
+  const btn = document.getElementById('startChatBtn');
+  if(!btn) return;
+
+  btn.disabled = false;
+  btn.style.pointerEvents = 'auto';
+  btn.style.opacity = '1';
+
+  btn.onclick = function(e){
+    if(e) e.preventDefault();
+    startApp();
+  };
+}
+
+// Делаем основные функции явно доступными для HTML onclick даже после сборки/деплоя.
+window.startApp = startApp;
+window.openSettings = openSettings;
+window.openChat = openChat;
+window.setMode = setMode;
+window.setPlan = setPlan;
+window.toggleEditTabs = toggleEditTabs;
+window.newChat = newChat;
+window.send = send;
+window.pickPhoto = pickPhoto;
+window.voiceInput = voiceInput;
+window.openVoiceCall = openVoiceCall;
+window.openProfileModal = openProfileModal;
+window.closeProfileModal = closeProfileModal;
+window.saveProfileFromModal = saveProfileFromModal;
+window.showFullMemory = showFullMemory;
+window.clearLearningMemory = clearLearningMemory;
+
+
+document.addEventListener('click', function(e){
+  const target = e.target;
+  if(target && target.id === 'startChatBtn'){
+    e.preventDefault();
+    startApp();
+  }
+});
+
 window.addEventListener('DOMContentLoaded', () => {
+  bindStartButton();
   resetEveryOpen(true);
   enableDragScroll(document.getElementById('chatTabs'), 'tabDragMoved');
   enableDragScroll(document.getElementById('suggestions'), 'sugDragMoved');
   syncProfileToWelcome();
+  bindStartButton();
   renderTop('welcome');
   render();
   renderSettings();
