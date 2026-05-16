@@ -630,7 +630,7 @@ function defaultProfile(){return {name:'',age:'',grade:'',hardSubject:'',hardTop
 function defaultMemory(){return {totalQuestions:0,totalVoiceQuestions:0,totalPhotos:0,topics:{},difficult:{},recent:[],lastSummary:'',updatedAt:''}}
 function defaultAccount(){return {loggedIn:false,email:'',createdAt:''}}
 function defaultSubscription(){return {plan:'free',expiresAt:'',lastPaidAt:''}}
-function defaultVoiceSettings(){return {rate:1.12,pitch:1.08}}
+function defaultVoiceSettings(){return {rate:1.15,pitch:1.05}}
 function loadJson(key,fallback){try{const raw=localStorage.getItem(key);return raw?Object.assign(fallback(),JSON.parse(raw)):fallback()}catch(e){return fallback()}}
 function saveJson(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch(e){}}
 
@@ -1963,23 +1963,21 @@ function splitSpeechIntoChunks(text){
 
 function getVoiceRate(){
   const settings = state.voiceSettings || defaultVoiceSettings();
-  const rate = Number(settings.rate || 1.12);
-  return Math.min(1.25, Math.max(0.9, rate));
+  const rate = Number(settings.rate || 1.15);
+  return Math.min(1.55, Math.max(0.75, rate));
 }
 
 function getVoicePitch(){
   const settings = state.voiceSettings || defaultVoiceSettings();
-  const pitch = Number(settings.pitch || 1.08);
-  return Math.min(1.25, Math.max(0.95, pitch));
+  const pitch = Number(settings.pitch || 1.05);
+  return Math.min(1.08, Math.max(1.02, pitch));
 }
 
 function changeVoiceSpeed(value){
-  const rate = Number(value || 1.12);
+  const rate = Number(value || 1.15);
   state.voiceSettings = state.voiceSettings || defaultVoiceSettings();
-  state.voiceSettings.rate = Math.min(1.25, Math.max(0.9, rate));
-
-  // Чем быстрее голос, тем меньше повышаем тон, чтобы он не звучал слишком «роботом».
-  state.voiceSettings.pitch = state.voiceSettings.rate >= 1.12 ? 1.06 : 1.08;
+  state.voiceSettings.rate = Math.min(1.55, Math.max(0.75, rate));
+  state.voiceSettings.pitch = 1.05;
 
   saveVoiceSettings();
   updateVoiceSpeedUI();
@@ -1994,6 +1992,18 @@ function updateVoiceSpeedUI(){
   const rate = getVoiceRate();
   range.value = String(rate);
   value.textContent = rate.toFixed(2) + '×';
+}
+
+function testVoiceSpeed(){
+  if(!('speechSynthesis' in window)) return;
+
+  if(voiceState.callOpen){
+    stopVoiceRecognition();
+    voiceState.autoListening = false;
+    updateVoiceControlButton();
+  }
+
+  speakVoiceAnswer('Привет! Я Умник. Сейчас проверяем скорость моего голоса.');
 }
 
 function speakVoiceAnswer(text){
@@ -2196,6 +2206,7 @@ window.send = send;
 window.pickPhoto = pickPhoto;
 window.voiceInput = voiceInput;
 window.openVoiceCall = openVoiceCall;
+window.testVoiceSpeed = testVoiceSpeed;
 window.openProfileModal = openProfileModal;
 window.closeProfileModal = closeProfileModal;
 window.saveProfileFromModal = saveProfileFromModal;
@@ -2392,9 +2403,10 @@ function resetEveryOpen(clearVoice = true){
     <div class="voice-settings">
       <div class="voice-settings-title">Скорость голоса</div>
       <div class="voice-speed-row">
-        <input id="voiceSpeedRange" type="range" min="0.9" max="1.25" step="0.01" value="1.12" oninput="changeVoiceSpeed(this.value)">
-        <div id="voiceSpeedValue" class="voice-speed-value">1.12×</div>
+        <input id="voiceSpeedRange" type="range" min="0.75" max="1.55" step="0.05" value="1.15" oninput="changeVoiceSpeed(this.value)">
+        <div id="voiceSpeedValue" class="voice-speed-value">1.15×</div>
       </div>
+      <button class="voice-small-btn" type="button" onclick="testVoiceSpeed()">Проверить голос</button>
     </div>
 
     <div class="voice-help">
