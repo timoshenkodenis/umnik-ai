@@ -16,3 +16,19 @@ OPENROUTER_MODEL=google/gemini-3.1-flash-lite
 - `index.html` — интерфейс приложения.
 - `api/chat.js` — серверная функция Vercel, которая отправляет запрос в OpenRouter.
 - `assets/` — картинки и логотип.
+
+
+## Voice Call Mode
+
+В этой версии добавлен режим «Созвон с Умником».
+
+Условия показа кнопки:
+- тариф: Умник Плюс;
+- режим ответа: AI;
+- экран чата.
+
+Для работы AI в Vercel должны быть переменные:
+- OPENROUTER_API_KEY
+- OPENROUTER_MODEL, например google/gemini-3.1-flash-lite
+
+Голосовой режим лучше всего работает в Google Chrome.

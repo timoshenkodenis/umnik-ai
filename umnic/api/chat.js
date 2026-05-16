@@ -1,16 +1,17 @@
 const SYSTEM_PROMPT = `
 Ты — Умник AI, безопасный детский учебный помощник для школьников 1–4 классов.
-Твоя задача — объяснять школьные темы простым, добрым и понятным языком.
+Ты работаешь как добрый AI-репетитор: объясняешь школьные темы простым языком и по шагам.
 
 Правила:
-1. Объясняй коротко, по шагам, без сложных терминов.
+1. Объясняй коротко, понятно и доброжелательно.
 2. Не просто давай ответ, а показывай, как думать.
 3. Если ребёнок просит решить задание, сначала объясни ход решения.
-4. Если вопрос неучебный, опасный, грубый, интимный или вредный — откажись мягко и предложи учебную тему.
+4. Если вопрос неучебный, опасный, грубый, интимный или вредный — мягко откажись и предложи учебную тему.
 5. Если вопрос непонятный — попроси уточнить.
 6. Если ребёнок устал или переживает — поддержи.
-7. Основные предметы: математика и русский язык 1–4 классов. Можно отвечать кратко по окружающему миру, истории, географии для демонстрации.
+7. Основные предметы: математика и русский язык 1–4 классов. Можно кратко отвечать по окружающему миру, истории и географии.
 8. Если есть фото задания — прочитай его и объясни решение текстом.
+9. Если в запросе есть история разговора, учитывай её: продолжай тему, помни предыдущие вопросы и не начинай каждый ответ с нуля.
 
 Верни строго JSON без markdown:
 {
@@ -31,6 +32,7 @@ function demoAnswer(message = '') {
 
 function safeJsonParse(text) {
   const raw = String(text || '').trim();
+
   try {
     return JSON.parse(raw);
   } catch {}
@@ -45,7 +47,21 @@ function safeJsonParse(text) {
   return null;
 }
 
-async function callOpenRouter({ message, age, chatTitle, imageDataUrl }) {
+function normalizeHistory(history) {
+  if (!Array.isArray(history)) return [];
+
+  return history
+    .slice(-12)
+    .map((m) => {
+      const role = m && m.role === 'assistant' ? 'assistant' : 'user';
+      const content = String(m && (m.content || m.text) || '').slice(0, 1800);
+      if (!content.trim()) return null;
+      return { role, content };
+    })
+    .filter(Boolean);
+}
+
+async function callOpenRouter({ message, age, chatTitle, imageDataUrl, history }) {
   const apiKey = process.env.OPENROUTER_API_KEY;
   const model = process.env.OPENROUTER_MODEL || process.env.MODEL || 'google/gemini-3.1-flash-lite';
 
@@ -53,10 +69,12 @@ async function callOpenRouter({ message, age, chatTitle, imageDataUrl }) {
     return { ...demoAnswer(message), source: 'demo' };
   }
 
+  const cleanHistory = normalizeHistory(history);
+
   const userContent = [
     {
       type: 'text',
-      text: `Возраст ребёнка: ${age || 'не указан'}\nЧат: ${chatTitle || 'Домашка'}\nВопрос: ${message || 'Пользователь прикрепил фото задания.'}`
+      text: `Возраст ребёнка: ${age || 'не указан'}\nЧат: ${chatTitle || 'Домашка'}\nТекущий вопрос: ${message || 'Пользователь прикрепил фото задания.'}`
     }
   ];
 
@@ -66,6 +84,12 @@ async function callOpenRouter({ message, age, chatTitle, imageDataUrl }) {
       image_url: { url: imageDataUrl }
     });
   }
+
+  const messages = [
+    { role: 'system', content: SYSTEM_PROMPT },
+    ...cleanHistory,
+    { role: 'user', content: userContent }
+  ];
 
   const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
@@ -77,10 +101,7 @@ async function callOpenRouter({ message, age, chatTitle, imageDataUrl }) {
     },
     body: JSON.stringify({
       model,
-      messages: [ ...(body.history || []),
-        { role: 'system', content: SYSTEM_PROMPT },
-        { role: 'user', content: userContent }
-      ],
+      messages,
       temperature: 0.35,
       max_tokens: 900
     })

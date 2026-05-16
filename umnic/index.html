@@ -89,55 +89,179 @@
 
     .chat{flex:1;min-height:0;overflow:auto;padding:12px 16px 8px;display:flex;flex-direction:column;gap:9px}.bubble{max-width:86%;padding:11px 14px;border-radius:22px;font-weight:500;font-size:14px;line-height:1.38;white-space:pre-wrap;letter-spacing:0;overflow-wrap:anywhere}.user{align-self:flex-end;background:var(--orange);color:white;border-bottom-right-radius:7px;font-weight:650}.bot{align-self:flex-start;background:var(--soft);border:1px solid var(--line);border-bottom-left-radius:7px;color:#202020}.status{font-size:12px;color:var(--gray);font-weight:800;text-align:center;padding:0 12px 7px;flex:0 0 auto}.composer{padding:12px;border-top:1px solid var(--line);background:rgba(248,244,238,.97);flex:0 0 auto}.suggestions{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none;cursor:grab;user-select:none}.suggestions button{flex:0 0 auto;background:white;color:#4b5563;border:1px solid var(--line);border-radius:999px;padding:9px 12px;font-size:12px;font-weight:800}.suggestions button:disabled{opacity:.55;cursor:not-allowed}.row{display:flex;gap:8px;align-items:center}.round{width:48px;height:48px;border-radius:50%;background:white;border:1px solid var(--line);color:var(--orange);font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center;flex:0 0 auto;padding:0;line-height:1}.round svg{display:block;width:22px;height:22px}.send{background:var(--orange);color:white}.send:disabled{background:#cfcac3;border-color:#cfcac3;color:white;cursor:not-allowed;box-shadow:none}.send svg{transform:translateX(1px)}textarea{resize:none;height:48px;min-height:48px;max-height:48px;flex:1;padding:13px 14px;font-size:14px;line-height:20px;border-radius:24px;font-weight:500}.small-note{font-size:11px;color:var(--gray);font-weight:700;text-align:center;margin-top:6px}.settings{padding:16px;gap:12px;overflow:auto}.card{background:white;border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:0 4px 14px rgba(0,0,0,.05)}.card h3{margin:0 0 8px;font-size:17px}.toggle{display:flex;gap:8px;margin-top:10px}.toggle button{flex:1;padding:12px;border-radius:16px;background:#f3eee8;font-weight:900;color:#555}.toggle button.active{background:var(--orange);color:white}.preview{max-width:85px;max-height:60px;border-radius:12px;border:1px solid var(--line);object-fit:cover;display:none;margin-top:8px}.plus-card{background:linear-gradient(140deg,var(--orange),var(--orange2));color:white}.plus-card .muted{color:rgba(255,255,255,.86)}
   
-.voice-call-btn{
-height:40px;width:40px;border-radius:999px;border:1px solid var(--line);
-background:white;color:var(--orange);font-size:18px;font-weight:900;
-display:flex;align-items:center;justify-content:center;
-box-shadow:0 2px 8px rgba(0,0,0,.06)
-}
-.voice-modal{
-position:fixed;inset:0;background:rgba(0,0,0,.65);
-display:flex;align-items:center;justify-content:center;z-index:9999
-}
-.voice-modal.hidden{display:none}
-.voice-content{
-width:min(92%,420px);background:white;border-radius:28px;
-padding:22px;display:flex;flex-direction:column;
-align-items:center;gap:16px
-}
-.voice-header{
-width:100%;display:flex;justify-content:space-between;align-items:center
-}
-.voice-title{font-size:20px;font-weight:900}
-.voice-close{
-border:0;background:none;font-size:24px;cursor:pointer
-}
-.voice-umnik{
-width:170px;object-fit:contain;
-filter:drop-shadow(0 10px 18px rgba(0,0,0,.18));
-animation:voiceFloat 3s ease-in-out infinite
-}
-@keyframes voiceFloat{
-0%{transform:translateY(0)}
-50%{transform:translateY(-8px)}
-100%{transform:translateY(0)}
-}
-.voice-status{
-font-weight:900;color:var(--orange);font-size:18px
-}
-.voice-mic{
-height:110px;width:110px;border-radius:999px;border:0;
-background:var(--orange);color:white;font-size:42px;
-box-shadow:0 12px 24px rgba(255,122,0,.28)
-}
-.voice-mic.listening{transform:scale(1.07)}
-.voice-transcript{
-width:100%;min-height:110px;background:#f5f5f5;
-border-radius:18px;padding:14px;line-height:1.5;
-font-size:14px;white-space:pre-wrap
-}
+    .top-actions{
+      grid-column:3;
+      justify-self:end;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:8px;
+    }
+    .voice-call-btn{
+      height:36px;
+      width:36px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:white;
+      color:var(--orange);
+      font-size:17px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 4px 12px rgba(0,0,0,.08);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      line-height:1;
+    }
+    .voice-call-btn.visible{
+      display:flex;
+    }
+    .voice-modal{
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      background:rgba(0,0,0,.68);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
+    .voice-modal.hidden{
+      display:none;
+    }
+    .voice-content{
+      width:min(420px,94vw);
+      max-height:92vh;
+      overflow:auto;
+      background:var(--bg);
+      border-radius:30px;
+      border:1px solid rgba(255,255,255,.7);
+      padding:20px;
+      box-shadow:0 30px 80px rgba(0,0,0,.42);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:14px;
+    }
+    .voice-header{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .voice-title{
+      font-size:21px;
+      line-height:1.15;
+      font-weight:900;
+      color:var(--dark);
+    }
+    .voice-subtitle{
+      margin-top:3px;
+      font-size:12px;
+      font-weight:800;
+      color:var(--gray);
+    }
+    .voice-close{
+      width:40px;
+      height:40px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:white;
+      color:var(--orange);
+      font-size:22px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 auto;
+    }
+    .voice-umnik{
+      height:170px;
+      max-width:78%;
+      object-fit:contain;
+      filter:drop-shadow(0 14px 20px rgba(0,0,0,.18));
+      animation:voiceFloat 3s ease-in-out infinite;
+    }
+    .voice-umnik.speaking{
+      animation:voiceTalk .75s ease-in-out infinite;
+    }
+    @keyframes voiceFloat{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-8px)}
+      100%{transform:translateY(0)}
+    }
+    @keyframes voiceTalk{
+      0%{transform:translateY(0) scale(1)}
+      50%{transform:translateY(-5px) scale(1.025)}
+      100%{transform:translateY(0) scale(1)}
+    }
+    .voice-status{
+      width:100%;
+      min-height:44px;
+      border-radius:18px;
+      background:white;
+      border:1px solid var(--line);
+      color:var(--orange);
+      font-size:16px;
+      font-weight:900;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:10px 12px;
+    }
+    .voice-mic{
+      width:112px;
+      height:112px;
+      border-radius:999px;
+      border:0;
+      background:var(--orange);
+      color:white;
+      font-size:42px;
+      cursor:pointer;
+      box-shadow:0 14px 30px rgba(255,122,0,.30);
+      transition:.18s ease;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .voice-mic:active{
+      transform:scale(.97);
+    }
+    .voice-mic.listening{
+      transform:scale(1.07);
+      box-shadow:0 0 0 10px rgba(255,122,0,.16), 0 14px 30px rgba(255,122,0,.30);
+    }
+    .voice-mic:disabled{
+      background:#cfcac3;
+      cursor:not-allowed;
+      box-shadow:none;
+    }
+    .voice-transcript{
+      width:100%;
+      min-height:126px;
+      max-height:190px;
+      overflow:auto;
+      border-radius:20px;
+      border:1px solid var(--line);
+      background:white;
+      padding:14px;
+      font-size:14px;
+      line-height:1.45;
+      color:var(--dark);
+      white-space:pre-wrap;
+    }
+    .voice-help{
+      color:var(--gray);
+      font-size:12px;
+      line-height:1.35;
+      font-weight:700;
+      text-align:center;
+      max-width:320px;
+    }
 
-</style>
+  </style>
 </head>
 <body>
 <div class="phone">
@@ -204,6 +328,7 @@ try{
 
 
 
+
 const defaultChats = ['Домашка','Таблица ×7','Русский'];
 const suggestions = [
   'Что такое сказуемое?',
@@ -228,6 +353,14 @@ const state = {
   isSending:false,
   tabDragMoved:false,
   sugDragMoved:false
+};
+
+const voiceState = {
+  recognition:null,
+  listening:false,
+  thinking:false,
+  history:[],
+  initialized:false
 };
 
 let currentEmotion = 'welcome';
@@ -267,6 +400,7 @@ function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   renderTop(id);
+  updateVoiceButtonVisibility();
 }
 
 function renderTop(id){
@@ -279,8 +413,10 @@ function renderTop(id){
     top.innerHTML =
       '<img id="headerFox" class="header-fox" src="/assets/umnik_welcome.png" alt="Умник">' +
       '<img class="logo" src="/assets/logo.png" alt="Умник">' +
-      '<button id="voiceCallBtn" class="voice-call-btn" style="display:none">📞</button>
-      <button class="gear-btn" onclick="openSettings()" aria-label="Настройки">' + gearIcon() + '</button>';
+      '<div class="top-actions">' +
+        '<button id="voiceCallBtn" class="voice-call-btn" type="button" onclick="openVoiceCall()" aria-label="Позвонить Умнику">📞</button>' +
+        '<button class="gear-btn" onclick="openSettings()" aria-label="Настройки">' + gearIcon() + '</button>' +
+      '</div>';
     setFox(currentEmotion || 'welcome');
   }
 }
@@ -304,7 +440,7 @@ function startApp(){
   state.age = age;
   state.plan = 'free';
   state.mode = 'ai';
-  resetEveryOpen();
+  resetEveryOpen(false);
   show('chatScreen');
   render();
 }
@@ -321,8 +457,12 @@ function openChat(){
 
 function setMode(m){
   state.mode = m;
+  if(m !== 'ai'){
+    closeVoiceCall();
+  }
   renderSettings();
   render();
+  updateVoiceButtonVisibility();
 }
 
 function setPlan(p){
@@ -330,7 +470,6 @@ function setPlan(p){
   state.plan = p;
 
   if(p === 'plus' && wasFree){
-    // При первом входе в Plus создаём стартовые чаты один раз.
     defaultChats.forEach(name => {
       if(!state.chats[name]){
         state.chats[name] = [{role:'bot', text:welcomeText(state.name)}];
@@ -341,9 +480,14 @@ function setPlan(p){
     });
   }
 
+  if(p === 'free'){
+    closeVoiceCall();
+  }
+
   normalizeChatsForPlan();
   renderSettings();
   render();
+  updateVoiceButtonVisibility();
 }
 
 function toggleEditTabs(){
@@ -437,7 +581,6 @@ function renderTabs(){
   editBtn.textContent = state.editingTabs ? '✓' : '✎';
   editBtn.style.display = isFree ? 'none' : 'block';
 
-  // Новые чаты появляются только в режиме редактирования и только в Plus.
   newBtn.style.display = (!isFree && state.editingTabs) ? 'block' : 'none';
 
   tabs.innerHTML = '';
@@ -533,7 +676,7 @@ function render(){
 
   document.getElementById('limitsText').textContent = state.plan === 'free'
     ? 'Free: 1 чат, 10 сообщений и 3 фото в день'
-    : 'Умник Плюс: безлимитные сообщения, фото, голос и сохранённые чаты';
+    : 'Умник Плюс: безлимитные сообщения, фото, голос, созвон и сохранённые чаты';
 
   document.getElementById('modeNote').textContent = state.mode === 'ai'
     ? 'AI-режим: запрос отправляется в модель'
@@ -543,6 +686,7 @@ function render(){
   if(sendBtn) sendBtn.disabled = state.isSending;
 
   renderSuggestions();
+  updateVoiceButtonVisibility();
 }
 
 function renderSuggestions(){
@@ -559,13 +703,10 @@ function renderSuggestions(){
 
     b.addEventListener('click', (e) => {
       if(state.isSending) return;
-
-      // Если реально перетаскивали ленту, не отправляем вопрос.
       if(state.sugDragMoved){
         e.preventDefault();
         return;
       }
-
       document.getElementById('input').value = s;
       send();
     });
@@ -592,6 +733,11 @@ function setFox(e){
   if(img){
     img.src = map[e] || map.welcome;
     img.className = 'header-fox ' + (e === 'thinking' ? 'thinking' : '');
+  }
+
+  const voiceImg = document.getElementById('voiceUmnik');
+  if(voiceImg && map[e]){
+    voiceImg.src = map[e];
   }
 }
 
@@ -793,7 +939,7 @@ function enableDragScroll(el, key){
     }
   });
 
-  function finish(e){
+  function finish(){
     if(!down) return;
 
     const wasMoved = moved;
@@ -809,8 +955,6 @@ function enableDragScroll(el, key){
 
     state[key] = false;
 
-    // Для кнопок быстрых вопросов: если это был обычный тап, отправляем вручную.
-    // Это чинит ситуацию, когда drag-scroll перехватывает обычный click.
     if(key === 'sugDragMoved'){
       const button = downTarget && downTarget.closest && downTarget.closest('button');
       if(button && el.contains(button) && !button.disabled){
@@ -830,141 +974,266 @@ function enableDragScroll(el, key){
     state[key] = false;
     el.classList.remove('dragging');
   });
-  el.addEventListener('pointerleave', e => {
-    if(down && key !== 'sugDragMoved') finish(e);
+  el.addEventListener('pointerleave', () => {
+    if(down && key !== 'sugDragMoved') finish();
   });
 }
 
+/* -------------------- VOICE CALL MODE -------------------- */
 
-
-// VOICE MODE
-let voiceHistory = [];
-let voiceRecognition = null;
-let voiceListening = false;
-
-function initVoiceMode(){
+function updateVoiceButtonVisibility(){
   const btn = document.getElementById('voiceCallBtn');
-  const modal = document.getElementById('voiceModal');
-  const close = document.getElementById('closeVoice');
-  const mic = document.getElementById('micButton');
-  const status = document.getElementById('voiceStatus');
-  const transcript = document.getElementById('voiceTranscript');
+  if(!btn) return;
 
-  if(state.plan === 'plus'){
-    btn.style.display = 'flex';
+  const chatOpen = document.getElementById('chatScreen')?.classList.contains('active');
+  const canVoice = chatOpen && state.plan === 'plus' && state.mode === 'ai';
+
+  btn.classList.toggle('visible', !!canVoice);
+}
+
+function openVoiceCall(){
+  if(state.plan !== 'plus'){
+    addMessage('bot','Созвон с Умником доступен только в Умник Плюс.');
+    render();
+    return;
   }
 
-  btn.onclick = () => {
-    if(state.plan !== 'plus'){
-      addMessage('bot','Созвон с Умником доступен только в Plus версии.');
-      render();
-      return;
-    }
-    modal.classList.remove('hidden');
-  };
+  if(state.mode !== 'ai'){
+    addMessage('bot','Созвон работает только в AI-режиме. Переключи режим ответа на AI в настройках.');
+    render();
+    return;
+  }
 
-  close.onclick = () => {
+  const modal = document.getElementById('voiceModal');
+  const transcript = document.getElementById('voiceTranscript');
+  const status = document.getElementById('voiceStatus');
+
+  if(!modal || !transcript || !status) return;
+
+  modal.classList.remove('hidden');
+  modal.setAttribute('aria-hidden','false');
+
+  if(!voiceState.history.length){
+    transcript.textContent = `Умник: Привет${state.name ? `, ${state.name}` : ''}! Нажми микрофон и задай вопрос голосом. Я буду помнить, о чём мы говорили в этом звонке.`;
+  }
+
+  status.textContent = 'Готов помочь';
+  initVoiceEvents();
+}
+
+function closeVoiceCall(){
+  const modal = document.getElementById('voiceModal');
+
+  if(modal){
     modal.classList.add('hidden');
-    speechSynthesis.cancel();
-  };
+    modal.setAttribute('aria-hidden','true');
+  }
 
-  mic.onclick = () => startVoice();
-
-  function startVoice(){
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    if(!SR){
-      alert('Используй Google Chrome для голосового режима');
-      return;
+  try{
+    if(voiceState.recognition && voiceState.listening){
+      voiceState.recognition.stop();
     }
+  }catch(e){}
 
-    if(!voiceRecognition){
-      voiceRecognition = new SR();
-      voiceRecognition.lang = 'ru-RU';
-      voiceRecognition.interimResults = false;
-      voiceRecognition.continuous = false;
+  speechSynthesis.cancel();
+  voiceState.listening = false;
+  voiceState.thinking = false;
 
-      voiceRecognition.onstart = () => {
-        voiceListening = true;
-        mic.classList.add('listening');
-        status.innerText = 'Слушаю...';
-      };
+  const mic = document.getElementById('micButton');
+  if(mic){
+    mic.classList.remove('listening');
+    mic.disabled = false;
+  }
 
-      voiceRecognition.onend = () => {
-        voiceListening = false;
-        mic.classList.remove('listening');
-      };
-
-      voiceRecognition.onresult = async (e) => {
-        const text = e.results[0][0].transcript;
-
-        voiceHistory.push({
-          role:'user',
-          content:text
-        });
-
-        transcript.innerText += '\nТы: ' + text + '\n';
-        status.innerText = 'Думаю...';
-
-        try{
-          const response = await fetch('/api/chat',{
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({
-              message:text,
-              history:voiceHistory,
-              age:state.age || '8',
-              chatTitle:'Voice Chat'
-            })
-          });
-
-          const data = await response.json();
-
-          const answer = data.text || 'Я не смог ответить';
-
-          voiceHistory.push({
-            role:'assistant',
-            content:answer
-          });
-
-          transcript.innerText += '\nУмник: ' + answer + '\n';
-          transcript.scrollTop = transcript.scrollHeight;
-
-          status.innerText = 'Объясняю...';
-
-          const utter = new SpeechSynthesisUtterance(answer);
-          utter.lang = 'ru-RU';
-
-          utter.onend = () => {
-            status.innerText = 'Готов помочь';
-          };
-
-          speechSynthesis.cancel();
-          speechSynthesis.speak(utter);
-
-        }catch(err){
-          status.innerText = 'Ошибка';
-        }
-      };
-    }
-
-    if(!voiceListening){
-      voiceRecognition.start();
-    }
+  const voiceImg = document.getElementById('voiceUmnik');
+  if(voiceImg){
+    voiceImg.classList.remove('speaking');
   }
 }
 
+function initVoiceEvents(){
+  if(voiceState.initialized) return;
+  voiceState.initialized = true;
+
+  const close = document.getElementById('closeVoice');
+  const mic = document.getElementById('micButton');
+
+  if(close) close.onclick = closeVoiceCall;
+  if(mic) mic.onclick = startVoiceRecognition;
+}
+
+function startVoiceRecognition(){
+  if(voiceState.thinking) return;
+
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const status = document.getElementById('voiceStatus');
+  const mic = document.getElementById('micButton');
+
+  if(!SR){
+    if(status) status.textContent = 'Голосовой режим работает лучше всего в Google Chrome.';
+    alert('Используй Google Chrome и разреши доступ к микрофону.');
+    return;
+  }
+
+  if(!voiceState.recognition){
+    voiceState.recognition = new SR();
+    voiceState.recognition.lang = 'ru-RU';
+    voiceState.recognition.interimResults = false;
+    voiceState.recognition.continuous = false;
+
+    voiceState.recognition.onstart = () => {
+      voiceState.listening = true;
+      if(mic) mic.classList.add('listening');
+      if(status) status.textContent = 'Слушаю...';
+      setFox('thinking');
+    };
+
+    voiceState.recognition.onend = () => {
+      voiceState.listening = false;
+      if(mic) mic.classList.remove('listening');
+      if(!voiceState.thinking && status) status.textContent = 'Готов помочь';
+    };
+
+    voiceState.recognition.onerror = () => {
+      voiceState.listening = false;
+      voiceState.thinking = false;
+      if(mic){
+        mic.classList.remove('listening');
+        mic.disabled = false;
+      }
+      if(status) status.textContent = 'Не услышал вопрос. Попробуй ещё раз.';
+      setFox('confused');
+    };
+
+    voiceState.recognition.onresult = async (event) => {
+      const text = event.results?.[0]?.[0]?.transcript || '';
+      if(!text.trim()) return;
+      await handleVoiceQuestion(text.trim());
+    };
+  }
+
+  try{
+    if(!voiceState.listening){
+      speechSynthesis.cancel();
+      voiceState.recognition.start();
+    }
+  }catch(e){
+    if(status) status.textContent = 'Микрофон уже запускается. Подожди секунду.';
+  }
+}
+
+async function handleVoiceQuestion(text){
+  const status = document.getElementById('voiceStatus');
+  const transcript = document.getElementById('voiceTranscript');
+  const mic = document.getElementById('micButton');
+  const voiceImg = document.getElementById('voiceUmnik');
+
+  voiceState.thinking = true;
+  if(mic) mic.disabled = true;
+  if(status) status.textContent = 'Думаю...';
+  setFox('thinking');
+
+  if(transcript){
+    const prev = transcript.textContent || '';
+    transcript.textContent = `${prev}\n\nТы: ${text}`.trim();
+    transcript.scrollTop = transcript.scrollHeight;
+  }
+
+  const historyForRequest = voiceState.history.slice(-10);
+
+  try{
+    const res = await fetch('/api/chat', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        message:text,
+        history:historyForRequest,
+        age:state.age,
+        chatTitle:'Созвон с Умником',
+        mode:'ai'
+      })
+    });
+
+    const data = await res.json();
+    if(!res.ok) throw new Error(data?.error || 'voice api error');
+
+    const answer = data.text || 'Я не смог ответить. Попробуй сказать вопрос ещё раз.';
+
+    voiceState.history.push({role:'user', content:text});
+    voiceState.history.push({role:'assistant', content:answer});
+
+    if(voiceState.history.length > 16){
+      voiceState.history = voiceState.history.slice(-16);
+    }
+
+    if(transcript){
+      transcript.textContent += `\n\nУмник: ${answer}`;
+      transcript.scrollTop = transcript.scrollHeight;
+    }
+
+    if(status) status.textContent = 'Объясняю...';
+    if(voiceImg) voiceImg.classList.add('speaking');
+    setFox(data.emotion || 'explain');
+
+    speakVoiceAnswer(answer);
+  }catch(e){
+    const fallback = demoAnswer(text).text;
+
+    voiceState.history.push({role:'user', content:text});
+    voiceState.history.push({role:'assistant', content:fallback});
+
+    if(transcript){
+      transcript.textContent += `\n\nУмник: ${fallback}`;
+      transcript.scrollTop = transcript.scrollHeight;
+    }
+
+    if(status) status.textContent = 'AI не ответил, показываю демо-ответ.';
+    setFox('confused');
+    speakVoiceAnswer(fallback);
+  }finally{
+    voiceState.thinking = false;
+    if(mic) mic.disabled = false;
+  }
+}
+
+function speakVoiceAnswer(text){
+  const status = document.getElementById('voiceStatus');
+  const voiceImg = document.getElementById('voiceUmnik');
+
+  speechSynthesis.cancel();
+
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'ru-RU';
+  utter.rate = 1;
+  utter.pitch = 1.02;
+
+  const voices = speechSynthesis.getVoices?.() || [];
+  const ruVoice = voices.find(v => String(v.lang || '').toLowerCase().startsWith('ru'));
+  if(ruVoice) utter.voice = ruVoice;
+
+  utter.onend = () => {
+    if(status) status.textContent = 'Готов помочь';
+    if(voiceImg) voiceImg.classList.remove('speaking');
+  };
+
+  utter.onerror = () => {
+    if(status) status.textContent = 'Готов помочь';
+    if(voiceImg) voiceImg.classList.remove('speaking');
+  };
+
+  speechSynthesis.speak(utter);
+}
 
 window.addEventListener('DOMContentLoaded', () => {
-  resetEveryOpen();
+  resetEveryOpen(true);
   enableDragScroll(document.getElementById('chatTabs'), 'tabDragMoved');
   enableDragScroll(document.getElementById('suggestions'), 'sugDragMoved');
   renderTop('welcome');
-  initVoiceMode();
   render();
+  initVoiceEvents();
 });
 
-function resetEveryOpen(){
+function resetEveryOpen(clearVoice = true){
   state.plan = 'free';
   state.mode = 'ai';
   state.activeChat = 'Домашка';
@@ -976,23 +1245,36 @@ function resetEveryOpen(){
   state.isSending = false;
   state.tabDragMoved = false;
   state.sugDragMoved = false;
+
+  if(clearVoice){
+    voiceState.history = [];
+    voiceState.thinking = false;
+    voiceState.listening = false;
+  }
 }
 </script>
 
-<div id="voiceModal" class="voice-modal hidden">
+<div id="voiceModal" class="voice-modal hidden" aria-hidden="true">
   <div class="voice-content">
     <div class="voice-header">
-      <div class="voice-title">Созвон с Умником</div>
-      <button id="closeVoice" class="voice-close">✕</button>
+      <div>
+        <div class="voice-title">Созвон с Умником</div>
+        <div class="voice-subtitle">доступно в Умник Плюс + AI-режим</div>
+      </div>
+      <button id="closeVoice" class="voice-close" type="button" aria-label="Закрыть">×</button>
     </div>
 
-    <img src="assets/umnik_happy.png" class="voice-umnik"/>
+    <img id="voiceUmnik" src="/assets/umnik_happy.png" class="voice-umnik" alt="Умник">
 
     <div id="voiceStatus" class="voice-status">Готов помочь</div>
 
-    <button id="micButton" class="voice-mic">🎤</button>
+    <button id="micButton" class="voice-mic" type="button" aria-label="Говорить с Умником">🎤</button>
 
-    <div id="voiceTranscript" class="voice-transcript"></div>
+    <div id="voiceTranscript" class="voice-transcript">Нажми на микрофон и задай вопрос голосом.</div>
+
+    <div class="voice-help">
+      Лучше всего работает в Google Chrome. Разреши браузеру доступ к микрофону.
+    </div>
   </div>
 </div>
 
