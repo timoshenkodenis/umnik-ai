@@ -353,6 +353,13 @@
     }
 
   
+    #startChatBtn{
+      pointer-events:auto!important;
+      opacity:1!important;
+      cursor:pointer!important;
+      position:relative;
+      z-index:20;
+    }
     .profile-grid{
       display:grid;
       grid-template-columns:1fr 1fr;
@@ -368,136 +375,23 @@
       font-weight:800;
       color:var(--dark);
     }
-    .profile-pill b{
-      display:block;
-      color:var(--orange);
-      font-size:11px;
-      margin-bottom:3px;
-    }
-    .profile-actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
-    .profile-actions button{
-      border:0;
-      border-radius:16px;
-      padding:12px 14px;
-      font-weight:900;
-      cursor:pointer;
-      background:var(--orange);
-      color:white;
-    }
-    .profile-actions button.secondary{
-      background:white;
-      color:var(--dark);
-      border:1px solid var(--line);
-    }
-    .profile-modal{
-      position:fixed;
-      inset:0;
-      z-index:10000;
-      background:rgba(0,0,0,.68);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-    }
-    .profile-modal.hidden{
-      display:none;
-    }
-    .profile-content{
-      width:min(430px,94vw);
-      max-height:92vh;
-      overflow:auto;
-      background:var(--bg);
-      border-radius:30px;
-      border:1px solid rgba(255,255,255,.7);
-      padding:20px;
-      box-shadow:0 30px 80px rgba(0,0,0,.42);
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-    }
-    .profile-header{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .profile-title{
-      font-size:22px;
-      line-height:1.1;
-      font-weight:900;
-      color:var(--dark);
-    }
-    .profile-subtitle{
-      margin-top:4px;
-      font-size:12px;
-      line-height:1.35;
-      color:var(--gray);
-      font-weight:800;
-    }
-    .profile-close{
-      width:40px;
-      height:40px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:white;
-      color:var(--orange);
-      font-size:22px;
-      cursor:pointer;
-      flex:0 0 auto;
-    }
-    .profile-form{
-      display:grid;
-      gap:10px;
-    }
-    .profile-form label{
-      display:grid;
-      gap:6px;
-      color:var(--dark);
-      font-size:13px;
-      font-weight:900;
-    }
-    .profile-form input,
-    .profile-form select,
-    .profile-form textarea{
-      width:100%;
-      border:1px solid var(--line);
-      background:white;
-      border-radius:16px;
-      padding:12px 13px;
-      font:inherit;
-      font-size:14px;
-      outline:none;
-      color:var(--dark);
-    }
-    .profile-form textarea{
-      min-height:80px;
-      resize:vertical;
-    }
-    .profile-save{
-      border:0;
-      background:var(--orange);
-      color:white;
-      border-radius:18px;
-      padding:14px 16px;
-      font-weight:900;
-      cursor:pointer;
-    }
-    .memory-box{
-      margin-top:10px;
-      border-radius:18px;
-      background:white;
-      border:1px solid var(--line);
-      padding:12px;
-      font-size:13px;
-      line-height:1.45;
-      color:var(--dark);
-      white-space:pre-wrap;
-    }
+    .profile-pill b{display:block;color:var(--orange);font-size:11px;margin-bottom:3px}
+    .profile-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .profile-actions button{border:0;border-radius:16px;padding:12px 14px;font-weight:900;cursor:pointer;background:var(--orange);color:white}
+    .profile-actions button.secondary{background:white;color:var(--dark);border:1px solid var(--line)}
+    .profile-modal{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.68);display:flex;align-items:center;justify-content:center;padding:18px}
+    .profile-modal.hidden{display:none}
+    .profile-content{width:min(430px,94vw);max-height:92vh;overflow:auto;background:var(--bg);border-radius:30px;border:1px solid rgba(255,255,255,.7);padding:20px;box-shadow:0 30px 80px rgba(0,0,0,.42);display:flex;flex-direction:column;gap:14px}
+    .profile-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+    .profile-title{font-size:22px;line-height:1.1;font-weight:900;color:var(--dark)}
+    .profile-subtitle{margin-top:4px;font-size:12px;line-height:1.35;color:var(--gray);font-weight:800}
+    .profile-close{width:40px;height:40px;border-radius:999px;border:1px solid var(--line);background:white;color:var(--orange);font-size:22px;cursor:pointer;flex:0 0 auto}
+    .profile-form{display:grid;gap:10px}
+    .profile-form label{display:grid;gap:6px;color:var(--dark);font-size:13px;font-weight:900}
+    .profile-form input,.profile-form select,.profile-form textarea{width:100%;border:1px solid var(--line);background:white;border-radius:16px;padding:12px 13px;font:inherit;font-size:14px;outline:none;color:var(--dark)}
+    .profile-form textarea{min-height:80px;resize:vertical}
+    .profile-save{border:0;background:var(--orange);color:white;border-radius:18px;padding:14px 16px;font-weight:900;cursor:pointer}
+    .memory-box{margin-top:10px;border-radius:18px;background:white;border:1px solid var(--line);padding:12px;font-size:13px;line-height:1.45;color:var(--dark);white-space:pre-wrap}
 
   </style>
 </head>
@@ -512,6 +406,7 @@
     <div class="chip">детский AI-помощник для школы</div>
     <h1>Умник AI</h1>
     <p class="muted">Объясняет школьные темы простыми шагами и помогает с домашкой.</p>
+    <div style="font-size:11px;font-weight:800;color:#9b8b7c;margin-top:4px">v6.3 stable</div>
     <div class="form">
       <input id="nameInput" placeholder="Имя ребёнка" autocomplete="off">
       <input id="ageInput" placeholder="Возраст" inputmode="numeric" autocomplete="off">
@@ -552,14 +447,12 @@
       <h3>Профиль ученика</h3>
       <p class="muted">Умник будет учитывать класс, сложные темы и стиль объяснения.</p>
       <div id="profileSummary" class="profile-grid"></div>
-      <div class="profile-actions">
-        <button onclick="openProfileModal()">Редактировать профиль</button>
-      </div>
+      <div class="profile-actions"><button onclick="openProfileModal()">Редактировать профиль</button></div>
     </div>
 
     <div class="card">
       <h3>Память Умника</h3>
-      <p class="muted">Умник запоминает темы, вопросы и сложности ребёнка прямо на этом устройстве.</p>
+      <p class="muted">Память хранится на этом устройстве и помогает Умнику подстраиваться под ученика.</p>
       <div id="memorySummary" class="memory-box"></div>
       <div class="profile-actions">
         <button onclick="showFullMemory()">Показать память</button>
@@ -627,291 +520,35 @@ const voiceState = {
   initialized:false
 };
 
-
 const PROFILE_KEY = 'umnik_student_profile_v1';
 const MEMORY_KEY = 'umnik_learning_memory_v1';
 
-function defaultProfile(){
-  return {
-    name:'',
-    age:'',
-    grade:'',
-    hardSubject:'',
-    hardTopics:'',
-    explainStyle:'очень просто',
-    goal:''
-  };
-}
-
-function defaultMemory(){
-  return {
-    totalQuestions:0,
-    totalVoiceQuestions:0,
-    totalPhotos:0,
-    topics:{},
-    difficult:{},
-    recent:[],
-    lastSummary:'',
-    updatedAt:''
-  };
-}
-
-function loadJson(key, fallback){
-  try{
-    const raw = localStorage.getItem(key);
-    if(!raw) return fallback();
-    return Object.assign(fallback(), JSON.parse(raw));
-  }catch(e){
-    return fallback();
-  }
-}
-
-function saveJson(key, value){
-  try{
-    localStorage.setItem(key, JSON.stringify(value));
-  }catch(e){}
-}
+function defaultProfile(){return {name:'',age:'',grade:'',hardSubject:'',hardTopics:'',explainStyle:'очень просто',goal:''}}
+function defaultMemory(){return {totalQuestions:0,totalVoiceQuestions:0,totalPhotos:0,topics:{},difficult:{},recent:[],lastSummary:'',updatedAt:''}}
+function loadJson(key,fallback){try{const raw=localStorage.getItem(key);return raw?Object.assign(fallback(),JSON.parse(raw)):fallback()}catch(e){return fallback()}}
+function saveJson(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch(e){}}
 
 state.profile = loadJson(PROFILE_KEY, defaultProfile);
 state.learningMemory = loadJson(MEMORY_KEY, defaultMemory);
 
-function saveProfile(){
-  saveJson(PROFILE_KEY, state.profile);
-}
-
-function saveMemory(){
-  state.learningMemory.updatedAt = new Date().toISOString();
-  saveJson(MEMORY_KEY, state.learningMemory);
-}
-
-function syncProfileToWelcome(){
-  const n = document.getElementById('nameInput');
-  const a = document.getElementById('ageInput');
-
-  if(n && state.profile.name && !n.value) n.value = state.profile.name;
-  if(a && state.profile.age && !a.value) a.value = state.profile.age;
-}
-
-function updateProfileFromWelcome(name, age){
-  state.profile.name = name || state.profile.name || '';
-  state.profile.age = age || state.profile.age || '';
-  saveProfile();
-}
-
-function profileForApi(){
-  return {
-    name:state.profile.name || state.name || '',
-    age:state.profile.age || state.age || '',
-    grade:state.profile.grade || '',
-    hardSubject:state.profile.hardSubject || '',
-    hardTopics:state.profile.hardTopics || '',
-    explainStyle:state.profile.explainStyle || 'очень просто',
-    goal:state.profile.goal || ''
-  };
-}
-
-function memoryForApi(){
-  const memory = state.learningMemory || defaultMemory();
-  return {
-    totalQuestions:memory.totalQuestions || 0,
-    totalVoiceQuestions:memory.totalVoiceQuestions || 0,
-    totalPhotos:memory.totalPhotos || 0,
-    topics:memory.topics || {},
-    difficult:memory.difficult || {},
-    recent:(memory.recent || []).slice(-6),
-    lastSummary:memory.lastSummary || ''
-  };
-}
-
-function detectLearningTopic(text){
-  const q = String(text || '').toLowerCase();
-
-  const pairs = [
-    ['дроби', ['дроб', 'числител', 'знаменател']],
-    ['таблица умножения', ['умнож', 'таблиц', 'произвед']],
-    ['уравнения', ['уравнен', 'икс', ' x ', 'x+', 'x -', 'найти x']],
-    ['периметр', ['периметр']],
-    ['площадь', ['площад']],
-    ['сказуемое', ['сказуем']],
-    ['подлежащее', ['подлежа']],
-    ['части речи', ['часть речи', 'существительн', 'прилагательн', 'глагол']],
-    ['орфография', ['проверочное слово', 'безударн', 'буква', 'орфограмм']],
-    ['текстовая задача', ['задача', 'условие', 'решение']]
-  ];
-
-  for(const [topic, words] of pairs){
-    if(words.some(w => q.includes(w))) return topic;
-  }
-
-  return 'общий вопрос';
-}
-
-function bumpMap(map, key){
-  if(!key) return;
-  map[key] = (map[key] || 0) + 1;
-}
-
-function updateLearningMemory(userText, answerText, source='chat', hadPhoto=false){
-  const memory = state.learningMemory || defaultMemory();
-  const topic = detectLearningTopic(userText + ' ' + answerText);
-
-  memory.totalQuestions = (memory.totalQuestions || 0) + 1;
-  if(source === 'voice') memory.totalVoiceQuestions = (memory.totalVoiceQuestions || 0) + 1;
-  if(hadPhoto) memory.totalPhotos = (memory.totalPhotos || 0) + 1;
-
-  memory.topics = memory.topics || {};
-  memory.difficult = memory.difficult || {};
-  memory.recent = memory.recent || [];
-
-  bumpMap(memory.topics, topic);
-
-  const hardText = String(userText || '').toLowerCase();
-  if(
-    hardText.includes('не понял') ||
-    hardText.includes('не понимаю') ||
-    hardText.includes('не получается') ||
-    hardText.includes('устал') ||
-    hardText.includes('сложно') ||
-    hardText.includes('ошибка')
-  ){
-    bumpMap(memory.difficult, topic);
-  }
-
-  memory.recent.push({
-    source,
-    topic,
-    question:String(userText || '').slice(0,180),
-    answer:String(answerText || '').slice(0,220),
-    at:new Date().toISOString()
-  });
-
-  if(memory.recent.length > 10) memory.recent = memory.recent.slice(-10);
-
-  memory.lastSummary = buildMemorySummary(memory);
-  state.learningMemory = memory;
-  saveMemory();
-  renderSettings();
-}
-
-function topKeys(obj, limit=3){
-  return Object.entries(obj || {})
-    .sort((a,b) => b[1] - a[1])
-    .slice(0,limit)
-    .map(([k,v]) => `${k} (${v})`);
-}
-
-function buildMemorySummary(memory){
-  const topTopics = topKeys(memory.topics, 3);
-  const hardTopics = topKeys(memory.difficult, 3);
-
-  const parts = [];
-
-  parts.push(`Всего вопросов: ${memory.totalQuestions || 0}`);
-  if(memory.totalVoiceQuestions) parts.push(`Голосом: ${memory.totalVoiceQuestions}`);
-  if(memory.totalPhotos) parts.push(`Фото: ${memory.totalPhotos}`);
-
-  if(topTopics.length) parts.push(`Чаще всего: ${topTopics.join(', ')}`);
-  if(hardTopics.length) parts.push(`Сложные темы: ${hardTopics.join(', ')}`);
-
-  return parts.join('\n') || 'Пока памяти мало: задай несколько вопросов, и Умник начнёт подстраиваться.';
-}
-
-function renderProfileSummary(){
-  const box = document.getElementById('profileSummary');
-  if(!box) return;
-
-  const p = profileForApi();
-
-  const items = [
-    ['Имя', p.name || 'не указано'],
-    ['Возраст', p.age || 'не указан'],
-    ['Класс', p.grade ? `${p.grade} класс` : 'не выбран'],
-    ['Сложнее всего', p.hardSubject || 'не выбрано'],
-    ['Стиль', p.explainStyle || 'очень просто'],
-    ['Темы', p.hardTopics || 'пока не указаны']
-  ];
-
-  box.innerHTML = items.map(([label,value]) =>
-    `<div class="profile-pill"><b>${label}</b>${value}</div>`
-  ).join('');
-}
-
-function renderMemorySummary(){
-  const box = document.getElementById('memorySummary');
-  if(!box) return;
-  box.textContent = state.learningMemory.lastSummary || buildMemorySummary(state.learningMemory || defaultMemory());
-}
-
-function openProfileModal(){
-  const p = profileForApi();
-
-  document.getElementById('profileName').value = p.name || '';
-  document.getElementById('profileAge').value = p.age || '';
-  document.getElementById('profileGrade').value = p.grade || '';
-  document.getElementById('profileHardSubject').value = p.hardSubject || '';
-  document.getElementById('profileHardTopics').value = p.hardTopics || '';
-  document.getElementById('profileExplainStyle').value = p.explainStyle || 'очень просто';
-  document.getElementById('profileGoal').value = p.goal || '';
-
-  const modal = document.getElementById('profileModal');
-  modal.classList.remove('hidden');
-  modal.setAttribute('aria-hidden','false');
-}
-
-function closeProfileModal(){
-  const modal = document.getElementById('profileModal');
-  modal.classList.add('hidden');
-  modal.setAttribute('aria-hidden','true');
-}
-
-function saveProfileFromModal(){
-  state.profile = {
-    name:document.getElementById('profileName').value.trim(),
-    age:document.getElementById('profileAge').value.trim(),
-    grade:document.getElementById('profileGrade').value,
-    hardSubject:document.getElementById('profileHardSubject').value,
-    hardTopics:document.getElementById('profileHardTopics').value.trim(),
-    explainStyle:document.getElementById('profileExplainStyle').value,
-    goal:document.getElementById('profileGoal').value.trim()
-  };
-
-  state.name = state.profile.name || state.name;
-  state.age = state.profile.age || state.age;
-
-  saveProfile();
-  closeProfileModal();
-  renderSettings();
-  render();
-
-  addMessage('bot','Профиль сохранён. Теперь я буду учитывать класс, сложные темы и стиль объяснения.');
-  setFox('happy');
-  render();
-}
-
-function showFullMemory(){
-  const memory = state.learningMemory || defaultMemory();
-  const recent = (memory.recent || []).slice(-5).map((r,i) =>
-    `${i+1}. ${r.topic}: ${r.question}`
-  ).join('\n');
-
-  alert(
-    'Память Умника:\n\n' +
-    buildMemorySummary(memory) +
-    (recent ? '\n\nПоследние вопросы:\n' + recent : '')
-  );
-}
-
-function clearLearningMemory(){
-  if(!confirm('Очистить память Умника на этом устройстве?')) return;
-
-  state.learningMemory = defaultMemory();
-  saveMemory();
-  renderSettings();
-
-  addMessage('bot','Память очищена. Начнём заново 🙂');
-  setFox('welcome');
-  render();
-}
+function saveProfile(){saveJson(PROFILE_KEY,state.profile)}
+function saveMemory(){state.learningMemory.updatedAt=new Date().toISOString();saveJson(MEMORY_KEY,state.learningMemory)}
+function syncProfileToWelcome(){const n=document.getElementById('nameInput');const a=document.getElementById('ageInput');if(n&&state.profile.name&&!n.value)n.value=state.profile.name;if(a&&state.profile.age&&!a.value)a.value=state.profile.age}
+function updateProfileFromWelcome(name,age){state.profile.name=name||state.profile.name||'';state.profile.age=age||state.profile.age||'';saveProfile()}
+function profileForApi(){return {name:state.profile.name||state.name||'',age:state.profile.age||state.age||'',grade:state.profile.grade||'',hardSubject:state.profile.hardSubject||'',hardTopics:state.profile.hardTopics||'',explainStyle:state.profile.explainStyle||'очень просто',goal:state.profile.goal||''}}
+function memoryForApi(){const m=state.learningMemory||defaultMemory();return {totalQuestions:m.totalQuestions||0,totalVoiceQuestions:m.totalVoiceQuestions||0,totalPhotos:m.totalPhotos||0,topics:m.topics||{},difficult:m.difficult||{},recent:(m.recent||[]).slice(-6),lastSummary:m.lastSummary||''}}
+function detectLearningTopic(text){const q=String(text||'').toLowerCase();const pairs=[['дроби',['дроб','числител','знаменател']],['таблица умножения',['умнож','таблиц','произвед']],['уравнения',['уравнен','икс',' x ','x+','x -','найти x']],['периметр',['периметр']],['площадь',['площад']],['сказуемое',['сказуем']],['подлежащее',['подлежа']],['части речи',['часть речи','существительн','прилагательн','глагол']],['орфография',['проверочное слово','безударн','буква','орфограмм']],['текстовая задача',['задача','условие','решение']]];for(const [topic,words] of pairs){if(words.some(w=>q.includes(w)))return topic}return 'общий вопрос'}
+function bumpMap(map,key){if(key)map[key]=(map[key]||0)+1}
+function topKeys(obj,limit=3){return Object.entries(obj||{}).sort((a,b)=>b[1]-a[1]).slice(0,limit).map(([k,v])=>`${k} (${v})`)}
+function buildMemorySummary(memory){const top=topKeys(memory.topics,3);const hard=topKeys(memory.difficult,3);const parts=[`Всего вопросов: ${memory.totalQuestions||0}`];if(memory.totalVoiceQuestions)parts.push(`Голосом: ${memory.totalVoiceQuestions}`);if(memory.totalPhotos)parts.push(`Фото: ${memory.totalPhotos}`);if(top.length)parts.push(`Чаще всего: ${top.join(', ')}`);if(hard.length)parts.push(`Сложные темы: ${hard.join(', ')}`);return parts.join('\n')||'Пока памяти мало: задай несколько вопросов, и Умник начнёт подстраиваться.'}
+function updateLearningMemory(userText,answerText,source='chat',hadPhoto=false){const m=state.learningMemory||defaultMemory();const topic=detectLearningTopic(userText+' '+answerText);m.totalQuestions=(m.totalQuestions||0)+1;if(source==='voice')m.totalVoiceQuestions=(m.totalVoiceQuestions||0)+1;if(hadPhoto)m.totalPhotos=(m.totalPhotos||0)+1;m.topics=m.topics||{};m.difficult=m.difficult||{};m.recent=m.recent||[];bumpMap(m.topics,topic);const hard=String(userText||'').toLowerCase();if(hard.includes('не понял')||hard.includes('не понимаю')||hard.includes('не получается')||hard.includes('устал')||hard.includes('сложно')||hard.includes('ошибка'))bumpMap(m.difficult,topic);m.recent.push({source,topic,question:String(userText||'').slice(0,180),answer:String(answerText||'').slice(0,220),at:new Date().toISOString()});if(m.recent.length>10)m.recent=m.recent.slice(-10);m.lastSummary=buildMemorySummary(m);state.learningMemory=m;saveMemory();renderSettings()}
+function renderProfileSummary(){const box=document.getElementById('profileSummary');if(!box)return;const p=profileForApi();const items=[['Имя',p.name||'не указано'],['Возраст',p.age||'не указан'],['Класс',p.grade?`${p.grade} класс`:'не выбран'],['Сложнее всего',p.hardSubject||'не выбрано'],['Стиль',p.explainStyle||'очень просто'],['Темы',p.hardTopics||'пока не указаны']];box.innerHTML=items.map(([l,v])=>`<div class="profile-pill"><b>${l}</b>${v}</div>`).join('')}
+function renderMemorySummary(){const box=document.getElementById('memorySummary');if(box)box.textContent=state.learningMemory.lastSummary||buildMemorySummary(state.learningMemory||defaultMemory())}
+function openProfileModal(){const p=profileForApi();document.getElementById('profileName').value=p.name||'';document.getElementById('profileAge').value=p.age||'';document.getElementById('profileGrade').value=p.grade||'';document.getElementById('profileHardSubject').value=p.hardSubject||'';document.getElementById('profileHardTopics').value=p.hardTopics||'';document.getElementById('profileExplainStyle').value=p.explainStyle||'очень просто';document.getElementById('profileGoal').value=p.goal||'';const modal=document.getElementById('profileModal');modal.classList.remove('hidden');modal.setAttribute('aria-hidden','false')}
+function closeProfileModal(){const modal=document.getElementById('profileModal');modal.classList.add('hidden');modal.setAttribute('aria-hidden','true')}
+function saveProfileFromModal(){state.profile={name:document.getElementById('profileName').value.trim(),age:document.getElementById('profileAge').value.trim(),grade:document.getElementById('profileGrade').value,hardSubject:document.getElementById('profileHardSubject').value,hardTopics:document.getElementById('profileHardTopics').value.trim(),explainStyle:document.getElementById('profileExplainStyle').value,goal:document.getElementById('profileGoal').value.trim()};state.name=state.profile.name||state.name;state.age=state.profile.age||state.age;saveProfile();closeProfileModal();renderSettings();addMessage('bot','Профиль сохранён. Теперь я буду учитывать класс, сложные темы и стиль объяснения.');setFox('happy');render()}
+function showFullMemory(){const m=state.learningMemory||defaultMemory();const recent=(m.recent||[]).slice(-5).map((r,i)=>`${i+1}. ${r.topic}: ${r.question}`).join('\n');alert('Память Умника:\n\n'+buildMemorySummary(m)+(recent?'\n\nПоследние вопросы:\n'+recent:''))}
+function clearLearningMemory(){if(!confirm('Очистить память Умника на этом устройстве?'))return;state.learningMemory=defaultMemory();saveMemory();renderSettings();addMessage('bot','Память очищена. Начнём заново 🙂');setFox('welcome');render()}
 
 
 let currentEmotion = 'welcome';
@@ -919,12 +556,7 @@ let currentEmotion = 'welcome';
 function welcomeText(name){
   const cleanName = String(name || '').trim();
   const hello = cleanName ? `Привет, ${cleanName}!` : 'Привет!';
-  const p = state && state.profile ? state.profile : {};
-  const m = state && state.learningMemory ? state.learningMemory : null;
-  const grade = p.grade ? ` Я помню, что ты учишься в ${p.grade} классе.` : '';
-  const style = p.explainStyle ? ` Буду объяснять: ${p.explainStyle}.` : '';
-  const memory = m && m.lastSummary ? ' Я уже немного помню твои темы и буду подстраиваться.' : '';
-  return `${hello} Я Умник. Напиши школьный вопрос или прикрепи фото задания — разберём вместе.${grade}${style}${memory}`;
+  return `${hello} Я Умник. Напиши школьный вопрос или прикрепи фото задания — разберём вместе.`;
 }
 
 function ensureChat(n){
@@ -978,28 +610,28 @@ function renderTop(id){
 }
 
 function startApp(){
-  const name = document.getElementById('nameInput').value.trim();
-  const age = document.getElementById('ageInput').value.trim();
-  const error = document.getElementById('welcomeError');
-  const fox = document.getElementById('welcomeFox');
-
-  if(!name || !age){
-    error.textContent = 'Заполни имя и возраст, пожалуйста 🙂';
-    fox.classList.remove('warn');
-    void fox.offsetWidth;
-    fox.classList.add('warn');
-    fox.src = '/assets/umnik_welcome.png';
-    return;
+  try{
+    const nameEl = document.getElementById('nameInput');
+    const ageEl = document.getElementById('ageInput');
+    const error = document.getElementById('welcomeError');
+    const saved = loadJson(PROFILE_KEY, defaultProfile);
+    const name = (nameEl && nameEl.value ? nameEl.value.trim() : '') || saved.name || 'друг';
+    const age = (ageEl && ageEl.value ? ageEl.value.trim() : '') || saved.age || '8';
+    if(error) error.textContent = '';
+    state.name = name;
+    state.age = age;
+    updateProfileFromWelcome(name, age);
+    state.plan = 'free';
+    state.mode = 'ai';
+    resetEveryOpen(false);
+    show('chatScreen');
+    render();
+  }catch(err){
+    console.error('startApp error', err);
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    const chat = document.getElementById('chatScreen');
+    if(chat) chat.classList.add('active');
   }
-
-  state.name = name;
-  state.age = age;
-  updateProfileFromWelcome(name, age);
-  state.plan = 'free';
-  state.mode = 'ai';
-  resetEveryOpen(false);
-  show('chatScreen');
-  render();
 }
 
 function openSettings(){
@@ -1120,7 +752,6 @@ function renderSettings(){
   demo.classList.toggle('active', state.mode === 'demo');
   free.classList.toggle('active', state.plan === 'free');
   plus.classList.toggle('active', state.plan === 'plus');
-
   renderProfileSummary();
   renderMemorySummary();
 }
@@ -1892,7 +1523,6 @@ function handleVoicePhoto(event){
         role:'user',
         content:'Я добавил фото задания в звонок. Дальше мои вопросы могут быть про это фото.'
       });
-
       state.learningMemory.totalPhotos = (state.learningMemory.totalPhotos || 0) + 1;
       saveMemory();
       renderSettings();
@@ -2247,7 +1877,41 @@ if('speechSynthesis' in window){
 }
 
 
+
+function forceStartChat(e){
+  if(e){e.preventDefault(); e.stopPropagation();}
+  startApp();
+  return false;
+}
+function bindStartButton(){
+  const btn=document.getElementById('startChatBtn');
+  if(!btn)return;
+  btn.disabled=false;
+  btn.style.pointerEvents='auto';
+  btn.style.opacity='1';
+  btn.onclick=forceStartChat;
+}
+window.forceStartChat = forceStartChat;
+window.startApp = startApp;
+window.openSettings = openSettings;
+window.openChat = openChat;
+window.setMode = setMode;
+window.setPlan = setPlan;
+window.toggleEditTabs = toggleEditTabs;
+window.newChat = newChat;
+window.send = send;
+window.pickPhoto = pickPhoto;
+window.voiceInput = voiceInput;
+window.openVoiceCall = openVoiceCall;
+window.openProfileModal = openProfileModal;
+window.closeProfileModal = closeProfileModal;
+window.saveProfileFromModal = saveProfileFromModal;
+window.showFullMemory = showFullMemory;
+window.clearLearningMemory = clearLearningMemory;
+document.addEventListener('click',function(e){if(e.target&&e.target.id==='startChatBtn')forceStartChat(e)},true);
+
 window.addEventListener('DOMContentLoaded', () => {
+  bindStartButton();
   resetEveryOpen(true);
   enableDragScroll(document.getElementById('chatTabs'), 'tabDragMoved');
   enableDragScroll(document.getElementById('suggestions'), 'sugDragMoved');
@@ -2256,6 +1920,7 @@ window.addEventListener('DOMContentLoaded', () => {
   render();
   renderSettings();
   initVoiceEvents();
+  bindStartButton();
 });
 
 function resetEveryOpen(clearVoice = true){
@@ -2298,56 +1963,25 @@ function resetEveryOpen(clearVoice = true){
     </div>
 
     <div class="profile-form">
-      <label>Имя
-        <input id="profileName" placeholder="Например, Денис">
-      </label>
-
-      <label>Возраст
-        <input id="profileAge" inputmode="numeric" placeholder="Например, 10">
-      </label>
-
+      <label>Имя<input id="profileName" placeholder="Например, Денис"></label>
+      <label>Возраст<input id="profileAge" inputmode="numeric" placeholder="Например, 10"></label>
       <label>Класс
         <select id="profileGrade">
-          <option value="">Не выбран</option>
-          <option value="1">1 класс</option>
-          <option value="2">2 класс</option>
-          <option value="3">3 класс</option>
-          <option value="4">4 класс</option>
-          <option value="5">5 класс</option>
-          <option value="6">6 класс</option>
-          <option value="7">7 класс</option>
+          <option value="">Не выбран</option><option value="1">1 класс</option><option value="2">2 класс</option><option value="3">3 класс</option><option value="4">4 класс</option><option value="5">5 класс</option><option value="6">6 класс</option><option value="7">7 класс</option>
         </select>
       </label>
-
       <label>Что сложнее всего?
         <select id="profileHardSubject">
-          <option value="">Не выбрано</option>
-          <option value="математика">Математика</option>
-          <option value="русский язык">Русский язык</option>
-          <option value="чтение">Чтение</option>
-          <option value="окружающий мир">Окружающий мир</option>
-          <option value="английский">Английский</option>
+          <option value="">Не выбрано</option><option value="математика">Математика</option><option value="русский язык">Русский язык</option><option value="чтение">Чтение</option><option value="окружающий мир">Окружающий мир</option><option value="английский">Английский</option>
         </select>
       </label>
-
-      <label>Сложные темы
-        <textarea id="profileHardTopics" placeholder="Например: дроби, таблица умножения, сказуемое"></textarea>
-      </label>
-
+      <label>Сложные темы<textarea id="profileHardTopics" placeholder="Например: дроби, таблица умножения, сказуемое"></textarea></label>
       <label>Как объяснять?
         <select id="profileExplainStyle">
-          <option value="очень просто">Очень просто</option>
-          <option value="обычно">Обычно</option>
-          <option value="как учитель">Как учитель</option>
-          <option value="через примеры">Через примеры</option>
-          <option value="игровым способом">Игровым способом</option>
+          <option value="очень просто">Очень просто</option><option value="обычно">Обычно</option><option value="как учитель">Как учитель</option><option value="через примеры">Через примеры</option><option value="игровым способом">Игровым способом</option>
         </select>
       </label>
-
-      <label>Цель занятий
-        <textarea id="profileGoal" placeholder="Например: лучше понимать домашку и не бояться задач"></textarea>
-      </label>
-
+      <label>Цель занятий<textarea id="profileGoal" placeholder="Например: лучше понимать домашку и не бояться задач"></textarea></label>
       <button class="profile-save" onclick="saveProfileFromModal()">Сохранить профиль</button>
     </div>
   </div>
