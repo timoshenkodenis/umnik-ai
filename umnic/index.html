@@ -523,7 +523,7 @@
       <input id="nameInput" placeholder="Имя ребёнка" autocomplete="off">
       <input id="ageInput" placeholder="Возраст" inputmode="numeric" autocomplete="off">
       <div id="welcomeError" class="error-note"></div>
-      <button class="primary" onclick="startApp()">Начать чат</button>
+      <button id="startChatBtn" class="primary" onclick="startApp()">Начать чат</button>
     </div>
   </section>
 
@@ -1220,6 +1220,7 @@ async function send(){
 
   const input = document.getElementById('input');
   const text = input.value.trim();
+  const hadPhoto = !!state.imageDataUrl;
 
   if(!text && !state.imageDataUrl) return;
   if(!canUse()) return;
@@ -1262,13 +1263,13 @@ async function send(){
 
     const answerText = data.text || 'Ответ пустой. Попробуй ещё раз.';
     addMessage('bot', answerText);
-    updateLearningMemory(text || 'Фото задания', answerText, 'chat', !!state.imageDataUrl);
+    updateLearningMemory(text || 'Фото задания', answerText, 'chat', hadPhoto);
     setFox(data.emotion || 'explain');
   }catch(e){
     const fallback = demoAnswer(text);
     const fallbackText = 'AI сейчас не ответил. Показываю демо-ответ:\n\n' + fallback.text;
     addMessage('bot', fallbackText);
-    updateLearningMemory(text || 'Фото задания', fallbackText, 'chat', !!state.imageDataUrl);
+    updateLearningMemory(text || 'Фото задания', fallbackText, 'chat', hadPhoto);
     setFox('confused');
   }finally{
     state.isSending = false;
@@ -1800,6 +1801,7 @@ function handleVoicePhoto(event){
 
 async function handleVoiceQuestion(text){
   const mic = document.getElementById('micButton');
+  const hadPhoto = !!voiceState.imageDataUrl;
 
   voiceState.autoListening = false;
   voiceState.thinking = true;
@@ -1838,7 +1840,7 @@ async function handleVoiceQuestion(text){
 
     voiceState.history.push({role:'user', content:text});
     voiceState.history.push({role:'assistant', content:answer});
-    updateLearningMemory(text, answer, 'voice', !!voiceState.imageDataUrl);
+    updateLearningMemory(text, answer, 'voice', hadPhoto);
 
     if(voiceState.history.length > 16){
       voiceState.history = voiceState.history.slice(-16);
@@ -1859,7 +1861,7 @@ async function handleVoiceQuestion(text){
 
     voiceState.history.push({role:'user', content:text});
     voiceState.history.push({role:'assistant', content:fallback});
-    updateLearningMemory(text, fallback, 'voice', !!voiceState.imageDataUrl);
+    updateLearningMemory(text, fallback, 'voice', hadPhoto);
 
     if(voiceState.history.length > 16){
       voiceState.history = voiceState.history.slice(-16);
