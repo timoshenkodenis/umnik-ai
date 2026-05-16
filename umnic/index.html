@@ -1196,33 +1196,141 @@ async function handleVoiceQuestion(text){
   }
 }
 
+
+function getBestRussianVoice(){
+  const voices = speechSynthesis.getVoices?.() || [];
+
+  const ruVoices = voices.filter(v =>
+    String(v.lang || '').toLowerCase().startsWith('ru')
+  );
+
+  if(!ruVoices.length) return null;
+
+  const preferredNames = [
+    'google русский',
+    'google russian',
+    'alena',
+    'алена',
+    'milena',
+    'милена',
+    'svetlana',
+    'светлана',
+    'irina',
+    'ирина',
+    'pavel',
+    'павел',
+    'microsoft irina',
+    'microsoft pavel'
+  ];
+
+  const scored = ruVoices.map(v => {
+    const name = String(v.name || '').toLowerCase();
+    let score = 0;
+
+    preferredNames.forEach((p, index) => {
+      if(name.includes(p)) score += 100 - index;
+    });
+
+    if(name.includes('google')) score += 40;
+    if(name.includes('microsoft')) score += 15;
+    if(v.localService) score += 5;
+
+    return { voice:v, score };
+  });
+
+  scored.sort((a,b) => b.score - a.score);
+
+  return scored[0].voice;
+}
+
+function makeSpeechTextHuman(text){
+  return String(text || '')
+    .replace(/\*/g, '')
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/\s+/g, ' ')
+    .replace(/([.!?])\s+/g, '$1 ... ')
+    .trim();
+}
+
+function splitSpeechIntoChunks(text){
+  const clean = makeSpeechTextHuman(text);
+
+  if(clean.length <= 220) return [clean];
+
+  const parts = clean.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [clean];
+  const chunks = [];
+  let current = '';
+
+  parts.forEach(part => {
+    const next = (current + ' ' + part).trim();
+
+    if(next.length > 240 && current){
+      chunks.push(current.trim());
+      current = part.trim();
+    }else{
+      current = next;
+    }
+  });
+
+  if(current) chunks.push(current.trim());
+
+  return chunks;
+}
+
 function speakVoiceAnswer(text){
   const status = document.getElementById('voiceStatus');
   const voiceImg = document.getElementById('voiceUmnik');
 
   speechSynthesis.cancel();
 
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = 'ru-RU';
-  utter.rate = 1;
-  utter.pitch = 1.02;
+  const chunks = splitSpeechIntoChunks(text);
+  const bestVoice = getBestRussianVoice();
 
-  const voices = speechSynthesis.getVoices?.() || [];
-  const ruVoice = voices.find(v => String(v.lang || '').toLowerCase().startsWith('ru'));
-  if(ruVoice) utter.voice = ruVoice;
+  let index = 0;
 
-  utter.onend = () => {
-    if(status) status.textContent = 'Готов помочь';
-    if(voiceImg) voiceImg.classList.remove('speaking');
-  };
+  function speakNext(){
+    if(index >= chunks.length){
+      if(status) status.textContent = 'Готов помочь';
+      if(voiceImg) voiceImg.classList.remove('speaking');
+      return;
+    }
 
-  utter.onerror = () => {
-    if(status) status.textContent = 'Готов помочь';
-    if(voiceImg) voiceImg.classList.remove('speaking');
-  };
+    const utter = new SpeechSynthesisUtterance(chunks[index]);
 
-  speechSynthesis.speak(utter);
+    utter.lang = 'ru-RU';
+    utter.rate = 0.88;
+    utter.pitch = 1.28;
+    utter.volume = 1;
+
+    if(bestVoice) utter.voice = bestVoice;
+
+    utter.onstart = () => {
+      if(status) status.textContent = 'Объясняю...';
+      if(voiceImg) voiceImg.classList.add('speaking');
+    };
+
+    utter.onend = () => {
+      index += 1;
+      setTimeout(speakNext, 180);
+    };
+
+    utter.onerror = () => {
+      index += 1;
+      setTimeout(speakNext, 120);
+    };
+
+    speechSynthesis.speak(utter);
+  }
+
+  speakNext();
 }
+
+if('speechSynthesis' in window){
+  speechSynthesis.onvoiceschanged = () => {
+    getBestRussianVoice();
+  };
+}
+
 
 window.addEventListener('DOMContentLoaded', () => {
   resetEveryOpen(true);
