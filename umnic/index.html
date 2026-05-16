@@ -261,6 +261,122 @@
       max-width:320px;
     }
 
+  
+    .camera-task-btn{
+      height:36px;
+      width:36px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:white;
+      color:var(--orange);
+      font-size:17px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 4px 12px rgba(0,0,0,.08);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      line-height:1;
+    }
+    .camera-task-btn.visible{
+      display:flex;
+    }
+    .camera-modal{
+      position:fixed;
+      inset:0;
+      z-index:9998;
+      background:rgba(0,0,0,.68);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
+    .camera-modal.hidden{
+      display:none;
+    }
+    .camera-content{
+      width:min(430px,94vw);
+      max-height:92vh;
+      overflow:auto;
+      background:var(--bg);
+      border-radius:30px;
+      border:1px solid rgba(255,255,255,.7);
+      padding:20px;
+      box-shadow:0 30px 80px rgba(0,0,0,.42);
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    .camera-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .camera-title{
+      font-size:21px;
+      line-height:1.15;
+      font-weight:900;
+      color:var(--dark);
+    }
+    .camera-subtitle{
+      margin-top:3px;
+      font-size:12px;
+      font-weight:800;
+      color:var(--gray);
+    }
+    .camera-close{
+      width:40px;
+      height:40px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:white;
+      color:var(--orange);
+      font-size:22px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 auto;
+    }
+    .camera-preview-big{
+      width:100%;
+      max-height:330px;
+      object-fit:contain;
+      border-radius:22px;
+      border:1px solid var(--line);
+      background:white;
+      box-shadow:0 8px 20px rgba(0,0,0,.08);
+    }
+    .camera-actions{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+    }
+    .camera-actions button{
+      border:0;
+      border-radius:18px;
+      padding:14px 16px;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .camera-primary{
+      background:var(--orange);
+      color:white;
+    }
+    .camera-secondary{
+      background:white;
+      color:var(--dark);
+      border:1px solid var(--line)!important;
+    }
+    .camera-note{
+      color:var(--gray);
+      font-size:12px;
+      line-height:1.35;
+      font-weight:700;
+      text-align:center;
+    }
+
   </style>
 </head>
 <body>
@@ -346,6 +462,7 @@ const state = {
   plan:'free',
   activeChat:'Домашка',
   imageDataUrl:null,
+  cameraImageDataUrl:null,
   chats:{'Домашка':[{role:'bot', text:welcomeText('')}]},
   chatOrder:['Домашка'],
   limits:{messages:0,photos:0},
@@ -360,6 +477,7 @@ const voiceState = {
   listening:false,
   thinking:false,
   history:[],
+  imageDataUrl:null,
   initialized:false
 };
 
@@ -414,6 +532,7 @@ function renderTop(id){
       '<img id="headerFox" class="header-fox" src="/assets/umnik_welcome.png" alt="Умник">' +
       '<img class="logo" src="/assets/logo.png" alt="Умник">' +
       '<div class="top-actions">' +
+        '<button id="cameraTaskBtn" class="camera-task-btn" type="button" onclick="openTaskCamera()" aria-label="Показать задание Умнику">📷</button>' +
         '<button id="voiceCallBtn" class="voice-call-btn" type="button" onclick="openVoiceCall()" aria-label="Позвонить Умнику">📞</button>' +
         '<button class="gear-btn" onclick="openSettings()" aria-label="Настройки">' + gearIcon() + '</button>' +
       '</div>';
@@ -979,16 +1098,173 @@ function enableDragScroll(el, key){
   });
 }
 
+
+/* -------------------- CAMERA TASK MODE -------------------- */
+
+function openTaskCamera(){
+  if(state.plan !== 'plus'){
+    addMessage('bot','Показать задание через камеру можно в Умник Плюс.');
+    render();
+    return;
+  }
+
+  if(state.mode !== 'ai'){
+    addMessage('bot','Разбор задания по камере работает только в AI-режиме. Переключи режим ответа на AI в настройках.');
+    render();
+    return;
+  }
+
+  const input = document.getElementById('cameraTaskInput');
+  if(input){
+    input.value = '';
+    input.click();
+  }
+}
+
+function closeCameraModal(){
+  const modal = document.getElementById('cameraModal');
+  if(modal){
+    modal.classList.add('hidden');
+    modal.setAttribute('aria-hidden','true');
+  }
+}
+
+function openCameraModal(){
+  const modal = document.getElementById('cameraModal');
+  const img = document.getElementById('cameraPreviewBig');
+
+  if(!modal || !img || !state.cameraImageDataUrl) return;
+
+  img.src = state.cameraImageDataUrl;
+  modal.classList.remove('hidden');
+  modal.setAttribute('aria-hidden','false');
+}
+
+function handleTaskCamera(event){
+  const file = event.target.files && event.target.files[0];
+  if(!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    compressImage(reader.result, (small) => {
+      state.cameraImageDataUrl = small;
+      state.imageDataUrl = small;
+      voiceState.imageDataUrl = small;
+
+      const preview = document.getElementById('photoPreview');
+      if(preview){
+        preview.src = small;
+        preview.style.display = 'block';
+      }
+
+      setFox('idea');
+      openCameraModal();
+    });
+  };
+
+  reader.readAsDataURL(file);
+}
+
+async function analyzeCameraTask(){
+  if(!state.cameraImageDataUrl){
+    openTaskCamera();
+    return;
+  }
+
+  if(state.isSending) return;
+
+  closeCameraModal();
+
+  state.isSending = true;
+  addMessage('user','Я показал задание на фото. Разбери его, пожалуйста.');
+  setFox('thinking');
+  render();
+
+  try{
+    const res = await fetch('/api/chat', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        message:'Разбери задание на фото. Объясни простыми шагами, но не просто дай готовый ответ.',
+        age:state.age,
+        chatTitle:state.activeChat,
+        imageDataUrl:state.cameraImageDataUrl,
+        mode:'ai'
+      })
+    });
+
+    const data = await res.json();
+    if(!res.ok) throw new Error(data?.error || 'camera api error');
+
+    const answer = data.text || 'Я посмотрел фото, но не смог разобрать задание. Попробуй сделать снимок ближе и чётче.';
+
+    addMessage('bot', answer);
+    setFox(data.emotion || 'explain');
+
+    voiceState.history.push({
+      role:'user',
+      content:'Я показал Умнику фото задания.'
+    });
+    voiceState.history.push({
+      role:'assistant',
+      content:answer
+    });
+
+    if(voiceState.history.length > 16){
+      voiceState.history = voiceState.history.slice(-16);
+    }
+
+  }catch(e){
+    const fallback = 'Я не смог разобрать фото через AI. Попробуй сделать снимок ближе, чтобы задание было крупнее и без бликов.';
+    addMessage('bot', fallback);
+    setFox('confused');
+  }finally{
+    state.isSending = false;
+    render();
+  }
+}
+
+function askAboutCameraByVoice(){
+  if(!state.cameraImageDataUrl){
+    openTaskCamera();
+    return;
+  }
+
+  closeCameraModal();
+  voiceState.imageDataUrl = state.cameraImageDataUrl;
+
+  if(!voiceState.history.some(m => String(m.content || '').includes('фото задания'))){
+    voiceState.history.push({
+      role:'user',
+      content:'Я показал фото задания. Дальше я буду задавать вопросы голосом именно про это фото.'
+    });
+  }
+
+  openVoiceCall();
+
+  const transcript = document.getElementById('voiceTranscript');
+  if(transcript){
+    transcript.textContent =
+      'Умник: Фото задания уже передо мной. Нажми микрофон и спроси, что именно нужно объяснить.';
+  }
+
+  const status = document.getElementById('voiceStatus');
+  if(status) status.textContent = 'Готов обсудить фото';
+}
+
+
 /* -------------------- VOICE CALL MODE -------------------- */
 
 function updateVoiceButtonVisibility(){
-  const btn = document.getElementById('voiceCallBtn');
-  if(!btn) return;
+  const voiceBtn = document.getElementById('voiceCallBtn');
+  const cameraBtn = document.getElementById('cameraTaskBtn');
 
   const chatOpen = document.getElementById('chatScreen')?.classList.contains('active');
-  const canVoice = chatOpen && state.plan === 'plus' && state.mode === 'ai';
+  const canUseSmartTools = chatOpen && state.plan === 'plus' && state.mode === 'ai';
 
-  btn.classList.toggle('visible', !!canVoice);
+  if(voiceBtn) voiceBtn.classList.toggle('visible', !!canUseSmartTools);
+  if(cameraBtn) cameraBtn.classList.toggle('visible', !!canUseSmartTools);
 }
 
 function openVoiceCall(){
@@ -1015,6 +1291,8 @@ function openVoiceCall(){
 
   if(!voiceState.history.length){
     transcript.textContent = `Умник: Привет${state.name ? `, ${state.name}` : ''}! Нажми микрофон и задай вопрос голосом. Я буду помнить, о чём мы говорили в этом звонке.`;
+  }else if(voiceState.imageDataUrl){
+    transcript.textContent = transcript.textContent || 'Умник: Фото задания уже передо мной. Можешь спросить голосом, что в нём непонятно.';
   }
 
   status.textContent = 'Готов помочь';
@@ -1150,6 +1428,7 @@ async function handleVoiceQuestion(text){
         history:historyForRequest,
         age:state.age,
         chatTitle:'Созвон с Умником',
+        imageDataUrl:voiceState.imageDataUrl || state.cameraImageDataUrl || null,
         mode:'ai'
       })
     });
@@ -1346,6 +1625,7 @@ function resetEveryOpen(clearVoice = true){
   state.mode = 'ai';
   state.activeChat = 'Домашка';
   state.imageDataUrl = null;
+  state.cameraImageDataUrl = null;
   state.chats = {'Домашка':[{role:'bot', text:welcomeText(state.name)}]};
   state.chatOrder = ['Домашка'];
   state.limits = {messages:0,photos:0};
@@ -1356,11 +1636,39 @@ function resetEveryOpen(clearVoice = true){
 
   if(clearVoice){
     voiceState.history = [];
+    voiceState.imageDataUrl = null;
     voiceState.thinking = false;
     voiceState.listening = false;
   }
 }
 </script>
+
+
+<input id="cameraTaskInput" type="file" accept="image/*" capture="environment" style="display:none" onchange="handleTaskCamera(event)">
+
+<div id="cameraModal" class="camera-modal hidden" aria-hidden="true">
+  <div class="camera-content">
+    <div class="camera-header">
+      <div>
+        <div class="camera-title">Показать задание Умнику</div>
+        <div class="camera-subtitle">доступно в Умник Плюс + AI-режим</div>
+      </div>
+      <button id="closeCameraModal" class="camera-close" type="button" onclick="closeCameraModal()" aria-label="Закрыть">×</button>
+    </div>
+
+    <img id="cameraPreviewBig" class="camera-preview-big" alt="Фото задания">
+
+    <div class="camera-actions">
+      <button class="camera-primary" type="button" onclick="analyzeCameraTask()">Разобрать задание</button>
+      <button class="camera-secondary" type="button" onclick="askAboutCameraByVoice()">Спросить голосом про это фото</button>
+      <button class="camera-secondary" type="button" onclick="openTaskCamera()">Сделать другое фото</button>
+    </div>
+
+    <div class="camera-note">
+      На телефоне откроется камера. На компьютере можно выбрать фото задания из файлов.
+    </div>
+  </div>
+</div>
 
 <div id="voiceModal" class="voice-modal hidden" aria-hidden="true">
   <div class="voice-content">
