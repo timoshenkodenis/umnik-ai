@@ -340,6 +340,18 @@
       text-align:center;
     }
 
+  
+    .voice-small-btn.stop{
+      background:#111827;
+      color:white;
+      border-color:#111827!important;
+    }
+    .voice-small-btn.wait{
+      background:#f3f4f6;
+      color:#6b7280;
+      border-color:#e5e7eb!important;
+    }
+
   </style>
 </head>
 <body>
@@ -436,7 +448,9 @@ const state = {
 
 const voiceState = {
   recognition:null,
+  stopRecognition:null,
   listening:false,
+  stopCommandListening:false,
   thinking:false,
   speaking:false,
   callOpen:false,
@@ -1159,6 +1173,7 @@ function openVoiceCall(){
   }
 
   setVoiceStatus('Запускаю микрофон...');
+  updateVoiceControlButton();
   setTimeout(startVoiceRecognition, 250);
 }
 
@@ -1176,6 +1191,7 @@ function closeVoiceCall(){
   }
 
   stopVoiceRecognition();
+  stopVoiceStopCommandListener();
   speechSynthesis.cancel();
 
   const mic = document.getElementById('micButton');
@@ -1188,6 +1204,8 @@ function closeVoiceCall(){
   if(voiceImg){
     voiceImg.classList.remove('speaking');
   }
+
+  updateVoiceControlButton();
 }
 
 function initVoiceEvents(){
@@ -1200,15 +1218,70 @@ function initVoiceEvents(){
   const restart = document.getElementById('voiceRestartBtn');
 
   if(close) close.onclick = closeVoiceCall;
-  if(mic) mic.onclick = () => {
-    voiceState.autoListening = true;
-    startVoiceRecognition();
-  };
-  if(restart) restart.onclick = () => {
-    voiceState.autoListening = true;
-    startVoiceRecognition();
-  };
+  if(mic) mic.onclick = handleVoiceControlButton;
+  if(restart) restart.onclick = handleVoiceControlButton;
   if(photo) photo.onclick = openVoicePhotoPicker;
+
+  updateVoiceControlButton();
+}
+
+function updateVoiceControlButton(){
+  const restart = document.getElementById('voiceRestartBtn');
+  const mic = document.getElementById('micButton');
+
+  if(!restart) return;
+
+  restart.classList.remove('stop','wait');
+
+  if(voiceState.speaking){
+    restart.textContent = '⏹ Остановить ответ';
+    restart.classList.add('stop');
+    if(mic) mic.textContent = '⏹';
+    return;
+  }
+
+  if(voiceState.thinking){
+    restart.textContent = '⏳ Умник думает';
+    restart.classList.add('wait');
+    if(mic) mic.textContent = '⏳';
+    return;
+  }
+
+  if(voiceState.listening){
+    restart.textContent = '⏹ Завершить фразу';
+    restart.classList.add('stop');
+    if(mic) mic.textContent = '⏹';
+    return;
+  }
+
+  restart.textContent = '🎙️ Продолжить';
+  if(mic) mic.textContent = '🎙️';
+}
+
+function handleVoiceControlButton(){
+  if(voiceState.speaking){
+    stopUmnikSpeakingAndContinue();
+    return;
+  }
+
+  if(voiceState.thinking){
+    setVoiceStatus('Умник уже думает. Подожди ответ или закрой звонок.');
+    updateVoiceControlButton();
+    return;
+  }
+
+  if(voiceState.listening){
+    voiceState.autoListening = false;
+    stopVoiceRecognition();
+    setVoiceStatus('Диктовка остановлена. Нажми «Продолжить», чтобы говорить дальше.');
+    updateVoiceControlButton();
+    return;
+  }
+
+  voiceState.autoListening = true;
+  setVoiceStatus('Слушаю...');
+  updateVoiceControlButton();
+  startVoiceRecognition();
 }
 
 function stopVoiceRecognition(){
@@ -1222,6 +1295,8 @@ function stopVoiceRecognition(){
 
   const mic = document.getElementById('micButton');
   if(mic) mic.classList.remove('listening');
+
+  updateVoiceControlButton();
 }
 
 function canVoiceListenNow(){
@@ -1255,11 +1330,13 @@ function startVoiceRecognition(){
       if(mic) mic.classList.add('listening');
       setVoiceStatus('Слушаю...');
       setFox('thinking');
+      updateVoiceControlButton();
     };
 
     voiceState.recognition.onend = () => {
       voiceState.listening = false;
       if(mic) mic.classList.remove('listening');
+      updateVoiceControlButton();
 
       if(canVoiceListenNow()){
         setVoiceStatus('Слушаю...');
@@ -1272,6 +1349,7 @@ function startVoiceRecognition(){
     voiceState.recognition.onerror = (event) => {
       voiceState.listening = false;
       if(mic) mic.classList.remove('listening');
+      updateVoiceControlButton();
 
       const err = event && event.error ? event.error : '';
 
@@ -1322,6 +1400,7 @@ function openVoicePhotoPicker(){
   }
 
   setVoiceStatus('Добавь фото задания');
+  updateVoiceControlButton();
 }
 
 function handleVoicePhoto(event){
@@ -1351,6 +1430,7 @@ function handleVoicePhoto(event){
 
       appendVoiceLine('bot','Вижу фото. Теперь просто скажи голосом, что нужно объяснить по этому заданию.');
       setVoiceStatus('Слушаю вопрос про фото...');
+      updateVoiceControlButton();
 
       voiceState.autoListening = true;
       setTimeout(startVoiceRecognition, 500);
@@ -1368,7 +1448,8 @@ async function handleVoiceQuestion(text){
 
   stopVoiceRecognition();
 
-  if(mic) mic.disabled = true;
+  if(mic) mic.disabled = false;
+  updateVoiceControlButton();
 
   appendVoiceLine('user', text);
   setVoiceStatus('Думаю...');
@@ -1409,6 +1490,7 @@ async function handleVoiceQuestion(text){
 
     voiceState.thinking = false;
     if(mic) mic.disabled = false;
+    updateVoiceControlButton();
 
     speakVoiceAnswer(answer);
   }catch(e){
@@ -1428,6 +1510,7 @@ async function handleVoiceQuestion(text){
 
     voiceState.thinking = false;
     if(mic) mic.disabled = false;
+    updateVoiceControlButton();
 
     speakVoiceAnswer(fallback);
   }
@@ -1520,6 +1603,8 @@ function speakVoiceAnswer(text){
 
   voiceState.speaking = true;
   voiceState.autoListening = false;
+  updateVoiceControlButton();
+  startVoiceStopCommandListener();
 
   const chunks = splitSpeechIntoChunks(text);
   const bestVoice = getBestRussianVoice();
@@ -1528,8 +1613,11 @@ function speakVoiceAnswer(text){
 
   function finishSpeaking(){
     voiceState.speaking = false;
+    stopVoiceStopCommandListener();
 
     if(voiceImg) voiceImg.classList.remove('speaking');
+
+    updateVoiceControlButton();
 
     if(voiceState.callOpen && isVoiceModalOpen()){
       voiceState.autoListening = true;
@@ -1576,6 +1664,105 @@ function speakVoiceAnswer(text){
   speakNext();
 }
 
+
+function isStopSpeakingCommand(text){
+  const t = String(text || '').toLowerCase().replace(/[.,!?]/g,' ').replace(/\s+/g,' ').trim();
+
+  const phrases = [
+    'умник перестань говорить',
+    'умник остановись',
+    'умник стоп',
+    'перестань говорить',
+    'останови ответ',
+    'остановись',
+    'хватит говорить',
+    'хватит',
+    'стоп',
+    'замолчи'
+  ];
+
+  return phrases.some(p => t.includes(p));
+}
+
+function stopUmnikSpeakingAndContinue(){
+  speechSynthesis.cancel();
+  stopVoiceStopCommandListener();
+
+  voiceState.speaking = false;
+  voiceState.thinking = false;
+  voiceState.autoListening = true;
+
+  const voiceImg = document.getElementById('voiceUmnik');
+  if(voiceImg) voiceImg.classList.remove('speaking');
+
+  const mic = document.getElementById('micButton');
+  if(mic) mic.disabled = false;
+
+  setVoiceStatus('Остановил ответ. Слушаю новый вопрос...');
+  updateVoiceControlButton();
+
+  setTimeout(startVoiceRecognition, 450);
+}
+
+function startVoiceStopCommandListener(){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if(!SR || voiceState.stopCommandListening) return;
+
+  try{
+    voiceState.stopRecognition = new SR();
+    voiceState.stopRecognition.lang = 'ru-RU';
+    voiceState.stopRecognition.interimResults = false;
+    voiceState.stopRecognition.continuous = true;
+
+    voiceState.stopRecognition.onstart = () => {
+      voiceState.stopCommandListening = true;
+    };
+
+    voiceState.stopRecognition.onresult = (event) => {
+      let heard = '';
+
+      for(let i = event.resultIndex; i < event.results.length; i++){
+        heard += ' ' + event.results[i][0].transcript;
+      }
+
+      if(isStopSpeakingCommand(heard)){
+        appendVoiceLine('user','Умник, перестань говорить');
+        stopUmnikSpeakingAndContinue();
+      }
+    };
+
+    voiceState.stopRecognition.onerror = () => {
+      voiceState.stopCommandListening = false;
+      if(voiceState.speaking && voiceState.callOpen){
+        setTimeout(startVoiceStopCommandListener, 700);
+      }
+    };
+
+    voiceState.stopRecognition.onend = () => {
+      voiceState.stopCommandListening = false;
+      if(voiceState.speaking && voiceState.callOpen){
+        setTimeout(startVoiceStopCommandListener, 700);
+      }
+    };
+
+    voiceState.stopRecognition.start();
+  }catch(e){
+    voiceState.stopCommandListening = false;
+  }
+}
+
+function stopVoiceStopCommandListener(){
+  try{
+    if(voiceState.stopRecognition && voiceState.stopCommandListening){
+      voiceState.stopRecognition.stop();
+    }
+  }catch(e){}
+
+  voiceState.stopCommandListening = false;
+}
+
+
 if('speechSynthesis' in window){
   speechSynthesis.onvoiceschanged = () => {
     getBestRussianVoice();
@@ -1610,6 +1797,7 @@ function resetEveryOpen(clearVoice = true){
     voiceState.imageDataUrl = null;
     voiceState.thinking = false;
     voiceState.speaking = false;
+    voiceState.stopCommandListening = false;
     voiceState.callOpen = false;
     voiceState.autoListening = false;
     voiceState.listening = false;
