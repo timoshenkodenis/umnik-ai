@@ -1,4 +1,4 @@
-﻿function paperclipIcon(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.4 11.6 12 21a6 6 0 0 1-8.5-8.5l9.8-9.8a4 4 0 0 1 5.7 5.7l-9.9 9.9a2 2 0 0 1-2.8-2.8l9.2-9.2"/></svg>'}
+function paperclipIcon(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.4 11.6 12 21a6 6 0 0 1-8.5-8.5l9.8-9.8a4 4 0 0 1 5.7 5.7l-9.9 9.9a2 2 0 0 1-2.8-2.8l9.2-9.2"/></svg>'}
 function micIcon(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z"/><path d="M19 11a7 7 0 0 1-14 0"/><path d="M12 18v3"/><path d="M8 21h8"/></svg>'}
 function sendIcon(){return '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.4 20.4 21.7 12 3.4 3.6 5.1 10.3 13.5 12l-8.4 1.7-1.7 6.7Z"/></svg>'}
 function gearIcon(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3h.1a1.7 1.7 0 0 0 .9-1.6V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.6.9H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5.9Z"/></svg>'}
@@ -13,14 +13,14 @@ try{
 
 
 
-const defaultChats = ['Р”РѕРјР°С€РєР°','РўР°Р±Р»РёС†Р° Г—7','Р СѓСЃСЃРєРёР№'];
+const defaultChats = ['Домашка','Таблица ×7','Русский'];
 const suggestions = [
-  'Р§С‚Рѕ С‚Р°РєРѕРµ СЃРєР°Р·СѓРµРјРѕРµ?',
-  'РљР°Рє РЅР°Р№С‚Рё РїРµСЂРёРјРµС‚СЂ?',
-  'РћР±СЉСЏСЃРЅРё С‚Р°Р±Р»РёС†Сѓ СѓРјРЅРѕР¶РµРЅРёСЏ',
-  'Р Р°Р·Р±РµСЂРё С„РѕС‚Рѕ Р·Р°РґР°РЅРёСЏ',
-  'Р§С‚Рѕ С‚Р°РєРѕРµ РґСЂРѕР±СЊ?',
-  'РЇ СѓСЃС‚Р°Р», Сѓ РјРµРЅСЏ РЅРµ РїРѕР»СѓС‡РёС‚СЃСЏ'
+  'Что такое сказуемое?',
+  'Как найти периметр?',
+  'Объясни таблицу умножения',
+  'Разбери фото задания',
+  'Что такое дробь?',
+  'Я устал, у меня не получится'
 ];
 
 const state = {
@@ -28,10 +28,10 @@ const state = {
   age:'',
   mode:'ai',
   plan:'free',
-  activeChat:'Р”РѕРјР°С€РєР°',
+  activeChat:'Домашка',
   imageDataUrl:null,
-  chats:{'Р”РѕРјР°С€РєР°':[{role:'bot', text:welcomeText('')}]},
-  chatOrder:['Р”РѕРјР°С€РєР°'],
+  chats:{'Домашка':[{role:'bot', text:welcomeText('')}]},
+  chatOrder:['Домашка'],
   limits:{messages:0,photos:0},
   editingTabs:false,
   isSending:false,
@@ -61,7 +61,7 @@ const SUBSCRIPTION_KEY = 'umnik_subscription_v1';
 const VOICE_SETTINGS_KEY = 'umnik_voice_settings_v1';
 
 
-function defaultProfile(){return {name:'',age:'',grade:'',hardSubject:'',hardTopics:'',explainStyle:'РѕС‡РµРЅСЊ РїСЂРѕСЃС‚Рѕ',goal:''}}
+function defaultProfile(){return {name:'',age:'',grade:'',hardSubject:'',hardTopics:'',explainStyle:'очень просто',goal:''}}
 function defaultMemory(){return {totalQuestions:0,totalVoiceQuestions:0,totalPhotos:0,topics:{},difficult:{},recent:[],lastSummary:'',updatedAt:''}}
 function defaultAccount(){return {loggedIn:false,email:'',createdAt:''}}
 function defaultSubscription(){return {plan:'free',expiresAt:'',lastPaidAt:''}}
@@ -131,8 +131,8 @@ function renderAccountSubscription(){
   if(accBox){
     const acc = state.account || defaultAccount();
     accBox.textContent = acc.loggedIn
-      ? `Р’С‹ РІРѕС€Р»Рё РєР°Рє ${acc.email || 'РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ'}`
-      : 'Р’С‹ РїРѕРєР° РЅРµ РІРѕС€Р»Рё. Р”Р»СЏ MVP РІС…РѕРґ СЃРѕС…СЂР°РЅСЏРµС‚СЃСЏ Р»РѕРєР°Р»СЊРЅРѕ РІ Р±СЂР°СѓР·РµСЂРµ.';
+      ? `Вы вошли как ${acc.email || 'пользователь'}`
+      : 'Вы пока не вошли. Для MVP вход сохраняется локально в браузере.';
   }
 
   if(loginBtn && logoutBtn){
@@ -146,10 +146,10 @@ function renderAccountSubscription(){
     const days = getSubscriptionDaysLeft();
 
     subBox.innerHTML =
-      `<div class="account-row"><span>РўР°СЂРёС„</span><b>${active ? 'РЈРјРЅРёРє РџР»СЋСЃ' : 'Free'}</b></div>` +
-      `<div class="account-row"><span>РЎС‚Р°С‚СѓСЃ</span><b>${active ? 'РђРєС‚РёРІРЅР°' : 'РќРµ Р°РєС‚РёРІРЅР°'}</b></div>` +
-      `<div class="account-row"><span>РћСЃС‚Р°Р»РѕСЃСЊ</span><b>${active ? `${days} РґРЅ.` : '0 РґРЅ.'}</b></div>` +
-      `<div class="account-row"><span>РЎС‚РѕРёРјРѕСЃС‚СЊ</span><b>349 в‚Ѕ / РјРµСЃ</b></div>`;
+      `<div class="account-row"><span>Тариф</span><b>${active ? 'Умник Плюс' : 'Free'}</b></div>` +
+      `<div class="account-row"><span>Статус</span><b>${active ? 'Активна' : 'Не активна'}</b></div>` +
+      `<div class="account-row"><span>Осталось</span><b>${active ? `${days} дн.` : '0 дн.'}</b></div>` +
+      `<div class="account-row"><span>Стоимость</span><b>349 ₽ / мес</b></div>`;
   }
 }
 
@@ -180,7 +180,7 @@ function openProfileEditor(){
 }
 
 function loginAccount(){
-  const email = prompt('Р’РІРµРґРё email РґР»СЏ РІС…РѕРґР° РІ MVP-Р°РєРєР°СѓРЅС‚:', state.account?.email || '');
+  const email = prompt('Введи email для входа в MVP-аккаунт:', state.account?.email || '');
   if(email === null) return;
 
   const clean = email.trim() || 'demo@umnik.ai';
@@ -207,33 +207,33 @@ function paySubscription(){
   render();
   renderAccountSubscription();
   updateVoiceButtonVisibility();
-  alert('MVP: РїРѕРґРїРёСЃРєР° РЈРјРЅРёРє РџР»СЋСЃ Р°РєС‚РёРІРёСЂРѕРІР°РЅР° РЅР° 30 РґРЅРµР№.');
+  alert('MVP: подписка Умник Плюс активирована на 30 дней.');
 }
 
 function syncProfileToWelcome(){const n=document.getElementById('nameInput');const a=document.getElementById('ageInput');if(n&&state.profile.name&&!n.value)n.value=state.profile.name;if(a&&state.profile.age&&!a.value)a.value=state.profile.age}
 function updateProfileFromWelcome(name,age){state.profile.name=name||state.profile.name||'';state.profile.age=age||state.profile.age||'';saveProfile()}
-function profileForApi(){return {name:state.profile.name||state.name||'',age:state.profile.age||state.age||'',grade:state.profile.grade||'',hardSubject:state.profile.hardSubject||'',hardTopics:state.profile.hardTopics||'',explainStyle:state.profile.explainStyle||'РѕС‡РµРЅСЊ РїСЂРѕСЃС‚Рѕ',goal:state.profile.goal||''}}
+function profileForApi(){return {name:state.profile.name||state.name||'',age:state.profile.age||state.age||'',grade:state.profile.grade||'',hardSubject:state.profile.hardSubject||'',hardTopics:state.profile.hardTopics||'',explainStyle:state.profile.explainStyle||'очень просто',goal:state.profile.goal||''}}
 function memoryForApi(){const m=state.learningMemory||defaultMemory();return {totalQuestions:m.totalQuestions||0,totalVoiceQuestions:m.totalVoiceQuestions||0,totalPhotos:m.totalPhotos||0,topics:m.topics||{},difficult:m.difficult||{},recent:(m.recent||[]).slice(-6),lastSummary:m.lastSummary||''}}
-function detectLearningTopic(text){const q=String(text||'').toLowerCase();const pairs=[['РґСЂРѕР±Рё',['РґСЂРѕР±','С‡РёСЃР»РёС‚РµР»','Р·РЅР°РјРµРЅР°С‚РµР»']],['С‚Р°Р±Р»РёС†Р° СѓРјРЅРѕР¶РµРЅРёСЏ',['СѓРјРЅРѕР¶','С‚Р°Р±Р»РёС†','РїСЂРѕРёР·РІРµРґ']],['СѓСЂР°РІРЅРµРЅРёСЏ',['СѓСЂР°РІРЅРµРЅ','РёРєСЃ',' x ','x+','x -','РЅР°Р№С‚Рё x']],['РїРµСЂРёРјРµС‚СЂ',['РїРµСЂРёРјРµС‚СЂ']],['РїР»РѕС‰Р°РґСЊ',['РїР»РѕС‰Р°Рґ']],['СЃРєР°Р·СѓРµРјРѕРµ',['СЃРєР°Р·СѓРµРј']],['РїРѕРґР»РµР¶Р°С‰РµРµ',['РїРѕРґР»РµР¶Р°']],['С‡Р°СЃС‚Рё СЂРµС‡Рё',['С‡Р°СЃС‚СЊ СЂРµС‡Рё','СЃСѓС‰РµСЃС‚РІРёС‚РµР»СЊРЅ','РїСЂРёР»Р°РіР°С‚РµР»СЊРЅ','РіР»Р°РіРѕР»']],['РѕСЂС„РѕРіСЂР°С„РёСЏ',['РїСЂРѕРІРµСЂРѕС‡РЅРѕРµ СЃР»РѕРІРѕ','Р±РµР·СѓРґР°СЂРЅ','Р±СѓРєРІР°','РѕСЂС„РѕРіСЂР°РјРј']],['С‚РµРєСЃС‚РѕРІР°СЏ Р·Р°РґР°С‡Р°',['Р·Р°РґР°С‡Р°','СѓСЃР»РѕРІРёРµ','СЂРµС€РµРЅРёРµ']]];for(const [topic,words] of pairs){if(words.some(w=>q.includes(w)))return topic}return 'РѕР±С‰РёР№ РІРѕРїСЂРѕСЃ'}
+function detectLearningTopic(text){const q=String(text||'').toLowerCase();const pairs=[['дроби',['дроб','числител','знаменател']],['таблица умножения',['умнож','таблиц','произвед']],['уравнения',['уравнен','икс',' x ','x+','x -','найти x']],['периметр',['периметр']],['площадь',['площад']],['сказуемое',['сказуем']],['подлежащее',['подлежа']],['части речи',['часть речи','существительн','прилагательн','глагол']],['орфография',['проверочное слово','безударн','буква','орфограмм']],['текстовая задача',['задача','условие','решение']]];for(const [topic,words] of pairs){if(words.some(w=>q.includes(w)))return topic}return 'общий вопрос'}
 function bumpMap(map,key){if(key)map[key]=(map[key]||0)+1}
 function topKeys(obj,limit=3){return Object.entries(obj||{}).sort((a,b)=>b[1]-a[1]).slice(0,limit).map(([k,v])=>`${k} (${v})`)}
-function buildMemorySummary(memory){const top=topKeys(memory.topics,3);const hard=topKeys(memory.difficult,3);const parts=[`Р’СЃРµРіРѕ РІРѕРїСЂРѕСЃРѕРІ: ${memory.totalQuestions||0}`];if(memory.totalVoiceQuestions)parts.push(`Р“РѕР»РѕСЃРѕРј: ${memory.totalVoiceQuestions}`);if(memory.totalPhotos)parts.push(`Р¤РѕС‚Рѕ: ${memory.totalPhotos}`);if(top.length)parts.push(`Р§Р°С‰Рµ РІСЃРµРіРѕ: ${top.join(', ')}`);if(hard.length)parts.push(`РЎР»РѕР¶РЅС‹Рµ С‚РµРјС‹: ${hard.join(', ')}`);return parts.join('\n')||'РџРѕРєР° РїР°РјСЏС‚Рё РјР°Р»Рѕ: Р·Р°РґР°Р№ РЅРµСЃРєРѕР»СЊРєРѕ РІРѕРїСЂРѕСЃРѕРІ, Рё РЈРјРЅРёРє РЅР°С‡РЅС‘С‚ РїРѕРґСЃС‚СЂР°РёРІР°С‚СЊСЃСЏ.'}
-function updateLearningMemory(userText,answerText,source='chat',hadPhoto=false){const m=state.learningMemory||defaultMemory();const topic=detectLearningTopic(userText+' '+answerText);m.totalQuestions=(m.totalQuestions||0)+1;if(source==='voice')m.totalVoiceQuestions=(m.totalVoiceQuestions||0)+1;if(hadPhoto)m.totalPhotos=(m.totalPhotos||0)+1;m.topics=m.topics||{};m.difficult=m.difficult||{};m.recent=m.recent||[];bumpMap(m.topics,topic);const hard=String(userText||'').toLowerCase();if(hard.includes('РЅРµ РїРѕРЅСЏР»')||hard.includes('РЅРµ РїРѕРЅРёРјР°СЋ')||hard.includes('РЅРµ РїРѕР»СѓС‡Р°РµС‚СЃСЏ')||hard.includes('СѓСЃС‚Р°Р»')||hard.includes('СЃР»РѕР¶РЅРѕ')||hard.includes('РѕС€РёР±РєР°'))bumpMap(m.difficult,topic);m.recent.push({source,topic,question:String(userText||'').slice(0,180),answer:String(answerText||'').slice(0,220),at:new Date().toISOString()});if(m.recent.length>10)m.recent=m.recent.slice(-10);m.lastSummary=buildMemorySummary(m);state.learningMemory=m;saveMemory();renderSettings()}
-function renderProfileSummary(){const box=document.getElementById('profileSummary');if(!box)return;const p=profileForApi();const items=[['РРјСЏ',p.name||'РЅРµ СѓРєР°Р·Р°РЅРѕ'],['Р’РѕР·СЂР°СЃС‚',p.age||'РЅРµ СѓРєР°Р·Р°РЅ'],['РљР»Р°СЃСЃ',p.grade?`${p.grade} РєР»Р°СЃСЃ`:'РЅРµ РІС‹Р±СЂР°РЅ'],['РЎР»РѕР¶РЅРµРµ РІСЃРµРіРѕ',p.hardSubject||'РЅРµ РІС‹Р±СЂР°РЅРѕ'],['РЎС‚РёР»СЊ',p.explainStyle||'РѕС‡РµРЅСЊ РїСЂРѕСЃС‚Рѕ'],['РўРµРјС‹',p.hardTopics||'РїРѕРєР° РЅРµ СѓРєР°Р·Р°РЅС‹']];box.innerHTML=items.map(([l,v])=>`<div class="profile-pill"><b>${l}</b>${v}</div>`).join('')}
+function buildMemorySummary(memory){const top=topKeys(memory.topics,3);const hard=topKeys(memory.difficult,3);const parts=[`Всего вопросов: ${memory.totalQuestions||0}`];if(memory.totalVoiceQuestions)parts.push(`Голосом: ${memory.totalVoiceQuestions}`);if(memory.totalPhotos)parts.push(`Фото: ${memory.totalPhotos}`);if(top.length)parts.push(`Чаще всего: ${top.join(', ')}`);if(hard.length)parts.push(`Сложные темы: ${hard.join(', ')}`);return parts.join('\n')||'Пока памяти мало: задай несколько вопросов, и Умник начнёт подстраиваться.'}
+function updateLearningMemory(userText,answerText,source='chat',hadPhoto=false){const m=state.learningMemory||defaultMemory();const topic=detectLearningTopic(userText+' '+answerText);m.totalQuestions=(m.totalQuestions||0)+1;if(source==='voice')m.totalVoiceQuestions=(m.totalVoiceQuestions||0)+1;if(hadPhoto)m.totalPhotos=(m.totalPhotos||0)+1;m.topics=m.topics||{};m.difficult=m.difficult||{};m.recent=m.recent||[];bumpMap(m.topics,topic);const hard=String(userText||'').toLowerCase();if(hard.includes('не понял')||hard.includes('не понимаю')||hard.includes('не получается')||hard.includes('устал')||hard.includes('сложно')||hard.includes('ошибка'))bumpMap(m.difficult,topic);m.recent.push({source,topic,question:String(userText||'').slice(0,180),answer:String(answerText||'').slice(0,220),at:new Date().toISOString()});if(m.recent.length>10)m.recent=m.recent.slice(-10);m.lastSummary=buildMemorySummary(m);state.learningMemory=m;saveMemory();renderSettings()}
+function renderProfileSummary(){const box=document.getElementById('profileSummary');if(!box)return;const p=profileForApi();const items=[['Имя',p.name||'не указано'],['Возраст',p.age||'не указан'],['Класс',p.grade?`${p.grade} класс`:'не выбран'],['Сложнее всего',p.hardSubject||'не выбрано'],['Стиль',p.explainStyle||'очень просто'],['Темы',p.hardTopics||'пока не указаны']];box.innerHTML=items.map(([l,v])=>`<div class="profile-pill"><b>${l}</b>${v}</div>`).join('')}
 function renderMemorySummary(){const box=document.getElementById('memorySummary');if(box)box.textContent=state.learningMemory.lastSummary||buildMemorySummary(state.learningMemory||defaultMemory())}
-function openProfileModal(){const p=profileForApi();document.getElementById('profileName').value=p.name||'';document.getElementById('profileAge').value=p.age||'';document.getElementById('profileGrade').value=p.grade||'';document.getElementById('profileHardSubject').value=p.hardSubject||'';document.getElementById('profileHardTopics').value=p.hardTopics||'';document.getElementById('profileExplainStyle').value=p.explainStyle||'РѕС‡РµРЅСЊ РїСЂРѕСЃС‚Рѕ';document.getElementById('profileGoal').value=p.goal||'';const modal=document.getElementById('profileModal');modal.classList.remove('hidden');modal.setAttribute('aria-hidden','false')}
+function openProfileModal(){const p=profileForApi();document.getElementById('profileName').value=p.name||'';document.getElementById('profileAge').value=p.age||'';document.getElementById('profileGrade').value=p.grade||'';document.getElementById('profileHardSubject').value=p.hardSubject||'';document.getElementById('profileHardTopics').value=p.hardTopics||'';document.getElementById('profileExplainStyle').value=p.explainStyle||'очень просто';document.getElementById('profileGoal').value=p.goal||'';const modal=document.getElementById('profileModal');modal.classList.remove('hidden');modal.setAttribute('aria-hidden','false')}
 function closeProfileModal(){const modal=document.getElementById('profileModal');modal.classList.add('hidden');modal.setAttribute('aria-hidden','true')}
-function saveProfileFromModal(){state.profile={name:document.getElementById('profileName').value.trim(),age:document.getElementById('profileAge').value.trim(),grade:document.getElementById('profileGrade').value,hardSubject:document.getElementById('profileHardSubject').value,hardTopics:document.getElementById('profileHardTopics').value.trim(),explainStyle:document.getElementById('profileExplainStyle').value,goal:document.getElementById('profileGoal').value.trim()};state.name=state.profile.name||state.name;state.age=state.profile.age||state.age;saveProfile();closeProfileModal();renderSettings();addMessage('bot','РџСЂРѕС„РёР»СЊ СЃРѕС…СЂР°РЅС‘РЅ. РўРµРїРµСЂСЊ СЏ Р±СѓРґСѓ СѓС‡РёС‚С‹РІР°С‚СЊ РєР»Р°СЃСЃ, СЃР»РѕР¶РЅС‹Рµ С‚РµРјС‹ Рё СЃС‚РёР»СЊ РѕР±СЉСЏСЃРЅРµРЅРёСЏ.');setFox('happy');render()}
-function showFullMemory(){const m=state.learningMemory||defaultMemory();const recent=(m.recent||[]).slice(-5).map((r,i)=>`${i+1}. ${r.topic}: ${r.question}`).join('\n');alert('РџР°РјСЏС‚СЊ РЈРјРЅРёРєР°:\n\n'+buildMemorySummary(m)+(recent?'\n\nРџРѕСЃР»РµРґРЅРёРµ РІРѕРїСЂРѕСЃС‹:\n'+recent:''))}
-function clearLearningMemory(){if(!confirm('РћС‡РёСЃС‚РёС‚СЊ РїР°РјСЏС‚СЊ РЈРјРЅРёРєР° РЅР° СЌС‚РѕРј СѓСЃС‚СЂРѕР№СЃС‚РІРµ?'))return;state.learningMemory=defaultMemory();saveMemory();renderSettings();addMessage('bot','РџР°РјСЏС‚СЊ РѕС‡РёС‰РµРЅР°. РќР°С‡РЅС‘Рј Р·Р°РЅРѕРІРѕ рџ™‚');setFox('welcome');render()}
+function saveProfileFromModal(){state.profile={name:document.getElementById('profileName').value.trim(),age:document.getElementById('profileAge').value.trim(),grade:document.getElementById('profileGrade').value,hardSubject:document.getElementById('profileHardSubject').value,hardTopics:document.getElementById('profileHardTopics').value.trim(),explainStyle:document.getElementById('profileExplainStyle').value,goal:document.getElementById('profileGoal').value.trim()};state.name=state.profile.name||state.name;state.age=state.profile.age||state.age;saveProfile();closeProfileModal();renderSettings();addMessage('bot','Профиль сохранён. Теперь я буду учитывать класс, сложные темы и стиль объяснения.');setFox('happy');render()}
+function showFullMemory(){const m=state.learningMemory||defaultMemory();const recent=(m.recent||[]).slice(-5).map((r,i)=>`${i+1}. ${r.topic}: ${r.question}`).join('\n');alert('Память Умника:\n\n'+buildMemorySummary(m)+(recent?'\n\nПоследние вопросы:\n'+recent:''))}
+function clearLearningMemory(){if(!confirm('Очистить память Умника на этом устройстве?'))return;state.learningMemory=defaultMemory();saveMemory();renderSettings();addMessage('bot','Память очищена. Начнём заново 🙂');setFox('welcome');render()}
 
 
 let currentEmotion = 'welcome';
 
 function welcomeText(name){
   const cleanName = String(name || '').trim();
-  const hello = cleanName ? `РџСЂРёРІРµС‚, ${cleanName}!` : 'РџСЂРёРІРµС‚!';
-  return `${hello} РЇ РЈРјРЅРёРє. РќР°РїРёС€Рё С€РєРѕР»СЊРЅС‹Р№ РІРѕРїСЂРѕСЃ РёР»Рё РїСЂРёРєСЂРµРїРё С„РѕС‚Рѕ Р·Р°РґР°РЅРёСЏ вЂ” СЂР°Р·Р±РµСЂС‘Рј РІРјРµСЃС‚Рµ.`;
+  const hello = cleanName ? `Привет, ${cleanName}!` : 'Привет!';
+  return `${hello} Я Умник. Напиши школьный вопрос или прикрепи фото задания — разберём вместе.`;
 }
 
 function ensureChat(n){
@@ -243,21 +243,21 @@ function ensureChat(n){
 
 function normalizeChatsForPlan(){
   if(state.plan === 'free'){
-    ensureChat('Р”РѕРјР°С€РєР°');
-    state.chats = {'Р”РѕРјР°С€РєР°': state.chats['Р”РѕРјР°С€РєР°'] || [{role:'bot', text:welcomeText(state.name)}]};
-    state.chatOrder = ['Р”РѕРјР°С€РєР°'];
-    state.activeChat = 'Р”РѕРјР°С€РєР°';
+    ensureChat('Домашка');
+    state.chats = {'Домашка': state.chats['Домашка'] || [{role:'bot', text:welcomeText(state.name)}]};
+    state.chatOrder = ['Домашка'];
+    state.activeChat = 'Домашка';
     state.editingTabs = false;
     return;
   }
 
   if(!state.chatOrder.length){
-    state.chatOrder = ['Р”РѕРјР°С€РєР°'];
-    ensureChat('Р”РѕРјР°С€РєР°');
+    state.chatOrder = ['Домашка'];
+    ensureChat('Домашка');
   }
 
   if(!state.chatOrder.includes(state.activeChat)){
-    state.activeChat = state.chatOrder[0] || 'Р”РѕРјР°С€РєР°';
+    state.activeChat = state.chatOrder[0] || 'Домашка';
   }
 }
 
@@ -272,16 +272,16 @@ function renderTop(id){
   const top = document.getElementById('topBar');
   if(id === 'welcome'){
     top.className = 'top welcome-top';
-    top.innerHTML = '<img class="logo" src="/assets/logo.png" alt="РЈРјРЅРёРє">';
+    top.innerHTML = '<img class="logo" src="/assets/logo.png" alt="Умник">';
   }else{
     top.className = 'top';
     top.innerHTML =
-      '<img id="headerFox" class="header-fox" src="/assets/umnik_welcome.png" alt="РЈРјРЅРёРє">' +
-      '<img class="logo" src="/assets/logo.png" alt="РЈРјРЅРёРє">' +
+      '<img id="headerFox" class="header-fox" src="/assets/umnik_welcome.png" alt="Умник">' +
+      '<img class="logo" src="/assets/logo.png" alt="Умник">' +
       '<div class="top-actions">' +
-        '<button id="voiceCallBtn" class="voice-call-btn" type="button" onclick="openVoiceCall()" aria-label="РџРѕР·РІРѕРЅРёС‚СЊ РЈРјРЅРёРєСѓ">рџ“ћ</button>' +
-        '<button id="profileMenuBtn" class="profile-menu-btn" type="button" onclick="openProfileMenu()" aria-label="РџСЂРѕС„РёР»СЊ СѓС‡РµРЅРёРєР°">рџ‘¤</button>' +
-        '<button class="gear-btn" onclick="openSettings()" aria-label="РќР°СЃС‚СЂРѕР№РєРё">' + gearIcon() + '</button>' +
+        '<button id="voiceCallBtn" class="voice-call-btn" type="button" onclick="openVoiceCall()" aria-label="Позвонить Умнику">📞</button>' +
+        '<button id="profileMenuBtn" class="profile-menu-btn" type="button" onclick="openProfileMenu()" aria-label="Профиль ученика">👤</button>' +
+        '<button class="gear-btn" onclick="openSettings()" aria-label="Настройки">' + gearIcon() + '</button>' +
       '</div>';
     setFox(currentEmotion || 'welcome');
   }
@@ -293,7 +293,7 @@ function startApp(){
     const ageEl = document.getElementById('ageInput');
     const error = document.getElementById('welcomeError');
     const saved = loadJson(PROFILE_KEY, defaultProfile);
-    const name = (nameEl && nameEl.value ? nameEl.value.trim() : '') || saved.name || 'РґСЂСѓРі';
+    const name = (nameEl && nameEl.value ? nameEl.value.trim() : '') || saved.name || 'друг';
     const age = (ageEl && ageEl.value ? ageEl.value.trim() : '') || saved.age || '8';
     if(error) error.textContent = '';
     state.name = name;
@@ -374,7 +374,7 @@ function toggleEditTabs(){
 }
 
 function uniqueName(base){
-  let root = (base || 'РќРѕРІС‹Р№ С‡Р°С‚').trim() || 'РќРѕРІС‹Р№ С‡Р°С‚';
+  let root = (base || 'Новый чат').trim() || 'Новый чат';
   let n = root;
   let i = 2;
   while(state.chats[n]){
@@ -386,17 +386,17 @@ function uniqueName(base){
 
 function newChat(){
   if(state.plan === 'free'){
-    addMessage('bot','Р’ Free-РІРµСЂСЃРёРё РґРѕСЃС‚СѓРїРµРЅ С‚РѕР»СЊРєРѕ РѕРґРёРЅ С‡Р°С‚. РЎРѕР·РґР°РЅРёРµ РѕС‚РґРµР»СЊРЅС‹С… С‡Р°С‚РѕРІ РѕС‚РЅРѕСЃРёС‚СЃСЏ Рє РЈРјРЅРёРє РџР»СЋСЃ.');
+    addMessage('bot','В Free-версии доступен только один чат. Создание отдельных чатов относится к Умник Плюс.');
     render();
     return;
   }
 
-  const raw = prompt('РќР°Р·РІР°РЅРёРµ РЅРѕРІРѕРіРѕ С‡Р°С‚Р°:','РќРѕРІС‹Р№ С‡Р°С‚');
+  const raw = prompt('Название нового чата:','Новый чат');
   if(raw === null) return;
 
   const n = uniqueName(raw);
   state.activeChat = n;
-  state.chats[n] = [{role:'bot', text:'РќРѕРІС‹Р№ С‡Р°С‚ СЃРѕР·РґР°РЅ. Р§С‚Рѕ Р±СѓРґРµРј СЂР°Р·Р±РёСЂР°С‚СЊ?'}];
+  state.chats[n] = [{role:'bot', text:'Новый чат создан. Что будем разбирать?'}];
   state.chatOrder.push(n);
   state.editingTabs = false;
   openChat();
@@ -410,7 +410,7 @@ function deleteChat(n){
   state.chatOrder = state.chatOrder.filter(x => x !== n);
 
   if(state.activeChat === n){
-    state.activeChat = state.chatOrder[0] || 'Р”РѕРјР°С€РєР°';
+    state.activeChat = state.chatOrder[0] || 'Домашка';
   }
 
   render();
@@ -458,7 +458,7 @@ function renderTabs(){
   const isFree = state.plan === 'free';
   row.classList.toggle('editing', state.editingTabs && !isFree);
 
-  editBtn.textContent = state.editingTabs ? 'вњ“' : 'вњЋ';
+  editBtn.textContent = state.editingTabs ? '✓' : '✎';
   editBtn.style.display = isFree ? 'none' : 'block';
 
   newBtn.style.display = (!isFree && state.editingTabs) ? 'block' : 'none';
@@ -483,7 +483,7 @@ function renderTabs(){
       const left = document.createElement('button');
       left.type = 'button';
       left.className = 'tab-control';
-      left.textContent = 'вЂ№';
+      left.textContent = '‹';
       left.onclick = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -493,7 +493,7 @@ function renderTabs(){
       const right = document.createElement('button');
       right.type = 'button';
       right.className = 'tab-control';
-      right.textContent = 'вЂє';
+      right.textContent = '›';
       right.onclick = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -503,7 +503,7 @@ function renderTabs(){
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'tab-control';
-      del.textContent = 'Г—';
+      del.textContent = '×';
       del.onclick = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -548,19 +548,19 @@ function render(){
   if(state.isSending){
     const d = document.createElement('div');
     d.className = 'bubble bot';
-    d.textContent = 'РЈРјРЅРёРє РґСѓРјР°РµС‚...';
+    d.textContent = 'Умник думает...';
     chat.appendChild(d);
   }
 
   chat.scrollTop = chat.scrollHeight;
 
   document.getElementById('limitsText').textContent = state.plan === 'free'
-    ? 'Free: 1 С‡Р°С‚, 10 СЃРѕРѕР±С‰РµРЅРёР№ Рё 3 С„РѕС‚Рѕ РІ РґРµРЅСЊ'
-    : 'РЈРјРЅРёРє РџР»СЋСЃ: Р±РµР·Р»РёРјРёС‚РЅС‹Рµ СЃРѕРѕР±С‰РµРЅРёСЏ, С„РѕС‚Рѕ, РіРѕР»РѕСЃ, СЃРѕР·РІРѕРЅ Рё СЃРѕС…СЂР°РЅС‘РЅРЅС‹Рµ С‡Р°С‚С‹';
+    ? 'Free: 1 чат, 10 сообщений и 3 фото в день'
+    : 'Умник Плюс: безлимитные сообщения, фото, голос, созвон и сохранённые чаты';
 
   document.getElementById('modeNote').textContent = state.mode === 'ai'
-    ? 'AI-СЂРµР¶РёРј: Р·Р°РїСЂРѕСЃ РѕС‚РїСЂР°РІР»СЏРµС‚СЃСЏ РІ РјРѕРґРµР»СЊ'
-    : 'Р”РµРјРѕ-СЂРµР¶РёРј: РѕС‚РІРµС‚С‹ РёР· Р·Р°РіРѕС‚РѕРІР»РµРЅРЅРѕР№ Р±Р°Р·С‹';
+    ? 'AI-режим: запрос отправляется в модель'
+    : 'Демо-режим: ответы из заготовленной базы';
 
   const sendBtn = document.getElementById('sendBtn');
   if(sendBtn) sendBtn.disabled = state.isSending;
@@ -630,7 +630,7 @@ function canUse(){
   if(state.plan === 'plus') return true;
 
   if(state.limits.messages >= 10){
-    addMessage('bot','Р’ Free-РІРµСЂСЃРёРё Р·Р°РєРѕРЅС‡РёР»РёСЃСЊ 10 СЃРѕРѕР±С‰РµРЅРёР№ РЅР° СЃРµРіРѕРґРЅСЏ. Р’ РїСЂРµР·РµРЅС‚Р°С†РёРё СЌС‚Рѕ РјРµСЃС‚Рѕ РґР»СЏ РїРµСЂРµС…РѕРґР° РЅР° РЈРјРЅРёРє РџР»СЋСЃ.');
+    addMessage('bot','В Free-версии закончились 10 сообщений на сегодня. В презентации это место для перехода на Умник Плюс.');
     render();
     return false;
   }
@@ -641,13 +641,13 @@ function canUse(){
 function demoAnswer(message) {
   const q = String(message || '').toLowerCase();
 
-  if(q.includes('СЃРєР°Р·СѓРµРј')) return { emotion:'explain', text:'РЎРєР°Р·СѓРµРјРѕРµ вЂ” СЌС‚Рѕ РіР»Р°РІРЅС‹Р№ С‡Р»РµРЅ РїСЂРµРґР»РѕР¶РµРЅРёСЏ, РєРѕС‚РѕСЂС‹Р№ РїРѕРєР°Р·С‹РІР°РµС‚, С‡С‚Рѕ РґРµР»Р°РµС‚ РїСЂРµРґРјРµС‚. РќР°РїСЂРёРјРµСЂ: В«РњР°Р»СЊС‡РёРє С‡РёС‚Р°РµС‚В». Р§С‚Рѕ РґРµР»Р°РµС‚? Р§РёС‚Р°РµС‚ вЂ” СЌС‚Рѕ СЃРєР°Р·СѓРµРјРѕРµ.' };
-  if(q.includes('РїРµСЂРёРјРµС‚СЂ')) return { emotion:'explain', text:'РџРµСЂРёРјРµС‚СЂ вЂ” СЌС‚Рѕ СЃСѓРјРјР° РґР»РёРЅ РІСЃРµС… СЃС‚РѕСЂРѕРЅ С„РёРіСѓСЂС‹. Р§С‚РѕР±С‹ РЅР°Р№С‚Рё РїРµСЂРёРјРµС‚СЂ, РЅСѓР¶РЅРѕ СЃР»РѕР¶РёС‚СЊ РІСЃРµ СЃС‚РѕСЂРѕРЅС‹. РЈ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРєР° РјРѕР¶РЅРѕ С‚Р°Рє: P = 2 Г— (РґР»РёРЅР° + С€РёСЂРёРЅР°).' };
-  if(q.includes('РґСЂРѕР±')) return { emotion:'happy', text:'Р”СЂРѕР±СЊ вЂ” СЌС‚Рѕ С‡Р°СЃС‚СЊ С†РµР»РѕРіРѕ. РќР°РїСЂРёРјРµСЂ, РµСЃР»Рё РїРёС†С†Сѓ СЂР°Р·РґРµР»РёР»Рё РЅР° 4 СЂР°РІРЅС‹Рµ С‡Р°СЃС‚Рё Рё РІР·СЏР»Рё 1 РєСѓСЃРѕРє, СЌС‚Рѕ 1/4.' };
-  if(q.includes('СѓСЃС‚Р°Р»')) return { emotion:'support', text:'РџРѕРЅРёРјР°СЋ. Р”Р°РІР°Р№ СЃРґРµР»Р°РµРј РѕРґРёРЅ РјР°Р»РµРЅСЊРєРёР№ С€Р°Рі: РЅР°РїРёС€Рё РїРµСЂРІРѕРµ Р·Р°РґР°РЅРёРµ, Рё СЏ РїРѕРјРѕРіСѓ СЂР°Р·РѕР±СЂР°С‚СЊ РµРіРѕ СЃРїРѕРєРѕР№РЅРѕ.' };
-  if(q.includes('С„РѕС‚Рѕ')) return { emotion:'idea', text:'Р¤РѕС‚Рѕ РїСЂРёРЅСЏС‚Рѕ. Р’ РїРѕР»РЅРѕР№ РІРµСЂСЃРёРё СЏ СЂР°СЃРїРѕР·РЅР°СЋ Р·Р°РґР°РЅРёРµ РЅР° С„РѕС‚Рѕ Рё РѕР±СЉСЏСЃРЅСЋ СЂРµС€РµРЅРёРµ С‚РµРєСЃС‚РѕРј.' };
+  if(q.includes('сказуем')) return { emotion:'explain', text:'Сказуемое — это главный член предложения, который показывает, что делает предмет. Например: «Мальчик читает». Что делает? Читает — это сказуемое.' };
+  if(q.includes('периметр')) return { emotion:'explain', text:'Периметр — это сумма длин всех сторон фигуры. Чтобы найти периметр, нужно сложить все стороны. У прямоугольника можно так: P = 2 × (длина + ширина).' };
+  if(q.includes('дроб')) return { emotion:'happy', text:'Дробь — это часть целого. Например, если пиццу разделили на 4 равные части и взяли 1 кусок, это 1/4.' };
+  if(q.includes('устал')) return { emotion:'support', text:'Понимаю. Давай сделаем один маленький шаг: напиши первое задание, и я помогу разобрать его спокойно.' };
+  if(q.includes('фото')) return { emotion:'idea', text:'Фото принято. В полной версии я распознаю задание на фото и объясню решение текстом.' };
 
-  return { emotion:'explain', text:'РЇ РїРѕРЅСЏР» РІРѕРїСЂРѕСЃ. Р”Р°РІР°Р№ СЂР°Р·Р±РµСЂС‘Рј РµРіРѕ РїСЂРѕСЃС‚С‹РјРё С€Р°РіР°РјРё: СЃРЅР°С‡Р°Р»Р° РІС‹РґРµР»РёРј РіР»Р°РІРЅРѕРµ, РїРѕС‚РѕРј СЂРµС€РёРј РїСЂРёРјРµСЂ.' };
+  return { emotion:'explain', text:'Я понял вопрос. Давай разберём его простыми шагами: сначала выделим главное, потом решим пример.' };
 }
 
 async function send(){
@@ -662,7 +662,7 @@ async function send(){
 
   state.isSending = true;
   state.limits.messages++;
-  addMessage('user', text || 'РЇ РїСЂРёРєСЂРµРїРёР» С„РѕС‚Рѕ Р·Р°РґР°РЅРёСЏ.');
+  addMessage('user', text || 'Я прикрепил фото задания.');
   input.value = '';
   setFox('thinking');
   render();
@@ -696,15 +696,15 @@ async function send(){
     const preview = document.getElementById('photoPreview');
     if(preview) preview.style.display = 'none';
 
-    const answerText = data.text || 'РћС‚РІРµС‚ РїСѓСЃС‚РѕР№. РџРѕРїСЂРѕР±СѓР№ РµС‰С‘ СЂР°Р·.';
+    const answerText = data.text || 'Ответ пустой. Попробуй ещё раз.';
     addMessage('bot', answerText);
-    updateLearningMemory(text || 'Р¤РѕС‚Рѕ Р·Р°РґР°РЅРёСЏ', answerText, 'chat', hadPhoto);
+    updateLearningMemory(text || 'Фото задания', answerText, 'chat', hadPhoto);
     setFox(data.emotion || 'explain');
   }catch(e){
     const fallback = demoAnswer(text);
-    const fallbackText = 'AI СЃРµР№С‡Р°СЃ РЅРµ РѕС‚РІРµС‚РёР». РџРѕРєР°Р·С‹РІР°СЋ РґРµРјРѕ-РѕС‚РІРµС‚:\n\n' + fallback.text;
+    const fallbackText = 'AI сейчас не ответил. Показываю демо-ответ:\n\n' + fallback.text;
     addMessage('bot', fallbackText);
-    updateLearningMemory(text || 'Р¤РѕС‚Рѕ Р·Р°РґР°РЅРёСЏ', fallbackText, 'chat', hadPhoto);
+    updateLearningMemory(text || 'Фото задания', fallbackText, 'chat', hadPhoto);
     setFox('confused');
   }finally{
     state.isSending = false;
@@ -723,7 +723,7 @@ function pickPhoto(){
   if(state.isSending) return;
 
   if(state.plan === 'free' && state.limits.photos >= 3){
-    addMessage('bot','Р’ Free-РІРµСЂСЃРёРё Р·Р°РєРѕРЅС‡РёР»РёСЃСЊ 3 С„РѕС‚Рѕ РЅР° СЃРµРіРѕРґРЅСЏ. Р’ Plus С„РѕС‚Рѕ-СЂР°Р·Р±РѕСЂ Р±СѓРґРµС‚ СЂР°СЃС€РёСЂРµРЅРЅС‹Рј.');
+    addMessage('bot','В Free-версии закончились 3 фото на сегодня. В Plus фото-разбор будет расширенным.');
     render();
     return;
   }
@@ -779,7 +779,7 @@ function voiceInput(){
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 
   if(!SR){
-    addMessage('bot','Р“РѕР»РѕСЃРѕРІРѕР№ РІРІРѕРґ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ РІ СЌС‚РѕРј Р±СЂР°СѓР·РµСЂРµ. РџРѕРїСЂРѕР±СѓР№ Google Chrome.');
+    addMessage('bot','Голосовой ввод не поддерживается в этом браузере. Попробуй Google Chrome.');
     render();
     return;
   }
@@ -895,7 +895,7 @@ function appendVoiceLine(role, text){
 
   const line = document.createElement('div');
   line.className = 'voice-line ' + (role === 'user' ? 'user' : 'bot');
-  line.textContent = (role === 'user' ? 'РўС‹: ' : 'РЈРјРЅРёРє: ') + text;
+  line.textContent = (role === 'user' ? 'Ты: ' : 'Умник: ') + text;
 
   box.appendChild(line);
   box.scrollTop = box.scrollHeight;
@@ -910,11 +910,11 @@ function appendVoicePhoto(dataUrl){
 
   const img = document.createElement('img');
   img.src = dataUrl;
-  img.alt = 'Р¤РѕС‚Рѕ Р·Р°РґР°РЅРёСЏ';
+  img.alt = 'Фото задания';
 
   const caption = document.createElement('div');
   caption.className = 'voice-photo-caption';
-  caption.textContent = 'Р¤РѕС‚Рѕ Р·Р°РґР°РЅРёСЏ РґРѕР±Р°РІР»РµРЅРѕ РІ Р·РІРѕРЅРѕРє';
+  caption.textContent = 'Фото задания добавлено в звонок';
 
   card.appendChild(img);
   card.appendChild(caption);
@@ -929,13 +929,13 @@ function clearVoiceTranscript(){
 
 function openVoiceCall(){
   if(state.plan !== 'plus'){
-    addMessage('bot','РЎРѕР·РІРѕРЅ СЃ РЈРјРЅРёРєРѕРј РґРѕСЃС‚СѓРїРµРЅ С‚РѕР»СЊРєРѕ РІ РЈРјРЅРёРє РџР»СЋСЃ.');
+    addMessage('bot','Созвон с Умником доступен только в Умник Плюс.');
     render();
     return;
   }
 
   if(state.mode !== 'ai'){
-    addMessage('bot','РЎРѕР·РІРѕРЅ СЂР°Р±РѕС‚Р°РµС‚ С‚РѕР»СЊРєРѕ РІ AI-СЂРµР¶РёРјРµ. РџРµСЂРµРєР»СЋС‡Рё СЂРµР¶РёРј РѕС‚РІРµС‚Р° РЅР° AI РІ РЅР°СЃС‚СЂРѕР№РєР°С….');
+    addMessage('bot','Созвон работает только в AI-режиме. Переключи режим ответа на AI в настройках.');
     render();
     return;
   }
@@ -956,14 +956,14 @@ function openVoiceCall(){
 
   if(!voiceState.history.length){
     clearVoiceTranscript();
-    appendVoiceLine('bot', `РџСЂРёРІРµС‚${state.name ? `, ${state.name}` : ''}! РЇ РЅР° СЃРІСЏР·Рё. РњРѕР¶РµС€СЊ РїСЂРѕСЃС‚Рѕ РіРѕРІРѕСЂРёС‚СЊ вЂ” СЏ Р±СѓРґСѓ СЃР»СѓС€Р°С‚СЊ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё.`);
+    appendVoiceLine('bot', `Привет${state.name ? `, ${state.name}` : ''}! Я на связи. Можешь просто говорить — я буду слушать автоматически.`);
   }
 
   if(voiceState.imageDataUrl){
-    appendVoiceLine('bot','Р¤РѕС‚Рѕ Р·Р°РґР°РЅРёСЏ СѓР¶Рµ РІ Р·РІРѕРЅРєРµ. РњРѕР¶РµС€СЊ СЃРїСЂРѕСЃРёС‚СЊ РіРѕР»РѕСЃРѕРј, С‡С‚Рѕ РёРјРµРЅРЅРѕ РЅРµРїРѕРЅСЏС‚РЅРѕ.');
+    appendVoiceLine('bot','Фото задания уже в звонке. Можешь спросить голосом, что именно непонятно.');
   }
 
-  setVoiceStatus('Р—Р°РїСѓСЃРєР°СЋ РјРёРєСЂРѕС„РѕРЅ...');
+  setVoiceStatus('Запускаю микрофон...');
   updateVoiceControlButton();
   setTimeout(startVoiceRecognition, 250);
 }
@@ -1025,28 +1025,28 @@ function updateVoiceControlButton(){
   restart.classList.remove('stop','wait');
 
   if(voiceState.speaking){
-    restart.textContent = 'вЏ№ РћСЃС‚Р°РЅРѕРІРёС‚СЊ РѕС‚РІРµС‚';
+    restart.textContent = '⏹ Остановить ответ';
     restart.classList.add('stop');
-    if(mic) mic.textContent = 'вЏ№';
+    if(mic) mic.textContent = '⏹';
     return;
   }
 
   if(voiceState.thinking){
-    restart.textContent = 'вЏі РЈРјРЅРёРє РґСѓРјР°РµС‚';
+    restart.textContent = '⏳ Умник думает';
     restart.classList.add('wait');
-    if(mic) mic.textContent = 'вЏі';
+    if(mic) mic.textContent = '⏳';
     return;
   }
 
   if(voiceState.listening){
-    restart.textContent = 'вЏ№ Р—Р°РІРµСЂС€РёС‚СЊ С„СЂР°Р·Сѓ';
+    restart.textContent = '⏹ Завершить фразу';
     restart.classList.add('stop');
-    if(mic) mic.textContent = 'вЏ№';
+    if(mic) mic.textContent = '⏹';
     return;
   }
 
-  restart.textContent = 'рџЋ™пёЏ РџСЂРѕРґРѕР»Р¶РёС‚СЊ';
-  if(mic) mic.textContent = 'рџЋ™пёЏ';
+  restart.textContent = '🎙️ Продолжить';
+  if(mic) mic.textContent = '🎙️';
 }
 
 function handleVoiceControlButton(){
@@ -1056,7 +1056,7 @@ function handleVoiceControlButton(){
   }
 
   if(voiceState.thinking){
-    setVoiceStatus('РЈРјРЅРёРє СѓР¶Рµ РґСѓРјР°РµС‚. РџРѕРґРѕР¶РґРё РѕС‚РІРµС‚ РёР»Рё Р·Р°РєСЂРѕР№ Р·РІРѕРЅРѕРє.');
+    setVoiceStatus('Умник уже думает. Подожди ответ или закрой звонок.');
     updateVoiceControlButton();
     return;
   }
@@ -1064,13 +1064,13 @@ function handleVoiceControlButton(){
   if(voiceState.listening){
     voiceState.autoListening = false;
     stopVoiceRecognition();
-    setVoiceStatus('Р”РёРєС‚РѕРІРєР° РѕСЃС‚Р°РЅРѕРІР»РµРЅР°. РќР°Р¶РјРё В«РџСЂРѕРґРѕР»Р¶РёС‚СЊВ», С‡С‚РѕР±С‹ РіРѕРІРѕСЂРёС‚СЊ РґР°Р»СЊС€Рµ.');
+    setVoiceStatus('Диктовка остановлена. Нажми «Продолжить», чтобы говорить дальше.');
     updateVoiceControlButton();
     return;
   }
 
   voiceState.autoListening = true;
-  setVoiceStatus('РЎР»СѓС€Р°СЋ...');
+  setVoiceStatus('Слушаю...');
   updateVoiceControlButton();
   startVoiceRecognition();
 }
@@ -1105,8 +1105,8 @@ function startVoiceRecognition(){
   const mic = document.getElementById('micButton');
 
   if(!SR){
-    setVoiceStatus('Р“РѕР»РѕСЃРѕРІРѕР№ СЂРµР¶РёРј Р»СѓС‡С€Рµ РІСЃРµРіРѕ СЂР°Р±РѕС‚Р°РµС‚ РІ Google Chrome.');
-    alert('РСЃРїРѕР»СЊР·СѓР№ Google Chrome Рё СЂР°Р·СЂРµС€Рё РґРѕСЃС‚СѓРї Рє РјРёРєСЂРѕС„РѕРЅСѓ.');
+    setVoiceStatus('Голосовой режим лучше всего работает в Google Chrome.');
+    alert('Используй Google Chrome и разреши доступ к микрофону.');
     return;
   }
 
@@ -1119,7 +1119,7 @@ function startVoiceRecognition(){
     voiceState.recognition.onstart = () => {
       voiceState.listening = true;
       if(mic) mic.classList.add('listening');
-      setVoiceStatus('РЎР»СѓС€Р°СЋ...');
+      setVoiceStatus('Слушаю...');
       setFox('thinking');
       updateVoiceControlButton();
     };
@@ -1130,10 +1130,10 @@ function startVoiceRecognition(){
       updateVoiceControlButton();
 
       if(canVoiceListenNow()){
-        setVoiceStatus('РЎР»СѓС€Р°СЋ...');
+        setVoiceStatus('Слушаю...');
         setTimeout(startVoiceRecognition, 520);
       }else if(voiceState.callOpen && !voiceState.thinking && !voiceState.speaking){
-        setVoiceStatus('Р“РѕС‚РѕРІ РїРѕРјРѕС‡СЊ');
+        setVoiceStatus('Готов помочь');
       }
     };
 
@@ -1146,15 +1146,15 @@ function startVoiceRecognition(){
 
       if(err === 'not-allowed' || err === 'service-not-allowed'){
         voiceState.autoListening = false;
-        setVoiceStatus('Р Р°Р·СЂРµС€Рё РґРѕСЃС‚СѓРї Рє РјРёРєСЂРѕС„РѕРЅСѓ РІ Р±СЂР°СѓР·РµСЂРµ.');
+        setVoiceStatus('Разреши доступ к микрофону в браузере.');
         return;
       }
 
       if(canVoiceListenNow()){
-        setVoiceStatus('РЎР»СѓС€Р°СЋ...');
+        setVoiceStatus('Слушаю...');
         setTimeout(startVoiceRecognition, 850);
       }else{
-        setVoiceStatus('РќРµ СѓСЃР»С‹С€Р°Р» РІРѕРїСЂРѕСЃ. РќР°Р¶РјРё В«РџСЂРѕРґРѕР»Р¶РёС‚СЊВ».');
+        setVoiceStatus('Не услышал вопрос. Нажми «Продолжить».');
       }
     };
 
@@ -1174,7 +1174,7 @@ function startVoiceRecognition(){
       voiceState.recognition.start();
     }
   }catch(e){
-    setVoiceStatus('РњРёРєСЂРѕС„РѕРЅ Р·Р°РїСѓСЃРєР°РµС‚СЃСЏ...');
+    setVoiceStatus('Микрофон запускается...');
   }
 }
 
@@ -1190,7 +1190,7 @@ function openVoicePhotoPicker(){
     input.click();
   }
 
-  setVoiceStatus('Р”РѕР±Р°РІСЊ С„РѕС‚Рѕ Р·Р°РґР°РЅРёСЏ');
+  setVoiceStatus('Добавь фото задания');
   updateVoiceControlButton();
 }
 
@@ -1212,7 +1212,7 @@ function handleVoicePhoto(event){
 
       voiceState.history.push({
         role:'user',
-        content:'РЇ РґРѕР±Р°РІРёР» С„РѕС‚Рѕ Р·Р°РґР°РЅРёСЏ РІ Р·РІРѕРЅРѕРє. Р”Р°Р»СЊС€Рµ РјРѕРё РІРѕРїСЂРѕСЃС‹ РјРѕРіСѓС‚ Р±С‹С‚СЊ РїСЂРѕ СЌС‚Рѕ С„РѕС‚Рѕ.'
+        content:'Я добавил фото задания в звонок. Дальше мои вопросы могут быть про это фото.'
       });
       state.learningMemory.totalPhotos = (state.learningMemory.totalPhotos || 0) + 1;
       saveMemory();
@@ -1222,8 +1222,8 @@ function handleVoicePhoto(event){
         voiceState.history = voiceState.history.slice(-16);
       }
 
-      appendVoiceLine('bot','Р’РёР¶Сѓ С„РѕС‚Рѕ. РўРµРїРµСЂСЊ РїСЂРѕСЃС‚Рѕ СЃРєР°Р¶Рё РіРѕР»РѕСЃРѕРј, С‡С‚Рѕ РЅСѓР¶РЅРѕ РѕР±СЉСЏСЃРЅРёС‚СЊ РїРѕ СЌС‚РѕРјСѓ Р·Р°РґР°РЅРёСЋ.');
-      setVoiceStatus('РЎР»СѓС€Р°СЋ РІРѕРїСЂРѕСЃ РїСЂРѕ С„РѕС‚Рѕ...');
+      appendVoiceLine('bot','Вижу фото. Теперь просто скажи голосом, что нужно объяснить по этому заданию.');
+      setVoiceStatus('Слушаю вопрос про фото...');
       updateVoiceControlButton();
 
       voiceState.autoListening = true;
@@ -1247,7 +1247,7 @@ async function handleVoiceQuestion(text){
   updateVoiceControlButton();
 
   appendVoiceLine('user', text);
-  setVoiceStatus('Р”СѓРјР°СЋ...');
+  setVoiceStatus('Думаю...');
   setFox('thinking');
 
   const historyForRequest = voiceState.history.slice(-10);
@@ -1260,7 +1260,7 @@ async function handleVoiceQuestion(text){
         message:text,
         history:historyForRequest,
         age:state.age,
-        chatTitle:'РЎРѕР·РІРѕРЅ СЃ РЈРјРЅРёРєРѕРј',
+        chatTitle:'Созвон с Умником',
         imageDataUrl:voiceState.imageDataUrl || null,
         profile:profileForApi(),
         memory:memoryForApi(),
@@ -1271,7 +1271,7 @@ async function handleVoiceQuestion(text){
     const data = await res.json();
     if(!res.ok) throw new Error(data?.error || 'voice api error');
 
-    const answer = data.text || 'РЇ РЅРµ СЃРјРѕРі РѕС‚РІРµС‚РёС‚СЊ. РџРѕРїСЂРѕР±СѓР№ СЃРєР°Р·Р°С‚СЊ РІРѕРїСЂРѕСЃ РµС‰С‘ СЂР°Р·.';
+    const answer = data.text || 'Я не смог ответить. Попробуй сказать вопрос ещё раз.';
 
     voiceState.history.push({role:'user', content:text});
     voiceState.history.push({role:'assistant', content:answer});
@@ -1283,7 +1283,7 @@ async function handleVoiceQuestion(text){
 
     appendVoiceLine('bot', answer);
 
-    setVoiceStatus('РћР±СЉСЏСЃРЅСЏСЋ...');
+    setVoiceStatus('Объясняю...');
     setFox(data.emotion || 'explain');
 
     voiceState.thinking = false;
@@ -1304,7 +1304,7 @@ async function handleVoiceQuestion(text){
 
     appendVoiceLine('bot', fallback);
 
-    setVoiceStatus('AI РЅРµ РѕС‚РІРµС‚РёР», РїРѕРєР°Р·С‹РІР°СЋ РґРµРјРѕ-РѕС‚РІРµС‚.');
+    setVoiceStatus('AI не ответил, показываю демо-ответ.');
     setFox('confused');
 
     voiceState.thinking = false;
@@ -1325,18 +1325,18 @@ function getBestRussianVoice(){
   if(!ruVoices.length) return null;
 
   const preferredNames = [
-    'google СЂСѓСЃСЃРєРёР№',
+    'google русский',
     'google russian',
     'alena',
-    'Р°Р»РµРЅР°',
+    'алена',
     'milena',
-    'РјРёР»РµРЅР°',
+    'милена',
     'svetlana',
-    'СЃРІРµС‚Р»Р°РЅР°',
+    'светлана',
     'irina',
-    'РёСЂРёРЅР°',
+    'ирина',
     'pavel',
-    'РїР°РІРµР»',
+    'павел',
     'microsoft irina',
     'microsoft pavel'
   ];
@@ -1426,7 +1426,7 @@ function updateVoiceSpeedUI(){
 
   const rate = getVoiceRate();
   range.value = String(rate);
-  value.textContent = rate.toFixed(2) + 'Г—';
+  value.textContent = rate.toFixed(2) + '×';
 }
 
 function testVoiceSpeed(){
@@ -1438,7 +1438,7 @@ function testVoiceSpeed(){
     updateVoiceControlButton();
   }
 
-  speakVoiceAnswer('РџСЂРёРІРµС‚! РЇ РЈРјРЅРёРє. РЎРµР№С‡Р°СЃ РїСЂРѕРІРµСЂСЏРµРј СЃРєРѕСЂРѕСЃС‚СЊ РјРѕРµРіРѕ РіРѕР»РѕСЃР°.');
+  speakVoiceAnswer('Привет! Я Умник. Сейчас проверяем скорость моего голоса.');
 }
 
 function speakVoiceAnswer(text){
@@ -1466,10 +1466,10 @@ function speakVoiceAnswer(text){
 
     if(voiceState.callOpen && isVoiceModalOpen()){
       voiceState.autoListening = true;
-      setVoiceStatus('РЎР»СѓС€Р°СЋ...');
+      setVoiceStatus('Слушаю...');
       setTimeout(startVoiceRecognition, 520);
     }else{
-      setVoiceStatus('Р“РѕС‚РѕРІ РїРѕРјРѕС‡СЊ');
+      setVoiceStatus('Готов помочь');
     }
   }
 
@@ -1489,7 +1489,7 @@ function speakVoiceAnswer(text){
     if(bestVoice) utter.voice = bestVoice;
 
     utter.onstart = () => {
-      setVoiceStatus('РћР±СЉСЏСЃРЅСЏСЋ...');
+      setVoiceStatus('Объясняю...');
       if(voiceImg) voiceImg.classList.add('speaking');
     };
 
@@ -1514,16 +1514,16 @@ function isStopSpeakingCommand(text){
   const t = String(text || '').toLowerCase().replace(/[.,!?]/g,' ').replace(/\s+/g,' ').trim();
 
   const phrases = [
-    'СѓРјРЅРёРє РїРµСЂРµСЃС‚Р°РЅСЊ РіРѕРІРѕСЂРёС‚СЊ',
-    'СѓРјРЅРёРє РѕСЃС‚Р°РЅРѕРІРёСЃСЊ',
-    'СѓРјРЅРёРє СЃС‚РѕРї',
-    'РїРµСЂРµСЃС‚Р°РЅСЊ РіРѕРІРѕСЂРёС‚СЊ',
-    'РѕСЃС‚Р°РЅРѕРІРё РѕС‚РІРµС‚',
-    'РѕСЃС‚Р°РЅРѕРІРёСЃСЊ',
-    'С…РІР°С‚РёС‚ РіРѕРІРѕСЂРёС‚СЊ',
-    'С…РІР°С‚РёС‚',
-    'СЃС‚РѕРї',
-    'Р·Р°РјРѕР»С‡Рё'
+    'умник перестань говорить',
+    'умник остановись',
+    'умник стоп',
+    'перестань говорить',
+    'останови ответ',
+    'остановись',
+    'хватит говорить',
+    'хватит',
+    'стоп',
+    'замолчи'
   ];
 
   return phrases.some(p => t.includes(p));
@@ -1543,7 +1543,7 @@ function stopUmnikSpeakingAndContinue(){
   const mic = document.getElementById('micButton');
   if(mic) mic.disabled = false;
 
-  setVoiceStatus('РћСЃС‚Р°РЅРѕРІРёР» РѕС‚РІРµС‚. РЎР»СѓС€Р°СЋ РЅРѕРІС‹Р№ РІРѕРїСЂРѕСЃ...');
+  setVoiceStatus('Остановил ответ. Слушаю новый вопрос...');
   updateVoiceControlButton();
 
   setTimeout(startVoiceRecognition, 450);
@@ -1572,7 +1572,7 @@ function startVoiceStopCommandListener(){
       }
 
       if(isStopSpeakingCommand(heard)){
-        appendVoiceLine('user','РЈРјРЅРёРє, РїРµСЂРµСЃС‚Р°РЅСЊ РіРѕРІРѕСЂРёС‚СЊ');
+        appendVoiceLine('user','Умник, перестань говорить');
         stopUmnikSpeakingAndContinue();
       }
     };
@@ -1676,10 +1676,10 @@ function resetEveryOpen(clearVoice = true){
   state.voiceSettings = loadJson(VOICE_SETTINGS_KEY, defaultVoiceSettings);
   state.plan = hasActivePlus() ? 'plus' : 'free';
   state.mode = 'ai';
-  state.activeChat = 'Р”РѕРјР°С€РєР°';
+  state.activeChat = 'Домашка';
   state.imageDataUrl = null;
-  state.chats = {'Р”РѕРјР°С€РєР°':[{role:'bot', text:welcomeText(state.name)}]};
-  state.chatOrder = ['Р”РѕРјР°С€РєР°'];
+  state.chats = {'Домашка':[{role:'bot', text:welcomeText(state.name)}]};
+  state.chatOrder = ['Домашка'];
   state.limits = {messages:0,photos:0};
   state.editingTabs = false;
   state.isSending = false;
